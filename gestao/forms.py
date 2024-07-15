@@ -5,38 +5,11 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import password_validation
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Digite seu nome',
-            }
-        ),
-        label= 'Nome',
-        required=True,
-        min_length=3,
-    )
-    last_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Digite seu sobrenome',
-            }
-        ),
-        label= 'Sobrenome',
-        required=True,
-    )
-    email = forms.EmailField(
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Digite seu email',
-            }
-        ),
-        label= 'E-mail',
-        required=True,
-    )
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Digite seu usuário',
+                'placeholder': 'Usuário',
+                'class': 'inputlogin',
             }
         ),
         label = 'Usuário',
@@ -45,7 +18,8 @@ class RegisterForm(UserCreationForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Digite sua senha',
+                'placeholder': 'Senha',
+                'class': 'inputlogin',
             }
         ),
         label = 'Senha',
@@ -55,7 +29,8 @@ class RegisterForm(UserCreationForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Digite sua senha novamente',
+                'placeholder': 'Digite novamente',
+                'class': 'inputlogin',
             }
         ),
         label = 'Confirme a senha' ,
@@ -66,20 +41,9 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = (
-            'first_name', 'last_name', 'email',
             'username', 'password1', 'password2',
         )
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-
-        if User.objects.filter(email=email).exists():
-            self.add_error(
-                'email',
-                ValidationError('Já existe este e-mail', code='invalid')
-            )
-
-        return email
 
 
 class RegisterUpdateForm(forms.ModelForm):

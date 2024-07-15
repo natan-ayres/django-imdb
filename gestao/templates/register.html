@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+<body class ="bodylogin">
+    <div class="divlogin">
+        
+        <h1 class="h1login">Registro</h1>
+        <br><br>
+        <form 
+                  action="{{ form_action }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="needs-validation"
+                  novalidate
+                >
+                  {% csrf_token %}      
+                    {% for field in form %}
+                        {{ field }}
+                        {% if field.errors %}
+                        {% endif %}
+                        <br><br>
+                    {% endfor %}
+
+                  {% if form.non_field_errors %}
+                        {{ form.non_field_errors }}
+                  {% endif %}     
+                <button class="buttonlogin" type="submit">Criar</button>
+                <h2 class="h2login"><a class="alogin" href="{% url 'gestao:login' %}">Já possui conta? Entre por aqui</a></h2>
+                
+                </form>
+                
+    </div>
+</body>
+</html>

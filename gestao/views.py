@@ -31,3 +31,22 @@ def loginview(request):
             'form': form
         }
     )
+
+def registerview(request):
+    form = RegisterForm()
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('gestao:login')
+
+
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form
+        }
+    )
