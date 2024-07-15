@@ -1,7 +1,7 @@
 from gestao.models import User
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import password_validation
 
 class RegisterForm(UserCreationForm):
@@ -179,3 +179,20 @@ class RegisterUpdateForm(forms.ModelForm):
                     ValidationError('Senhas não batem', code='invalid')
                 )
         return super().clean()
+    
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'inputlogin',
+            'placeholder': 'Nome',
+            'aria-describedby': 'usernameHelp'
+        }),
+    )
+    password = forms.CharField(
+        label='Senha',
+        widget=forms.PasswordInput(attrs={
+            'class': 'inputlogin',
+            'placeholder': 'Senha',
+            'aria-describedby': 'passwordHelp'
+        }),
+    )

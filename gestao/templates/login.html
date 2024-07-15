@@ -11,12 +11,30 @@
 <body class ="bodylogin">
     <div class="divlogin">
         
-        <h1>Login</h1>
-        <input type="text" class="inputlogin" placeholder="Nome">
+        <h1 class="h1login">Login</h1>
         <br><br>
-        <input type="password" class="inputlogin" placeholder="Senha">
-        <br><br>
-        <button class="buttonlogin">Enviar</button>
+        <form 
+                  action="{{ form_action }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="needs-validation"
+                  novalidate
+                >
+                  {% csrf_token %}      
+                    {% for field in form %}
+                        {{ field }}
+                        {% if field.errors %}
+                        {% endif %}
+                        <br><br>
+                    {% endfor %}
+
+                  {% if form.non_field_errors %}
+                        {{ form.non_field_errors }}
+                  {% endif %}     
+                <button class="buttonlogin" type="submit">Conecte-se</button>
+                <h2 class="h2login">Não possui conta? Cadastre-se aqui</h2>
+                </form>
+                
     </div>
 </body>
 </html>

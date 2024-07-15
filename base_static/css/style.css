@@ -9,30 +9,51 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    padding: 80px;
+    padding: 90px;
+    width: 25%;
     border-radius: 15px;
     color: white;
 }
 
 .inputlogin{
+    width: 91%;
     padding: 15px;
     border-radius: 10px;
     border: none;
     outline: none;
     font-size: 15px;
+    transform: translate(0%,-60%);
 }
 
 .buttonlogin{
-    background-color: dodgerblue;
+    background-color: rgb(106, 23, 201);
     border: none;
     padding: 15px;
     width: 100%;
     border-radius: 10px;
     color: white;
     font-size: 15px;
-    cursor: pointer
+    cursor: pointer;
+    transform: translate(0%,-30%);
 }
 
 .buttonlogin:hover{
-    background-color: deepskyblue;
+    background-color: rgb(120, 41, 166);
+}
+
+.h1login{
+    font-size: 45px;
+    text-align: center;
+    transform: translate(0%,-30%);
+}
+
+.h2login{
+    transform: translate(0%,-30%);
+    font-size: 15px;
+    text-align: center;
+    color: rgb(106, 23, 201);
+}
+
+.h2login:hover{
+    color: rgb(120, 41, 166)
 }
