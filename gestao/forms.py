@@ -1,8 +1,24 @@
-from gestao.models import User
+from gestao.models import User, Filmes
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import password_validation
+
+class FilmesForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Nome',
+                'class': ''
+            }
+        )
+    )
+
+    class Meta:
+        model = Filmes
+        fields = (
+            'nome', 'desc', 'data', 'foto'
+        )
 
 class RegisterForm(UserCreationForm):
     username = forms.CharField(
