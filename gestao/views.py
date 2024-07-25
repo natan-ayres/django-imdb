@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm
 
 def index(request):
     context = {
@@ -51,7 +51,7 @@ def registerview(request):
         }
     )
 
-def createfilmeview(request):
+def createfilme(request):
     form = FilmesForm()
     
     if request.method == 'POST':
@@ -64,6 +64,24 @@ def createfilmeview(request):
     return render(
         request,
         'registerfilme.html',
+        {
+            'form': form
+        }
+    )
+
+def createreview(request):
+    form = ReviewForm()
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'registerreview.html',
         {
             'form': form
         }

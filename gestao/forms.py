@@ -1,6 +1,7 @@
-from gestao.models import User, Filmes
+from gestao.models import User, Filmes, Reviews
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import password_validation
 
@@ -18,6 +19,33 @@ class FilmesForm(forms.ModelForm):
         model = Filmes
         fields = (
             'nome', 'desc', 'data', 'foto'
+        )
+
+class ReviewForm(forms.ModelForm):
+    filme = forms.ModelChoiceField(
+        queryset=Filmes.objects.all(),
+        label='Filme',
+        required=True
+    )
+    nota = forms.FloatField(
+        label='Nota',
+        required=True,
+        validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Review',
+            }
+        ),
+        label='Review',
+        required=False
+    )
+
+    class Meta:
+        model = Reviews
+        fields = (
+            'filme', 'review', 'nota'
         )
 
 class RegisterForm(UserCreationForm):
