@@ -12,7 +12,7 @@ class FilmesAdmin(admin.ModelAdmin):
 
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = 'filme', 'nota',
+    list_display = 'usuario', 'filme', 'nota',
     ordering = '-id',
-    search_fields = 'filme', 'nota',
+    search_fields = 'filme', 'nota', 'usuario'
     list_per_page = 10
