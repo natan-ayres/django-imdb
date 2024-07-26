@@ -73,15 +73,17 @@ def createreview(request):
     form = ReviewForm()
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, request.user)
 
         if form.is_valid():
-            form.save()
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.save()
             return redirect('gestao:index')
         
     return render(
         request,
-        'registerreview.html',
+        'registerfilme.html',
         {
             'form': form
         }

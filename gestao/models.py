@@ -22,4 +22,9 @@ class Reviews(models.Model):
 
     def __str__(self):
         return f"Avaliação de {self.filme.nome} - Nota: {self.nota}"
+    
+@receiver(pre_save, sender=Reviews)
+def set_contact_owner(sender, instance, **kwargs):
+        if not instance.usuario_id:
+            instance.usuario = instance._request_user
 
