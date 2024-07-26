@@ -11,6 +11,7 @@ class Filmes(models.Model):
     data = models.DateField()
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     foto = models.ImageField(blank=True, upload_to= 'images/')
+    avaliacoes = models.ManyToManyField(User, through='Reviews')
 
     def calcular_nota_media(self):
         reviews = self.reviews.all()

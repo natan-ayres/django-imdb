@@ -70,10 +70,10 @@ def createfilme(request):
     )
 
 def createreview(request):
-    form = ReviewForm()
+    form = ReviewForm(usuario=request.user)
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST, request.user)
+        form = ReviewForm(request.POST, usuario=request.user)
 
         if form.is_valid():
             review = form.save(commit=False)

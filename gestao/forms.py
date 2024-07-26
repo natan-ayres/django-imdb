@@ -48,6 +48,12 @@ class ReviewForm(forms.ModelForm):
             'filme', 'review', 'nota'
         )
 
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario')
+        super().__init__(*args, **kwargs)
+        filmes_avaliados = Filmes.objects.filter(avaliacoes=usuario)
+        self.fields['filme'].queryset = Filmes.objects.exclude(id__in=filmes_avaliados)
+
 class RegisterForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(
