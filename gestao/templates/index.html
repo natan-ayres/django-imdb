@@ -1,21 +1,2 @@
-<!DOCTYPE html>
-{% load static %}
-{% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static '/css/style.css' %}">
-</head>
-<body>
-    <div>
-        {% if user.is_authenticated %}
-        <h1>Olá {{ user.username }}</h1>
-        {% else %}
-        <h1> Olá fulano </h1>
-        {% endif %}
-    </div>
-</body>
-</html>
-{% endblock content %}
+{% extends 'base.html' %} {% block content %}
+{% endblock content%}

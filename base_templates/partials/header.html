@@ -1,0 +1,13 @@
+{% load static %} 
+<header class="headercabecalho">
+    <div>
+        <img class="imglogo" src="{% static '/images/logo.png' %}" alt="Logo IMDB">
+    </div>
+    <div class="navindex">
+        <a class="aindex" href="{% url 'gestao:index'%}">Home</a>
+        <a class="aindex" href="{% url 'gestao:index'%}">Filmes</a>
+        <a class="aindex" href="{% url 'gestao:index'%}">Series</a>
+        <a class="aindex" href="{% url 'gestao:login'%}">Login</a>
+        <a class="aindex" href="{% url 'gestao:register'%}">Cadastro</a>
+    </div>
+</header>

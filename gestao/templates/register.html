@@ -8,17 +8,14 @@
     <title>Login</title>
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
-<body class ="bodylogin">
+<body class ="bodyindex">
     <div class="divlogin">
-        
         <h1 class="h1login">Registro</h1>
         <br><br>
         {% include 'partials/userforms.html'%}
                 <button class="buttonlogin" type="submit">Criar</button>
                 <h2 class="h2login"><a class="alogin" href="{% url 'gestao:login' %}">Já possui conta? Entre por aqui</a></h2>
-                
                 </form>
-                
     </div>
 </body>
 </html>
