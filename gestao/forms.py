@@ -1,9 +1,30 @@
-from gestao.models import User, Filmes, Reviews
+from gestao.models import User, Filmes, Reviews, Noticias
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import password_validation
+
+class NoticiasForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Nome'
+            }
+        )
+    )
+    texto = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Matéria'
+            }
+        )
+    )
+    class Meta:
+        model = Noticias
+        fields = [
+            'nome', 'texto', 'imagem'
+        ]
 
 class FilmesForm(forms.ModelForm):
     nome = forms.CharField(
@@ -18,7 +39,7 @@ class FilmesForm(forms.ModelForm):
     class Meta:
         model = Filmes
         fields = (
-            'nome', 'desc', 'data', 'foto'
+            'nome', 'desc', 'data', 'poster'
         )
 
 class ReviewForm(forms.ModelForm):

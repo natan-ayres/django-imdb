@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import auth
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm
 
 def index(request):
     context = {
@@ -55,7 +56,7 @@ def createfilme(request):
     form = FilmesForm()
     
     if request.method == 'POST':
-        form = FilmesForm(request.POST)
+        form = FilmesForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
@@ -83,8 +84,28 @@ def createreview(request):
         
     return render(
         request,
-        'registerfilme.html',
+        'registerreview.html',
         {
             'form': form
+        }
+    )
+
+def createnoticia(request):
+    form = NoticiasForm()
+
+    if request.method == 'POST':
+        form = NoticiasForm(request.POST,  request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('gestao:index')
+        
+    
+    return render(
+        request,
+        'registernoticia.html',
+        {
+            'form': form,
+            'site_title': 'Criar Noticias'
         }
     )
