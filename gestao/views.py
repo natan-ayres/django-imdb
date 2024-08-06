@@ -97,7 +97,9 @@ def createnoticia(request):
         form = NoticiasForm(request.POST,  request.FILES)
 
         if form.is_valid():
-            form.save()
+            noticia = form.save(commit=False)
+            noticia.usuario = request.user
+            noticia.save()
             return redirect('gestao:index')
         
     
