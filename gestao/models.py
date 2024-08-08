@@ -2,7 +2,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.db import models
 from django.db.models import Avg
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.contrib.auth.models import User
 
 class Filmes(models.Model):
@@ -31,10 +31,11 @@ class Noticias(models.Model):
     class Meta:
         verbose_name = 'Noticia'
 
-    nome = models.CharField(max_length=31)
+    nome = models.CharField(max_length=31, validators=[MinLengthValidator(5)])
     imagem = models.ImageField(blank=True, upload_to='noticias/')
-    texto = models.TextField(max_length=684)
+    texto = models.TextField(max_length=684, validators=[MinLengthValidator(5)])
     data = models.DateTimeField(auto_now_add=True)
+    mostrar = models.BooleanField(default=False)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
     def __str__(self):

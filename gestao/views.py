@@ -1,18 +1,38 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import auth
+from . models import Noticias
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm
 
 def index(request):
-    context = {
-        'site_title': 'Imdb-Django'
-    }
+    try:
 
-    return render(
-        request,
-        'index.html',
-        context
-    )
+        noticias = Noticias.objects \
+            .filter(mostrar = True) \
+            .order_by('-data') \
+            .distinct() 
+
+        context = {
+            'noticias': noticias,
+            'site_title': 'Imdb-Django'
+        }
+
+        return render(
+            request,
+            'index.html',
+            context
+        )
+    
+    except AttributeError:
+        context = {
+            'site_title': 'Imdb-Django'
+        }
+
+        return render(
+            request,
+            'index.html',
+            context
+        )
 
 def loginview(request):
     form = CustomAuthenticationForm(request)
@@ -111,3 +131,5 @@ def createnoticia(request):
             'site_title': 'Criar Noticias'
         }
     )
+
+
