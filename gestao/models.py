@@ -25,7 +25,7 @@ class Filmes(models.Model):
             self.nota_media = None
 
     def __str__(self):
-        return f'{self.nome} - {self.data}'
+        return f'{self.nome} - {self.data.year}'
     
 class Noticias(models.Model):
     class Meta:
@@ -39,7 +39,7 @@ class Noticias(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
     def __str__(self):
-        return f"{self.nome} - {self.data.year}"
+        return f"{self.nome} - {self.data.day}/{self.data.month}"
 
 
 class Reviews(models.Model):

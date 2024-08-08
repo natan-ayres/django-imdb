@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import loginview, index, registerview, createfilme, createreview, createnoticia
+from gestao.views import loginview, index, registerview, createfilme, createreview, createnoticia, listarfilmes
 app_name = 'gestao'
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path('criar/filme/', createfilme, name='criarfilme'),
     path('criar/review/', createreview, name='criarreview'),
     path('criar/noticia/', createnoticia, name='criarnoticia'),
+    path('filmes/', listarfilmes, name='listarfilmes'),
 ]

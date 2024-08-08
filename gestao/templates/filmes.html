@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+{% for filmes in page_obj %}
+<div>
+    <div>
+        <p>{{ filmes.nome }}</p>
+        <p>{{ filmes.data.year }}</p>
+        <p>{{ filmes.nota_media }}</p>
+        <p>{{ filmes.descricao }}</p>  
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

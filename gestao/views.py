@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias
+from . models import Noticias, Filmes
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm
 
 def index(request):
@@ -133,3 +134,36 @@ def createnoticia(request):
     )
 
 
+def listarfilmes(request):
+    try:
+
+        filmes = Filmes.objects \
+            .order_by('-id') \
+            .distinct() 
+
+        paginator = Paginator(filmes, 10)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'filmes': filmes,
+            'page_obj': page_obj,
+            'site_title': 'Filmes'
+        }
+
+        return render(
+            request,
+            'filmes.html',
+            context
+        )
+    
+    except AttributeError:
+        context = {
+            'site_title': 'Filmes'
+        }
+
+        return render(
+            request,
+            'filmes.html',
+            context
+        )

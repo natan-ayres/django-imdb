@@ -86,7 +86,7 @@
     transform: translate(-135%, -50%);
     color: white;
     font-size: 18px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 2);
     z-index: 10;
     max-width: 350px;
     white-space: normal;
@@ -188,6 +188,10 @@
     margin-right: 40px;
 }
 
+.navigation-auto .auto-btn1 {
+    background-color: #FFF;
+}
+
 #radio1:checked ~ .navigation-auto .auto-btn1{
     background-color: #FFF;
 }
@@ -203,6 +207,20 @@
 #radio4:checked ~ .navigation-auto .auto-btn4{
     background-color: #FFF;
 }
+
+#radio2:checked ~ .navigation-auto .auto-btn1{
+    background-color: transparent;
+}
+
+#radio3:checked ~ .navigation-auto .auto-btn1{
+    background-color: transparent;
+}
+
+#radio4:checked ~ .navigation-auto .auto-btn1{
+    background-color: transparent;
+}
+
+
 
 .bodyindex{
     background-color: var(--color-dark1);
