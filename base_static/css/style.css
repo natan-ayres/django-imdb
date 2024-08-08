@@ -57,14 +57,15 @@
 
 .slider{
     margin: 0 auto;
-    width: 800px;
-    height: 400px;
+    width: 900px;
+    height: 450px;
     overflow: hidden;
+    border-radius: 15px;
 }
 
 .slides{
-    width: 400%;
-    height: 400px;
+    width: 600%;
+    height: 600px;
     display: flex;
 }
 
@@ -77,22 +78,45 @@
     position: relative;
 }
 
+.text-overlay {
+    position: absolute;
+    top: 32%;
+    left: 75%;
+    bottom: 10%;
+    transform: translate(-135%, -50%);
+    color: white;
+    font-size: 18px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    max-width: 350px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.text-overlay-titulo{
+    font-size: 22px;
+    margin-bottom: 30px;
+}
+
 .slide img{
-    width: 900px;
+    width: 1000px;
 }
 
 .manual-navigation{
     position: absolute;
     width: 800px;
-    margin-top: -40px;
+    margin-top: -190px;
     display: flex;
     justify-content: center;
 }
 
 .manual-btn{
+    margin-right: -80px;
+    width: 7px;
+    height: 7px;
     border: 2px solid #FFF;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 17px;
     cursor: pointer;
     transition: 0.5s;
 }
@@ -117,12 +141,24 @@
 .navigation-auto div{
     border: 2px solid #20a6ff;
     padding: 5px;
+    margin-top: 50px;
     border-radius: 10px;
     cursor: pointer;
     transition: 0.5s;
 }
 
+.auto-btn1{
+    width: 7px;
+    height: 7px;
+}
+
+.auto-btn2{
+    width: 7px;
+    height: 7px;
+}
+
 .navigation-auto{
+    margin-left: 40px;
     position: absolute;
     width: 800px;
     margin-top: 360px;

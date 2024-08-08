@@ -31,9 +31,9 @@ class Noticias(models.Model):
     class Meta:
         verbose_name = 'Noticia'
 
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(max_length=31)
     imagem = models.ImageField(blank=True, upload_to='noticias/')
-    texto = models.TextField(max_length=300)
+    texto = models.TextField(max_length=684)
     data = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
