@@ -141,7 +141,7 @@ def listarfilmes(request):
             .order_by('-id') \
             .distinct() 
 
-        paginator = Paginator(filmes, 10)
+        paginator = Paginator(filmes, 3)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 

@@ -220,7 +220,55 @@
     background-color: transparent;
 }
 
+.notafilme {
+    font-size: 20px;
+    background-color: rgb(173, 173, 79);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: auto;
+}
 
+.divfilmes1 {
+    background-color: var(--color-dark2);
+    position: relative; 
+    margin: 10px auto; 
+    padding: 17px;
+    width: 20%; 
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+
+.divfilmes2 {
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+
+.posterfilme img {
+    width: 80px; 
+    height: 80px;
+    border-radius: 10px;
+    margin-right: 20px; 
+}
+
+.filme-info {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    position: relative;
+}
+
+.filme-info p {
+    margin: 5px 0;
+}
 
 .bodyindex{
     background-color: var(--color-dark1);
