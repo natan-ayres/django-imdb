@@ -188,6 +188,7 @@
 }
 
 .filme-info-row img{
+    border-radius: 10px;
     width: 500px;
     height: 500px;
 }
@@ -198,3 +199,9 @@
     background-color: goldenrod;
 }
 
+.filme-info-col {
+    background-color: rgb(109, 31, 126);
+    border-radius: 5px;
+    width: 60%;
+    color: black;
+}

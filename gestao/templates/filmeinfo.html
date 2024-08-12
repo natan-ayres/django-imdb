@@ -1,13 +1,17 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-<div class="container p-5 bg-light mt-5">
+<div class="container p-5 mb-5 mt-5 my-container-form">
     <div class="row filme-info-row">
-        <div class="col">
+        <div class="col mb-5">
             <img src="{% static filme.poster %}" alt="{{ filme.nome }}" class="d-block mx-auto img-fluid"/>
         </div>
     </div>
     
-    <div class="col p-1">Título: {{ filme.nome }}</div>
-    <div class="col p-1">Lançamento: {{filme.data}}</div>
-    <div class="col p-1">Sinopse: {{ filme.desc }}</div>
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ filme.nome }}</div>
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{filme.data}}</div>
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ filme.diretor }}</div>
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ filme.duracao }}</div>
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ filme.nome }}</div>
+    <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ filme.desc }}</div>
+
 </div>
 {% endblock content %}
