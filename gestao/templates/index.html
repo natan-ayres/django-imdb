@@ -1,52 +1,59 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
-<div class="divindex">
-    <div class="slider">
-        <div class="slides">
-            <input type="radio" name="radio-btn" id="radio1">
-            <input type="radio" name="radio-btn" id="radio2">
-            <input type="radio" name="radio-btn" id="radio3">
-            <input type="radio" name="radio-btn" id="radio4">
-            {% for noticia in noticias %}
-                {% if forloop.first %}
-                    <div class="slide first">
-                        <img src="{% static noticia.imagem %}" alt="Noticia"/>
-                        <div class="text-overlay">
-                            <div class="text-overlay-titulo">
-                                {{ noticia.nome }}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-custom-container mt-5 bg-light">
+    <div class="row">
+        <div class="col">
+            <div class="carousel slide" data-bs-ride="carousel" id="ads">
+                <div class="carousel-inner my-custom-carousel">
+                    {% for noticia in noticias %}
+                        {% if forloop.first %}
+                            <div class="carousel-item active">
+                                <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
                             </div>
-                            <div>
-                                {{ noticia.texto }}
+                        {% else %}
+                            <div class="carousel-item">
+                                <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
                             </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="slide">
-                        <img src="{% static noticia.imagem %}" alt="Noticia"/>
-                        <div class="text-overlay">
-                            <div class="text-overlay-titulo">
-                                {{ noticia.nome }}
-                            </div>
-                            <div>
-                                {{ noticia.texto }}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-                <div class="navigation-auto">
-                    <div class="auto-btn1"></div>
-                    <div class="auto-btn2"></div>
-                    <div class="auto-btn3"></div>
-                    <div class="auto-btn4"></div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
+                <button class="carousel-control-prev" data-bs-target="#ads" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" data-bs-target="#ads" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
         </div>
-        <div class="manual-navigation">
-            <label for="radio1" class="manual-btn"></label>
-            <label for="radio2" class="manual-btn"></label>
-            <label for="radio3" class="manual-btn"></label>
-            <label for="radio4" class="manual-btn"></label>
+        <div class="col d-flex align-items-center">
+            {% for noticia in noticias %}
+                <div id="slide-text-{{ forloop.counter }}" class="slidetexto">
+                    <div class="col mb-3">{{ noticia.nome }}</div>
+                    <div class="col">{{noticia.texto}}</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+var carousel = document.querySelector('#ads');
+var slideTexts = document.querySelectorAll('.slidetexto');
 
-{% endblock content%}
+function hideAllTexts() {
+    slideTexts.forEach(function(text) {
+        text.style.display = 'none';
+    });
+}
+
+carousel.addEventListener('slide.bs.carousel', function (event) {
+    hideAllTexts();
+    var activeSlide = event.to + 1;
+    document.querySelector('#slide-text-' + activeSlide).style.display = 'block';
+});
+
+hideAllTexts();
+document.querySelector('#slide-text-1').style.display = 'block';
+</script>
+{% endblock content %}

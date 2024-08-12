@@ -133,6 +133,25 @@ def createnoticia(request):
         }
     )
 
+def infofilme(request, filme_id):
+    try:
+        single_filme = Filmes.objects.get(pk=filme_id)
+    except Filmes.DoesNotExist:
+        return redirect('gestao:index')
+        
+    site_title = f'{single_filme.nome} - {single_filme.data.year}'
+
+    context = {
+        'filme': single_filme,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'filmeinfo.html',
+        context
+    )
+
 
 def listarfilmes(request):
     try:

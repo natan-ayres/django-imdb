@@ -8,14 +8,16 @@
     <title>Login</title>
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
-<body class="bodyindex">
-    <div class="divlogin">
-        <h1 class="h1login">Login</h1>
-        <br><br>
-        {% include 'partials/userforms.html'%}     
-                <button class="buttonlogin" type="submit">Conecte-se</button>
-                <h2 class="h2login"><a class="alogin" href="{% url 'gestao:register' %}">Não possui conta? Cadastre-se aqui</a></h2>
-        </form>
+<body class="bodylogin">
+    <div class="divfora">
+        <div class="divlogin">
+            <h1 class="h1login">Login</h1>
+            <br><br>
+            {% include 'partials/userforms.html'%}     
+                    <button class="buttonlogin" type="submit">Conecte-se</button>
+                    <h2 class="h2login"><a class="alogin" href="{% url 'gestao:register' %}">Não possui conta? Cadastre-se aqui</a></h2>
+            </form>
+        </div>
     </div>
 </body>
 </html>

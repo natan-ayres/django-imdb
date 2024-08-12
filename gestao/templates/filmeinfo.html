@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container p-5 bg-light mt-5">
+    <div class="row filme-info-row">
+        <div class="col">
+            <img src="{% static filme.poster %}" alt="{{ filme.nome }}" class="d-block mx-auto img-fluid"/>
+        </div>
+    </div>
+    
+    <div class="col p-1">Título: {{ filme.nome }}</div>
+    <div class="col p-1">Lançamento: {{filme.data}}</div>
+    <div class="col p-1">Sinopse: {{ filme.desc }}</div>
+</div>
+{% endblock content %}

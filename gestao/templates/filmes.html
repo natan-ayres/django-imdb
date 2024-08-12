@@ -1,16 +1,15 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-<div class="divfilmes2">
+<div class="container filmes-container mt-5 p-1">
     {% for filmes in page_obj %}
-    <div class="divfilmes1">
-        <div class="posterfilme">
-            <img src="{% static filmes.poster %}" alt="{{ filmes.nome }}"/>
+    <div class="row filmes-row p-2 mx-1 justify-content-center">
+        <div class="col-12 col-md-12 custom-card text-center">
+            <p>{{ filmes.nome }} ({{filmes.data.year}})</p>
         </div>
-        <div class="filme-info">
-            <p>{{ filmes.nome }}</p>
-            <p>{{ filmes.data.year }}</p>
+        <div class="col-12 col-md-12 images-row mb-3 text-center">
+            <img src="{% static filmes.poster %}" alt="{{ filmes.nome }}" class="d-block mx-auto img-fluid"/>
         </div>
-        <div class="notafilme">
-            <p>{{ filmes.nota_media }}</p>  
+        <div class="col-12 col-md-2 p-1 filme-nota text-center">
+            {{ filmes.nota_media }}
         </div>
     </div>
     {% endfor %}

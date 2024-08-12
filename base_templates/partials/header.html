@@ -1,13 +1,16 @@
 {% load static %} 
-<header class="headercabecalho">
-    <div>
-        <img class="imglogo" src="{% static '/images/logo2.png' %}" alt="Logo IMDB">
-    </div>
-    <div class="navindex">
-        <a class="aindex" href="{% url 'gestao:index'%}">Home</a>
-        <a class="aindex" href="{% url 'gestao:listarfilmes'%}">Filmes</a>
-        <a class="aindex" href="{% url 'gestao:index'%}">Series</a>
-        <a class="aindex" href="{% url 'gestao:login'%}">Login</a>
-        <a class="aindex" href="{% url 'gestao:register'%}">Cadastro</a>
+<header>
+    <div class="container-fluid">
+        <div class="row my-custom-row justify-content-between align-items-center">
+            <div class="col-auto">
+                <div class="my-custom-logo"><img src="{% static '/images/logo3.png' %}" alt="logo"></div>
+            </div>         
+            <div class="col-auto d-flex justify-content-end">
+                <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarfilmes'%}">Filmes</a></div>
+                <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarfilmes'%}">Séries</a></div>
+                <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarfilmes'%}">Animes</a></div>
+                <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:login'%}">Login</a></div>
+            </div>
+        </div>
     </div>
 </header>
