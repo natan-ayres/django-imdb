@@ -8,6 +8,10 @@
     --color-purple: #b040ff;
 }
 
+.bodygeral{
+    background-color: #343434;
+}
+
 .my-custom-row{
     background-color: var(--color-dark1);
     height: 4rem;
@@ -58,11 +62,39 @@
     background-color: var(--color-dark1);
 }
 
+.my-container-form{
+    color: black;
+    border-radius: 10px;
+    background-color: var(--color-dark1);
+}
+
+.my-custom-form{
+    background-color: rgb(109, 31, 126);
+    border-radius: 5px;
+    width: 60%;
+    color: black;
+}
+
+.my-custom-form2{
+    margin-right: 40px;
+}
+
+.my-custom-form3{
+    border-radius: 10px;
+}
+
+.btn-my-custom-button{
+    width: 100px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(109, 31, 126);
+}
+
 .divlogin {
     border-radius: 15px;
     width: 400px;
     padding: 70px; 
-    background-color: rgba(20, 0, 67, 0.9);
+    background-color: rgba(45, 0, 67, 0.9);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 

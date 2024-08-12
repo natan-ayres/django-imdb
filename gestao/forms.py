@@ -36,10 +36,42 @@ class FilmesForm(forms.ModelForm):
         )
     )
 
+    diretor = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Diretor',
+                'class': ''
+            }
+        )
+    )
+
+    desc = forms.CharField(
+        label='Sinopse', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Sinopse',
+                'class': ''
+            }
+        )
+    )
+    data = forms.DateField(
+        label='Data',widget=forms.DateInput(
+            attrs={
+                'type': 'date'
+            }
+        )
+    )
+    duracao = forms.TimeField(
+        label='Duração', widget=forms.TimeInput(
+            attrs={
+                'type': 'time'
+            }
+        )
+    )
+
     class Meta:
         model = Filmes
         fields = (
-            'nome', 'desc', 'data', 'poster'
+            'nome', 'diretor', 'classificacao', 'duracao', 'desc', 'data', 'poster'
         )
 
 class ReviewForm(forms.ModelForm):

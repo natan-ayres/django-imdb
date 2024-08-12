@@ -8,8 +8,29 @@ from django.contrib.auth.models import User
 class Filmes(models.Model):
     class Meta:
         verbose_name = 'Filme'
+
+    OPCAO1 = 'opcao1'
+    OPCAO2 = 'opcao2'
+    OPCAO3 = 'opcao3'
+    OPCAO4 = 'opcao4'
+    OPCAO5 = 'opcao5'
+    OPCAO6 = 'opcao6'
+
+    CLASSIFICACOES_CHOICES = [
+        (OPCAO1, 'Livre'),
+        (OPCAO2, '10'),
+        (OPCAO3, '12'),
+        (OPCAO4, '14'),
+        (OPCAO5, '16'),
+        (OPCAO6, '18'),
+    ]
+
+    
     
     nome = models.CharField(max_length=30)
+    diretor = models.CharField(max_length=30, blank=True, null=True)
+    duracao = models.TimeField(blank=True, null=True)
+    classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
     desc = models.TextField(max_length=200)
     data = models.DateField()
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
