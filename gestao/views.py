@@ -81,11 +81,11 @@ def createfilme(request):
 
         if form.is_valid():
             form.save()
-            return redirect('gestao:index')
+            return redirect('gestao:listarfilmes')
         
     return render(
         request,
-        'registerfilme.html',
+        'registermodel.html',
         {
             'form': form
         }
@@ -105,7 +105,7 @@ def createreview(request):
         
     return render(
         request,
-        'registerreview.html',
+        'registermodel.html',
         {
             'form': form
         }
@@ -126,7 +126,7 @@ def createnoticia(request):
     
     return render(
         request,
-        'registernoticia.html',
+        'registermodel.html',
         {
             'form': form,
             'site_title': 'Criar Noticias'
