@@ -161,19 +161,21 @@
 }
 
 .filmes-container{
+    border-radius: 7px;
     display: flex;
-    height: 10px;
+    height: 310px;
     justify-content: space-between; 
 }
 
 .filmes-row{
-    color: black;
     width: 200px;
     height: 350px;
     max-height: 300px;
     background-color: rgb(109, 31, 126);
     border-radius: 15px;
 }
+
+
 
 .images-row{
     width: 160px;
@@ -193,10 +195,25 @@
     height: 500px;
 }
 
-.filme-nota{
-    width: 10px;
-    height: 30px;
+.filme-nota-boa{
+    border-radius: 5px;
+    width: 40px;
+    height: 32px;
     background-color: goldenrod;
+}
+
+.filme-nota-media{
+    border-radius: 5px;
+    width: 40px;
+    height: 32px;
+    background-color: rgb(196, 186, 160);
+}
+
+.filme-nota-ruim{
+    border-radius: 5px;
+    width: 40px;
+    height: 32px;
+    background-color: rgb(184, 19, 19);
 }
 
 .filme-info-col {
