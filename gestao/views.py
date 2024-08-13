@@ -197,3 +197,22 @@ def listarfilmes(request):
             'filmes.html',
             context
         )
+    
+def inforeview(request, review_id):
+    try:
+        single_review = Reviews.objects.get(pk=review_id)
+    except Reviews.DoesNotExist:
+        return redirect('gestao:index')
+    
+    site_title = f'{single_review.usuario} - {single_review.nota}'
+
+    context = {
+        'review': single_review,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'reviewinfo.html',
+        context
+    )

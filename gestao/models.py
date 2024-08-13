@@ -68,6 +68,7 @@ class Reviews(models.Model):
         verbose_name = 'Review'
 
     filme = models.ForeignKey(Filmes, related_name='reviews', on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     review = models.TextField(max_length=250)
     nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
     show = models.BooleanField(default=False)
