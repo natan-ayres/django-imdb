@@ -23,7 +23,7 @@
                 {% if contador == 1 %}
                     <div class="container p-3 mb-1 mt-2 my-container-form2">
                 {% endif %}
-                <a>
+                <a href="{% url 'gestao:inforeview' review.id %}" class="text-decoration-none text-black">
                     <div class="row filme-reviews-col text-center">
                         <div class="col">
                             <p class="mt-2"><b>{{review.usuario}}</b> - {{review.nota}}</p>
