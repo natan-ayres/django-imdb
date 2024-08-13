@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes
+from . models import Noticias, Filmes, Reviews
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm
 
 def index(request):
@@ -138,10 +138,21 @@ def infofilme(request, filme_id):
         single_filme = Filmes.objects.get(pk=filme_id)
     except Filmes.DoesNotExist:
         return redirect('gestao:index')
+    
+    reviews = Reviews.objects \
+        .filter(show=True, filme_id = single_filme)\
+        .order_by('-id')
+
+    paginator = Paginator(reviews, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
         
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
+        'review': reviews,
+        'page_obj': page_obj,
         'filme': single_filme,
         'site_title': site_title
     }

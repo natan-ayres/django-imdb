@@ -5,13 +5,35 @@
             <img src="{% static filme.poster %}" alt="{{ filme.nome }}" class="d-block mx-auto img-fluid"/>
         </div>
     </div>
-    
+    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ filme.nota_media }}</div>
     <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ filme.nome }}</div>
     <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{filme.data}}</div>
     <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ filme.diretor }}</div>
     <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ filme.duracao }}</div>
     <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ filme.nome }}</div>
     <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ filme.desc }}</div>
-
+</div>
+<div class="container p-2 mb-5 mt-5 my-container-form">
+    <div class="mx-auto col p-1 filme-info-col2 text-center">
+        <b>REVIEWS</b>
+    </div>
+        {% for review in page_obj %}
+            {% cycle 1 2 3 4 5 6 as contador silent %}
+            {% with contador=contador %}
+                {% if contador == 1 %}
+                    <div class="container p-3 mb-1 mt-2 my-container-form2">
+                {% endif %}
+                <a>
+                    <div class="row filme-reviews-col text-center">
+                        <div class="col">
+                            <p class="mt-2"><b>{{review.usuario}}</b> - {{review.nota}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% if contador == 6 %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
 </div>
 {% endblock content %}

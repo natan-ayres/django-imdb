@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div class="container p-2 mb-5 mt-5 my-container-form">
     {% for filmes in page_obj %}
         {% cycle 1 2 3 4 5 6 as contador silent %}
         {% with contador=contador %}
@@ -39,4 +40,5 @@
             {% endif %}
         {% endwith %}
     {% endfor %}
+</div>
 {% endblock content %}

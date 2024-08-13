@@ -70,6 +70,7 @@ class Reviews(models.Model):
     filme = models.ForeignKey(Filmes, related_name='reviews', on_delete=models.CASCADE)
     review = models.TextField(max_length=250)
     nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
+    show = models.BooleanField(default=False)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
