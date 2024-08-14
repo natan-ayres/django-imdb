@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>{{ site_title }}</title>
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
 <body class="bodylogin">
     <div class="divfora">
         <div class="divlogin">
-            <h1 class="h1login">Login</h1>
+            <h1 class="h1login">{{ site_title }}</h1>
             <br><br>
             {% include 'partials/userforms.html'%}     
-                    <button class="buttonlogin" type="submit">Conecte-se</button>
-                    <h2 class="h2login"><a class="alogin" href="{% url 'gestao:register' %}">Não possui conta? Cadastre-se aqui</a></h2>
+                    <button class="buttonlogin" type="submit">{{ botao }}</button>
+                    <h2 class="h2login"><a class="alogin" href="{% url counterlink %}">{{countertext}}</a></h2>
             </form>
         </div>
     </div>

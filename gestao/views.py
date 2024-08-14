@@ -50,6 +50,10 @@ def loginview(request):
         request,
         'login.html',
         {
+            'countertext': 'Não possui conta? Cadastre-se aqui',
+            'counterlink': 'gestao:register',
+            'botao': 'Entrar',
+            'site_title': 'Login',
             'form': form
         }
     )
@@ -67,8 +71,12 @@ def registerview(request):
 
     return render(
         request,
-        'register.html',
+        'login.html',
         {
+            'countertext': 'Já possui conta? Entre por aqui',
+            'counterlink': 'gestao:login',
+            'botao': 'Cadastre-se',
+            'site_title': 'Cadastro',
             'form': form
         }
     )
