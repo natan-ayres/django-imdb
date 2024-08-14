@@ -270,3 +270,22 @@ def inforeview(request, review_id):
         'reviewinfo.html',
         context
     )
+
+def infoserie(request, serie_id):
+    try:
+        single_serie = Series.objects.get(pk=serie_id)
+    except Series.DoesNotExist:
+        return redirect('gestao:index')
+        
+    site_title = f'{single_serie.nome} - {single_serie.data_lancamento.year}'
+
+    context = {
+        'serie': single_serie,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'serieinfo.html',
+        context
+    )

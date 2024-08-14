@@ -89,7 +89,6 @@ class Series(models.Model):
     poster = models.ImageField(blank=True, upload_to='series/')
     nome = models.CharField(max_length=31)
     diretor = models.CharField(max_length=31, blank=True, null=True)
-    roteirista = models.CharField(max_length=31, blank=True, null=True)
     data_lancamento = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)
     episodios = models.PositiveSmallIntegerField()
