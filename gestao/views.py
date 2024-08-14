@@ -153,36 +153,6 @@ def createserie(request):
         }
     )
 
-def infofilme(request, filme_id):
-    try:
-        single_filme = Filmes.objects.get(pk=filme_id)
-    except Filmes.DoesNotExist:
-        return redirect('gestao:index')
-    
-    reviews = Reviews.objects \
-        .filter(show=True, filme_id = single_filme)\
-        .order_by('-id')
-
-    paginator = Paginator(reviews, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-        
-    site_title = f'{single_filme.nome} - {single_filme.data.year}'
-
-    context = {
-        'review': reviews,
-        'page_obj': page_obj,
-        'filme': single_filme,
-        'site_title': site_title
-    }
-
-    return render(
-        request,
-        'filmeinfo.html',
-        context
-    )
-
 
 def listarfilmes(request):
     try:
@@ -217,6 +187,70 @@ def listarfilmes(request):
             'filmes.html',
             context
         )
+    
+def listarseries(request):
+    try:
+        series = Series.objects \
+        .order_by('-id')\
+        .distinct()
+
+        paginator = Paginator(series, 6)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'series': series,
+            'page_obj': page_obj,
+            'site_title': 'Séries'
+        }
+
+        return render(
+            request,
+            'series.html',
+            context
+        )
+    
+    except AttributeError:
+        context = {
+            'site_title': 'Séries'
+        }
+
+        return render(
+            request,
+            'series.html',
+            context
+        )
+    
+
+def infofilme(request, filme_id):
+    try:
+        single_filme = Filmes.objects.get(pk=filme_id)
+    except Filmes.DoesNotExist:
+        return redirect('gestao:index')
+    
+    reviews = Reviews.objects \
+        .filter(show=True, filme_id = single_filme)\
+        .order_by('-id')
+
+    paginator = Paginator(reviews, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+        
+    site_title = f'{single_filme.nome} - {single_filme.data.year}'
+
+    context = {
+        'review': reviews,
+        'page_obj': page_obj,
+        'filme': single_filme,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'filmeinfo.html',
+        context
+    )
     
 def inforeview(request, review_id):
     try:

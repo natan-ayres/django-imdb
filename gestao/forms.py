@@ -123,7 +123,7 @@ class SeriesForm(forms.ModelForm):
                 'placeholder': 'Diretor',
                 'class': ''
             }
-        )
+        ),required=False
     )
     roteirista = forms.CharField(
         widget=forms.TextInput(
@@ -131,7 +131,7 @@ class SeriesForm(forms.ModelForm):
                 'placeholder': 'Roteirista',
                 'class': ''
             }
-        )
+        ),required=False
     )
     data_lancamento = forms.DateField(
         label='Estreia',widget=forms.DateInput(
