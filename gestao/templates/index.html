@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container my-custom-container mt-5 bg-light">
+<div class="container my-custom-container mt-5">
     <div class="row">
         <div class="col">
             <div class="carousel slide" data-bs-ride="carousel" id="ads">
@@ -26,10 +26,10 @@
                 </button>
             </div>
         </div>
-        <div class="col d-flex align-items-center">
+        <div class="col d-flex mt-3">
             {% for noticia in noticias %}
                 <div id="slide-text-{{ forloop.counter }}" class="slidetexto">
-                    <div class="col mb-3">{{ noticia.nome }}</div>
+                    <div class="col font-noticia mb-1"><b>{{ noticia.nome }}</b></div>
                     <div class="col">{{noticia.texto}}</div>
                 </div>
             {% endfor %}
