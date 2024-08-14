@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from gestao.models import Filmes, Reviews, Noticias, Series
+from gestao.models import Filmes, ReviewsFilmes, Noticias, Series
 
 @admin.register(Filmes)
 class FilmesAdmin(admin.ModelAdmin):
@@ -18,8 +18,8 @@ class SeriesAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_editable = 'nome','data_lancamento',
 
-@admin.register(Reviews)
-class ReviewsAdmin(admin.ModelAdmin):
+@admin.register(ReviewsFilmes)
+class ReviewsFilmesAdmin(admin.ModelAdmin):
     list_display = 'usuario', 'filme', 'nota',
     ordering = '-id',
     search_fields = 'filme', 'nota', 'usuario'

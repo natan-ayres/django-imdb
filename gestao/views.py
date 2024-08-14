@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, Reviews, Series
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm, SeriesForm
+from . models import Noticias, Filmes, ReviewsFilmes, Series
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, NoticiasForm, SeriesForm
 
 def index(request):
     try:
@@ -103,11 +103,11 @@ def createfilme(request):
         }
     )
 
-def createreview(request):
-    form = ReviewForm(usuario=request.user)
+def createreviewfilme(request):
+    form = ReviewFilmeForm(usuario=request.user)
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST, usuario=request.user)
+        form = ReviewFilmeForm(request.POST, usuario=request.user)
 
         if form.is_valid():
             review = form.save(commit=False)
@@ -240,7 +240,7 @@ def infofilme(request, filme_id):
     except Filmes.DoesNotExist:
         return redirect('gestao:index')
     
-    reviews = Reviews.objects \
+    reviews = ReviewsFilmes.objects \
         .filter(show=True, filme_id = single_filme)\
         .order_by('-id')
 
@@ -264,10 +264,10 @@ def infofilme(request, filme_id):
         context
     )
     
-def inforeview(request, review_id):
+def inforeviewfilme(request, review_id):
     try:
-        single_review = Reviews.objects.get(pk=review_id)
-    except Reviews.DoesNotExist:
+        single_review = ReviewsFilmes.objects.get(pk=review_id)
+    except ReviewsFilmes.DoesNotExist:
         return redirect('gestao:index')
     
     site_title = f'{single_review.usuario} - {single_review.nota}'

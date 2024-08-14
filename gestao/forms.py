@@ -1,4 +1,4 @@
-from gestao.models import User, Filmes, Reviews, Noticias, Series
+from gestao.models import User, Filmes, ReviewsFilmes, Noticias, Series
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -74,7 +74,7 @@ class FilmesForm(forms.ModelForm):
             'nome', 'diretor', 'classificacao', 'duracao', 'desc', 'data', 'poster'
         )
 
-class ReviewForm(forms.ModelForm):
+class ReviewFilmeForm(forms.ModelForm):
     filme = forms.ModelChoiceField(
         queryset=Filmes.objects.all(),
         label='Filme',
@@ -96,7 +96,7 @@ class ReviewForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Reviews
+        model = ReviewsFilmes
         fields = (
             'filme', 'review', 'nota'
         )

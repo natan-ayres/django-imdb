@@ -35,7 +35,7 @@ class Filmes(models.Model):
     data = models.DateField(null=True, blank=True)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     poster = models.ImageField(blank=True, upload_to= 'filmes/')
-    avaliacoes = models.ManyToManyField(User, through='Reviews')
+    avaliacoes = models.ManyToManyField(User, through='ReviewsFilmes')
 
     def calcular_nota_media(self):
         reviews = self.reviews.all() 
@@ -63,7 +63,7 @@ class Noticias(models.Model):
         return f"{self.nome} - {self.data.day}/{self.data.month}"
 
 
-class Reviews(models.Model):
+class ReviewsFilmes(models.Model):
     class Meta:
         verbose_name = 'Review'
 
@@ -75,7 +75,7 @@ class Reviews(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
-        super(Reviews, self).save(*args, **kwargs)
+        super(ReviewsFilmes, self).save(*args, **kwargs)
         self.filme.calcular_nota_media()
         self.filme.save()
 
