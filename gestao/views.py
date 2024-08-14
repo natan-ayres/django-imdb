@@ -81,6 +81,10 @@ def registerview(request):
         }
     )
 
+def logoutview(request):
+    auth.logout(request)
+    return redirect('gestao:login')
+
 def createfilme(request):
     form = FilmesForm()
     
