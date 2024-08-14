@@ -1,4 +1,4 @@
-from gestao.models import User, Filmes, Reviews, Noticias
+from gestao.models import User, Filmes, Reviews, Noticias, Series
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -51,14 +51,14 @@ class FilmesForm(forms.ModelForm):
                 'placeholder': 'Sinopse',
                 'class': ''
             }
-        )
+        ), required=False
     )
     data = forms.DateField(
         label='Data',widget=forms.DateInput(
             attrs={
                 'type': 'date'
             }
-        )
+        ), required=False
     )
     duracao = forms.TimeField(
         label='Duração', widget=forms.TimeInput(
@@ -106,6 +106,67 @@ class ReviewForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         filmes_avaliados = Filmes.objects.filter(avaliacoes=usuario)
         self.fields['filme'].queryset = Filmes.objects.exclude(id__in=filmes_avaliados)
+
+class SeriesForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Nome',
+                'class': ''
+            }
+        )
+    )
+
+    diretor = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Diretor',
+                'class': ''
+            }
+        )
+    )
+    roteirista = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Roteirista',
+                'class': ''
+            }
+        )
+    )
+    data_lancamento = forms.DateField(
+        label='Estreia',widget=forms.DateInput(
+            attrs={
+                'type': 'date'
+            }
+        ), required=False
+    )
+    data_termino = forms.DateField(
+        label='Término',widget=forms.DateInput(
+            attrs={
+                'type': 'date'
+            }
+        ), required=False
+    )
+    episodios = forms.IntegerField(
+        label='Episódios', widget=forms.NumberInput()
+    )
+    temporadas = forms.IntegerField(
+        label='Temporadas', widget=forms.NumberInput()
+    )
+    sinopse = forms.CharField(
+        label='Sinopse', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Sinopse',
+                'class': ''
+            }
+        ), required=False
+    )
+
+    class Meta:
+        model = Series
+        fields = (
+            'nome', 'diretor', 'roteirista', 'data_lancamento', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
+        )
 
 class RegisterForm(UserCreationForm):
     username = forms.CharField(

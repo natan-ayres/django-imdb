@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, Reviews
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm
+from . models import Noticias, Filmes, Reviews, Series
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewForm, NoticiasForm, SeriesForm
 
 def index(request):
     try:
@@ -130,6 +130,26 @@ def createnoticia(request):
         {
             'form': form,
             'site_title': 'Criar Noticias'
+        }
+    )
+
+def createserie(request):
+    form = SeriesForm()
+
+    if request.method == 'POST':
+        form = SeriesForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'registermodel.html',
+        {
+            'form': form,
+            'site_title': 'Criar Série'
         }
     )
 
