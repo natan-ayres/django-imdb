@@ -93,7 +93,7 @@ def createfilme(request):
         
     return render(
         request,
-        'registermodel.html',
+        'register.html',
         {
             'form': form
         }
@@ -113,7 +113,7 @@ def createreview(request):
         
     return render(
         request,
-        'registermodel.html',
+        'register.html',
         {
             'form': form
         }
@@ -134,7 +134,7 @@ def createnoticia(request):
     
     return render(
         request,
-        'registermodel.html',
+        'register.html',
         {
             'form': form,
             'site_title': 'Criar Noticias'
@@ -154,7 +154,7 @@ def createserie(request):
         
     return render(
         request,
-        'registermodel.html',
+        'register.html',
         {
             'form': form,
             'site_title': 'Criar Série'
@@ -248,7 +248,7 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
-        'review': reviews,
+        'reviews': reviews,
         'page_obj': page_obj,
         'filme': single_filme,
         'site_title': site_title
@@ -256,7 +256,7 @@ def infofilme(request, filme_id):
 
     return render(
         request,
-        'filmeinfo.html',
+        'info.html',
         context
     )
     
@@ -275,7 +275,7 @@ def inforeview(request, review_id):
 
     return render(
         request,
-        'reviewinfo.html',
+        'info.html',
         context
     )
 
@@ -294,6 +294,6 @@ def infoserie(request, serie_id):
 
     return render(
         request,
-        'serieinfo.html',
+        'info.html',
         context
     )
