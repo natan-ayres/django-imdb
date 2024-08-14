@@ -173,7 +173,7 @@ def listarfilmes(request):
 
         return render(
             request,
-            'filmes.html',
+            'listar.html',
             context
         )
     
@@ -184,7 +184,7 @@ def listarfilmes(request):
 
         return render(
             request,
-            'filmes.html',
+            'listar.html',
             context
         )
     
@@ -206,7 +206,7 @@ def listarseries(request):
 
         return render(
             request,
-            'series.html',
+            'listar.html',
             context
         )
     
@@ -217,7 +217,7 @@ def listarseries(request):
 
         return render(
             request,
-            'series.html',
+            'listar.html',
             context
         )
     
