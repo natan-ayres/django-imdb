@@ -58,7 +58,7 @@ class FilmesForm(forms.ModelForm):
             attrs={
                 'type': 'date'
             }
-        ), required=False
+        ), required=True
     )
     duracao = forms.TimeField(
         label='Duração', widget=forms.TimeInput(
@@ -171,7 +171,7 @@ class SeriesForm(forms.ModelForm):
             attrs={
                 'type': 'date'
             }
-        ), required=False
+        ), required=True
     )
     data_termino = forms.DateField(
         label='Término',widget=forms.DateInput(
