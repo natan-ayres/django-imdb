@@ -158,14 +158,6 @@ class SeriesForm(forms.ModelForm):
             }
         ),required=False
     )
-    roteirista = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Roteirista',
-                'class': ''
-            }
-        ),required=False
-    )
     data_lancamento = forms.DateField(
         label='Estreia',widget=forms.DateInput(
             attrs={
@@ -198,7 +190,7 @@ class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
         fields = (
-            'nome', 'diretor', 'roteirista', 'data_lancamento', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
+            'nome', 'diretor', 'data_lancamento', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
         )
 
 class RegisterForm(UserCreationForm):

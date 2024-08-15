@@ -223,6 +223,44 @@ def updatefilme(request, filme_id):
         context
     )
 
+def updateserie(request, serie_id):
+    try:
+        single_serie = Series.objects.get(pk=serie_id)
+    except Series.DoesNotExist:
+        return redirect('gestao:index')
+        
+
+    form_action = reverse('gestao:updateserie', args=(serie_id,))
+
+    if request.method == 'POST':
+        form = SeriesForm(request.POST, request.FILES, instance=single_serie)
+
+        context = {
+            'form': form,
+            'form_action': form_action,
+        }
+
+        if form.is_valid():
+            serie = form.save()
+            return redirect('gestao:infoserie', serie_id=serie.pk)
+
+        return render(
+            request,
+            'register.html',
+            context
+        )
+
+    context = {
+        'form': SeriesForm(instance=single_serie),
+        'form_action': form_action,
+    }
+
+    return render(
+        request,
+        'register.html',
+        context
+    )
+
 
 def listarfilmes(request):
     try:
