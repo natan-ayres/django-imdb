@@ -261,6 +261,44 @@ def updateserie(request, serie_id):
         context
     )
 
+def updatenoticia(request, noticia_id):
+    try:
+        single_noticia = Noticias.objects.get(pk=noticia_id)
+    except Noticias.DoesNotExist:
+        return redirect('gestao:index')
+        
+
+    form_action = reverse('gestao:updatenoticia', args=(noticia_id,))
+
+    if request.method == 'POST':
+        form = NoticiasForm(request.POST, request.FILES, instance=single_noticia)
+
+        context = {
+            'form': form,
+            'form_action': form_action,
+        }
+
+        if form.is_valid():
+            form.save()
+            return redirect('gestao:index')
+
+        return render(
+            request,
+            'register.html',
+            context
+        )
+
+    context = {
+        'form': NoticiasForm(instance=single_noticia),
+        'form_action': form_action,
+    }
+
+    return render(
+        request,
+        'register.html',
+        context
+    )
+
 
 def listarfilmes(request):
     try:

@@ -20,21 +20,21 @@ class SeriesAdmin(admin.ModelAdmin):
 
 @admin.register(ReviewsFilmes)
 class ReviewsFilmesAdmin(admin.ModelAdmin):
-    list_display = 'usuario', 'filme', 'nota',
+    list_display = 'id', 'usuario', 'filme', 'nota',
     ordering = '-id',
     search_fields = 'filme', 'nota', 'usuario'
     list_per_page = 10
 
 @admin.register(ReviewsSeries)
 class ReviewsSeriesAdmin(admin.ModelAdmin):
-    list_display = 'usuario', 'serie', 'nota',
+    list_display = 'id', 'usuario', 'serie', 'nota',
     ordering = '-id',
     search_fields = 'serie', 'nota', 'usuario'
     list_per_page = 10
 
 @admin.register(Noticias)
 class NoticiasAdmin(admin.ModelAdmin):
-    list_display = 'nome','data'
+    list_display = 'id', 'nome','data'
     ordering = '-id',
     search_fields = 'data', 'nome'
     list_per_page = 5
