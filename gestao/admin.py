@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from gestao.models import Filmes, ReviewsFilmes, Noticias, Series
+from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series
 
 @admin.register(Filmes)
 class FilmesAdmin(admin.ModelAdmin):
@@ -23,6 +23,13 @@ class ReviewsFilmesAdmin(admin.ModelAdmin):
     list_display = 'usuario', 'filme', 'nota',
     ordering = '-id',
     search_fields = 'filme', 'nota', 'usuario'
+    list_per_page = 10
+
+@admin.register(ReviewsSeries)
+class ReviewsSeriesAdmin(admin.ModelAdmin):
+    list_display = 'usuario', 'serie', 'nota',
+    ordering = '-id',
+    search_fields = 'serie', 'nota', 'usuario'
     list_per_page = 10
 
 @admin.register(Noticias)

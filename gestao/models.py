@@ -46,7 +46,33 @@ class Filmes(models.Model):
             self.nota_media = None
 
     def __str__(self):
-        return f'{self.nome} - {self.data.year}'
+        return f'{self.nome} ({self.data.year})'
+    
+class Series(models.Model):
+    class Meta:
+        verbose_name = 'Serie'
+    
+    poster = models.ImageField(blank=True, upload_to='series/')
+    nome = models.CharField(max_length=31)
+    diretor = models.CharField(max_length=31, blank=True, null=True)
+    data_lancamento = models.DateField(blank=True, null=True)
+    data_termino = models.DateField(blank=True, null=True)
+    episodios = models.PositiveSmallIntegerField()
+    temporadas = models.PositiveSmallIntegerField()
+    sinopse = models.TextField(max_length=200)
+    nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
+    avaliacoes = models.ManyToManyField(User, through='ReviewsSeries')
+
+    def calcular_nota_media(self):
+        reviews = self.reviews.all() 
+        if reviews.exists():
+            media = reviews.aggregate(Avg('nota'))['nota__avg']
+            self.nota_media = media
+        else:
+            self.nota_media = None
+
+    def __str__(self):
+        return f"{self.nome} ({self.data_lancamento.year})"
     
 class Noticias(models.Model):
     class Meta:
@@ -65,7 +91,7 @@ class Noticias(models.Model):
 
 class ReviewsFilmes(models.Model):
     class Meta:
-        verbose_name = 'Review'
+        verbose_name = 'Review - Filme'
 
     filme = models.ForeignKey(Filmes, related_name='reviews', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -82,24 +108,24 @@ class ReviewsFilmes(models.Model):
     def __str__(self):
         return f"Avaliação de {self.filme.nome} - Nota: {self.nota}"
 
-class Series(models.Model):
-    class Meta:
-        verbose_name = 'Serie'
-    
-    poster = models.ImageField(blank=True, upload_to='series/')
-    nome = models.CharField(max_length=31)
-    diretor = models.CharField(max_length=31, blank=True, null=True)
-    data_lancamento = models.DateField(blank=True, null=True)
-    data_termino = models.DateField(blank=True, null=True)
-    episodios = models.PositiveSmallIntegerField()
-    temporadas = models.PositiveSmallIntegerField()
-    sinopse = models.TextField(max_length=200)
-    nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
 
-    if data_termino:
-        def __str__(self):
-            return f"{self.nome} - {self.data_lancamento}/{self.data_termino}"
-    else:
-        def __str__(self):
-            return f"{self.nome} - {self.data_lancamento}"
+class ReviewsSeries(models.Model):
+    class Meta:
+        verbose_name = 'Review - Serie'
+
+    serie = models.ForeignKey(Series, related_name='reviews', on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    review = models.TextField(max_length=250)
+    nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
+    show = models.BooleanField(default=False)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
+
+    def save(self, *args, **kwargs):
+        super(ReviewsSeries, self).save(*args, **kwargs)
+        self.serie.calcular_nota_media()
+        self.serie.save()
+
+    def __str__(self):
+        return f"Avaliação de {self.serie.nome} - Nota: {self.nota}"
+
 

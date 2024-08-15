@@ -1,4 +1,4 @@
-from gestao.models import User, Filmes, ReviewsFilmes, Noticias, Series
+from gestao.models import User, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -106,6 +106,39 @@ class ReviewFilmeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         filmes_avaliados = Filmes.objects.filter(avaliacoes=usuario)
         self.fields['filme'].queryset = Filmes.objects.exclude(id__in=filmes_avaliados)
+
+class ReviewSeriesForm(forms.ModelForm):
+    serie = forms.ModelChoiceField(
+        queryset=Series.objects.all(),
+        label='Serie',
+        required=True
+    )
+    nota = forms.FloatField(
+        label='Nota',
+        required=True,
+        validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Review',
+            }
+        ),
+        label='Review',
+        required=False
+    )
+
+    class Meta:
+        model = ReviewsSeries
+        fields = (
+            'serie', 'review', 'nota'
+        )
+
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario')
+        super().__init__(*args, **kwargs)
+        series_avaliadas = Series.objects.filter(avaliacoes=usuario)
+        self.fields['serie'].queryset = Series.objects.exclude(id__in=series_avaliadas)
 
 class SeriesForm(forms.ModelForm):
     nome = forms.CharField(

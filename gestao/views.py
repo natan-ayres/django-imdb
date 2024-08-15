@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, Series
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, NoticiasForm, SeriesForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewSeriesForm, NoticiasForm, SeriesForm
 
 def index(request):
     try:
@@ -108,6 +108,26 @@ def createreviewfilme(request):
 
     if request.method == 'POST':
         form = ReviewFilmeForm(request.POST, usuario=request.user)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form
+        }
+    )
+
+def createreviewserie(request):
+    form = ReviewSeriesForm(usuario=request.user)
+
+    if request.method == 'POST':
+        form = ReviewSeriesForm(request.POST, usuario=request.user)
 
         if form.is_valid():
             review = form.save(commit=False)
