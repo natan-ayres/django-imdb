@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, Series
+from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewSeriesForm, NoticiasForm, SeriesForm
 
 def index(request):
@@ -272,28 +272,10 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
+        'counterlink': 'gestao:inforeviewfilme',
         'reviews': reviews,
         'page_obj': page_obj,
         'filme': single_filme,
-        'site_title': site_title
-    }
-
-    return render(
-        request,
-        'info.html',
-        context
-    )
-    
-def inforeviewfilme(request, review_id):
-    try:
-        single_review = ReviewsFilmes.objects.get(pk=review_id)
-    except ReviewsFilmes.DoesNotExist:
-        return redirect('gestao:index')
-    
-    site_title = f'{single_review.usuario} - {single_review.nota}'
-
-    context = {
-        'review': single_review,
         'site_title': site_title
     }
 
@@ -308,11 +290,64 @@ def infoserie(request, serie_id):
         single_serie = Series.objects.get(pk=serie_id)
     except Series.DoesNotExist:
         return redirect('gestao:index')
+    
+    reviews = ReviewsSeries.objects \
+        .filter(show=True, serie_id = single_serie)\
+        .order_by('-id')
+
+    paginator = Paginator(reviews, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
         
     site_title = f'{single_serie.nome} - {single_serie.data_lancamento.year}'
 
     context = {
+        'counterlink': 'gestao:inforeviewserie',
+        'reviews': reviews,
+        'page_obj': page_obj,
         'serie': single_serie,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )
+
+def inforeviewfilme(request, review_id):
+    try:
+        single_review = ReviewsFilmes.objects.get(pk=review_id)
+    except ReviewsFilmes.DoesNotExist:
+        return redirect('gestao:index')
+    
+    site_title = f'{single_review.usuario} - {single_review.nota}'
+
+    context = {
+        'Fonte': 'Filme',
+        'fonte': single_review.filme,
+        'review': single_review,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )
+
+def inforeviewserie(request, review_id):
+    try:
+        single_review = ReviewsSeries.objects.get(pk=review_id)
+    except ReviewsSeries.DoesNotExist:
+        return redirect('gestao:index')
+    
+    site_title = f'{single_review.usuario} - {single_review.nota}'
+
+    context = {
+        'Fonte': 'Série',
+        'fonte': single_review.serie,
+        'review': single_review,
         'site_title': site_title
     }
 

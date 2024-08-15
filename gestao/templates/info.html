@@ -27,13 +27,13 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ serie.temporadas }}</div>
         <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ serie.sinopse }}</div>
     {% elif review %}
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Filme: </b>{{ review.filme }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>{{Fonte}}: </b>{{ fonte }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ review.usuario }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ review.nota }}</div>
         <div class="mx-auto col p-1 filme-info-col"><b>Review: </b>{{ review.review }}</div>
     {% endif %}
 </div>
-{% if filme %}
+{% if filme or serie %}
     <div class="container p-2 mb-5 mt-5 my-container-form">
         <div class="mx-auto col p-1 filme-info-col2 text-center">
             <b>REVIEWS</b>
@@ -44,7 +44,8 @@
                     {% if contador == 1 %}
                         <div class="container p-3 mb-1 mt-2 my-container-form2">
                     {% endif %}
-                    <a href="{% url 'gestao:inforeview' reviews.id %}" class="text-decoration-none text-black">
+
+                    <a href="{% url counterlink reviews.id %}" class="text-decoration-none text-black">
                         <div class="row filme-reviews-col text-center">
                             <div class="col">
                                 <p class="mt-2"><b>{{reviews.usuario}}</b> - {{reviews.nota}}</p>
