@@ -40,18 +40,6 @@
     width: 45rem;
 }
 
-.my-custom-container{
-    background-color: var(--color-dark1);
-    color: black;
-    width: 90%;
-    padding: 0;
-    border-radius: 10px;
-}
-
-.my-custom-container img{
-    border-radius: 10px;
-}
-
 .font-noticia {
     font-size: 20px;
 }

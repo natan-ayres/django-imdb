@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series
+from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, User
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewSeriesForm, NoticiasForm, SeriesForm
 
 def index(request):
@@ -253,6 +253,24 @@ def listarseries(request):
             context
         )
     
+def infouser(request, user_id):
+    try:
+        single_user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return redirect('gestao:index')
+
+    site_title = f'{single_user.username} - '
+
+    context = {
+        'usuario': single_user,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )
 
 def infofilme(request, filme_id):
     try:
