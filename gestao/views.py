@@ -272,6 +272,7 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
+        'poster': single_filme.poster,
         'counterlink': 'gestao:inforeviewfilme',
         'reviews': reviews,
         'page_obj': page_obj,
@@ -302,6 +303,7 @@ def infoserie(request, serie_id):
     site_title = f'{single_serie.nome} - {single_serie.data_lancamento.year}'
 
     context = {
+        'poster': single_serie.poster,
         'counterlink': 'gestao:inforeviewserie',
         'reviews': reviews,
         'page_obj': page_obj,

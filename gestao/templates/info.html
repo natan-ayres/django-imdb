@@ -1,31 +1,28 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <div class="container p-5 mb-5 mt-5 my-container-form">
-    {% if filme %}
-        <div class="row filme-info-row">
-            <div class="col mb-5">
-                <img src="{% static filme.poster %}" alt="{{ filme.nome }}" class="d-block mx-auto img-fluid"/>
+    {% if filme or serie %}
+            <div class="row filme-info-row">
+                <div class="col mb-5">
+                    <img src="{% static poster %}" alt="Poster" class="d-block mx-auto img-fluid"/>
+                </div>
             </div>
-        </div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ filme.nota_media }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ filme.nome }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{filme.data}}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ filme.diretor }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ filme.duracao }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ filme.nome }}</div>
-        <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ filme.desc }}</div>
-    {% elif serie %}
-        <div class="row filme-info-row">
-            <div class="col mb-5">
-                <img src="{% static serie.poster %}" alt="{{ serie.nome }}" class="d-block mx-auto img-fluid"/>
-            </div>
-        </div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ serie.nota_media }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ serie.nome }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{serie.data_lancamento}}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ serie.diretor }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ serie.episodios }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ serie.temporadas }}</div>
-        <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ serie.sinopse }}</div>
+            {% if filme %}
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ filme.nota_media }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ filme.nome }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{filme.data}}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ filme.diretor }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ filme.duracao }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ filme.nome }}</div>
+                <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ filme.desc }}</div>
+            {% elif serie %}
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ serie.nota_media }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ serie.nome }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{serie.data_lancamento}}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ serie.diretor }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ serie.episodios }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ serie.temporadas }}</div>
+                <div class="mx-auto col p-1 filme-info-col"><b>Sinopse: </b>{{ serie.sinopse }}</div>
+            {% endif %}
     {% elif review %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>{{Fonte}}: </b>{{ fonte }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ review.usuario }}</div>
