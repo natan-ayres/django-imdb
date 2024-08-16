@@ -534,6 +534,7 @@ def inforeviewfilme(request, review_id):
     site_title = f'{single_review.usuario} - {single_review.nota}'
 
     context = {
+        'update': 'gestao:updatereviewfilme',
         'Fonte': 'Filme',
         'fonte': single_review.filme,
         'review': single_review,
@@ -555,6 +556,7 @@ def inforeviewserie(request, review_id):
     site_title = f'{single_review.usuario} - {single_review.nota}'
 
     context = {
+        'update': 'gestao:updatereviewserie',
         'Fonte': 'Série',
         'fonte': single_review.serie,
         'review': single_review,
