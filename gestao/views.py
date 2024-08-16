@@ -305,37 +305,39 @@ def updatereviewfilme(request, review_id):
     except ReviewsFilmes.DoesNotExist:
         return redirect('gestao:index')
         
+    if single_reviewfilme.usuario == request.user:
+        form_action = reverse('gestao:updatereviewfilme', args=(review_id,))
 
-    form_action = reverse('gestao:updatereviewfilme', args=(review_id,))
+        if request.method == 'POST':
+            form = ReviewUpdateFilmeForm(request.POST, instance=single_reviewfilme)
 
-    if request.method == 'POST':
-        form = ReviewUpdateFilmeForm(request.POST, instance=single_reviewfilme)
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:index')
+
+            return render(
+                request,
+                'register.html',
+                context
+            )
 
         context = {
-            'form': form,
+            'form': ReviewUpdateFilmeForm(instance=single_reviewfilme),
             'form_action': form_action,
         }
-
-        if form.is_valid():
-            form.save()
-            return redirect('gestao:index')
 
         return render(
             request,
             'register.html',
             context
         )
-
-    context = {
-        'form': ReviewUpdateFilmeForm(instance=single_reviewfilme),
-        'form_action': form_action,
-    }
-
-    return render(
-        request,
-        'register.html',
-        context
-    )
+    else:
+        return redirect('gestao:inforeviewfilme', review_id=single_reviewfilme.pk)
 
 def updatereviewserie(request, review_id):
     try:
@@ -343,37 +345,39 @@ def updatereviewserie(request, review_id):
     except ReviewsSeries.DoesNotExist:
         return redirect('gestao:index')
         
+    if single_reviewserie.usuario == request.user:
+        form_action = reverse('gestao:updatereviewserie', args=(review_id,))
 
-    form_action = reverse('gestao:updatereviewserie', args=(review_id,))
+        if request.method == 'POST':
+            form = ReviewUpdateSeriesForm(request.POST, instance=single_reviewserie)
 
-    if request.method == 'POST':
-        form = ReviewUpdateSeriesForm(request.POST, instance=single_reviewserie)
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:index')
+
+            return render(
+                request,
+                'register.html',
+                context
+            )
 
         context = {
-            'form': form,
+            'form': ReviewUpdateSeriesForm(instance=single_reviewserie),
             'form_action': form_action,
         }
-
-        if form.is_valid():
-            form.save()
-            return redirect('gestao:index')
 
         return render(
             request,
             'register.html',
             context
         )
-
-    context = {
-        'form': ReviewUpdateSeriesForm(instance=single_reviewserie),
-        'form_action': form_action,
-    }
-
-    return render(
-        request,
-        'register.html',
-        context
-    )
+    else:
+        return redirect('gestao:inforeviewserie', review_id=single_reviewserie.pk)
 
 
 def listarfilmes(request):

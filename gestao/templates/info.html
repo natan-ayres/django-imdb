@@ -30,7 +30,9 @@
         <a href="{% url 'gestao:infouser' review.usuario.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ review.usuario }}</div></a>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ review.nota }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-4"><b>Review: </b>{{ review.review }}</div>
-        <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+        {% if review.usuario == user %}
+            <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+        {% endif %}
         
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Username: </b>{{ usuario.username }}</div>
