@@ -12,11 +12,11 @@ class FilmesAdmin(admin.ModelAdmin):
 
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data_lancamento',
+    list_display = 'id', 'nome', 'data',
     ordering = '-id',
-    search_fields = 'nome','data_lancamento',
+    search_fields = 'nome','data',
     list_per_page = 10
-    list_editable = 'nome','data_lancamento',
+    list_editable = 'nome','data',
 
 @admin.register(ReviewsFilmes)
 class ReviewsFilmesAdmin(admin.ModelAdmin):

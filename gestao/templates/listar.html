@@ -2,32 +2,32 @@
 {% load static %}
 {% block content %}
 <div class="container p-2 mb-5 mt-5 my-container-form">
-    {% if filmes %}
-        {% for filmes in page_obj %}
+    {% if items %}
+        {% for items in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
             {% with contador=contador %}
                 {% if contador == 1 %}
                     <div class="container filmes-container mt-1 p-1">
                 {% endif %}
-                        <a href="{% url 'gestao:infofilme' filmes.id %}" class="text-decoration-none text-black">
+                        <a href="{% url redirect items.id %}" class="text-decoration-none text-black">
                             <div class="row filmes-row p-2 mx-1 justify-content-center">
                                 <div class="col-12 col-md-12 custom-card text-center">
-                                    <p>{{ filmes.nome }} ({{ filmes.data.year }})</p>
+                                    <p>{{ items.nome }} ({{ items.data.year }})</p>
                                 </div>
                                 <div class="col-12 col-md-12 images-row mb-3 text-center">
-                                    <img src="{% static filmes.poster %}" alt="{{ filmes.nome }}" class="d-block mx-auto img-fluid"/>
+                                    <img src="{% static items.poster %}" alt="{{ items.nome }}" class="d-block mx-auto img-fluid"/>
                                 </div>
-                                {% if filmes.nota_media > 7 %}
+                                {% if items.nota_media > 7 %}
                                     <div class="col-12 col-md-3 p-1 filme-nota-boa text-center">
-                                        {{ filmes.nota_media }}
+                                        {{ items.nota_media }}
                                     </div>
-                                {% elif filmes.nota_media > 5 and filmes.nota_media < 8 %}
+                                {% elif items.nota_media > 5 and filmes.nota_media < 8 %}
                                     <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
-                                        {{ filmes.nota_media }}
+                                        {{ items.nota_media }}
                                     </div>
-                                {% elif filmes.nota_media < 6 %}
+                                {% elif items.nota_media < 6 %}
                                     <div class="col-12 col-md-2 p-1 filme-nota-ruim text-center">
-                                        {{ filmes.nota_media }}
+                                        {{ items.nota_media }}
                                     </div>
                                 {% else %}
                                     <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
@@ -39,45 +39,6 @@
                 {% if contador == 6 %}
                     </div>
                 {% endif %}
-            {% endwith %}
-        {% endfor %}
-    {% elif series %}
-        {% for series in page_obj %}
-        {% cycle 1 2 3 4 5 6 as contador silent %}
-        {% with contador=contador %}
-            {% if contador == 1 %}
-                <div class="container filmes-container mt-1 p-1">
-            {% endif %}
-                    <a href="{% url 'gestao:infoserie' series.id %}" class="text-decoration-none text-black">
-                        <div class="row filmes-row p-2 mx-1 justify-content-center">
-                            <div class="col-12 col-md-12 custom-card text-center">
-                                <p>{{ series.nome }} ({{ series.data_lancamento.year }})</p>
-                            </div>
-                            <div class="col-12 col-md-12 images-row mb-3 text-center">
-                                <img src="{% static series.poster %}" alt="{{ series.nome }}" class="d-block mx-auto img-fluid"/>
-                            </div>
-                            {% if series.nota_media > 7 %}
-                                <div class="col-12 col-md-3 p-1 filme-nota-boa text-center">
-                                    {{ series.nota_media }}
-                                </div>
-                            {% elif series.nota_media > 5 and series.nota_media < 8 %}
-                                <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
-                                    {{ series.nota_media }}
-                                </div>
-                            {% elif series.nota_media < 6 %}
-                                <div class="col-12 col-md-2 p-1 filme-nota-ruim text-center">
-                                    {{ series.nota_media }}
-                                </div>
-                            {% else %}
-                                <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
-                                    ?
-                                </div>
-                            {% endif %}
-                        </div>
-                    </a>
-            {% if contador == 6 %}
-                </div>
-            {% endif %}
             {% endwith %}
         {% endfor %}
     {% endif %}

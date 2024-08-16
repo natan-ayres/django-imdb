@@ -392,7 +392,8 @@ def listarfilmes(request):
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'filmes': filmes,
+            'redirect': 'gestao:infofilme',
+            'items': filmes,
             'page_obj': page_obj,
             'site_title': 'Filmes'
         }
@@ -425,7 +426,8 @@ def listarseries(request):
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'series': series,
+            'redirect': 'gestao:infoserie',
+            'items': series,
             'page_obj': page_obj,
             'site_title': 'Séries'
         }
