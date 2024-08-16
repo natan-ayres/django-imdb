@@ -72,7 +72,7 @@ class Series(models.Model):
             self.nota_media = None
 
     def __str__(self):
-        return f"{self.nome} ({self.data_lancamento.year})"
+        return f"{self.nome} ({self.data.year})"
     
 class Noticias(models.Model):
     class Meta:

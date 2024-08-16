@@ -486,11 +486,11 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
-        'poster': single_filme.poster,
+        'update': 'gestao:updatereviewfilme',
         'counterlink': 'gestao:inforeviewfilme',
         'reviews': reviews,
         'page_obj': page_obj,
-        'filme': single_filme,
+        'item': single_filme,
         'site_title': site_title
     }
 
@@ -514,14 +514,14 @@ def infoserie(request, serie_id):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
         
-    site_title = f'{single_serie.nome} - {single_serie.data_lancamento.year}'
+    site_title = f'{single_serie.nome} - {single_serie.data.year}'
 
     context = {
-        'poster': single_serie.poster,
+        'update': 'gestao:updatereviewserie',
         'counterlink': 'gestao:inforeviewserie',
         'reviews': reviews,
         'page_obj': page_obj,
-        'serie': single_serie,
+        'item': single_serie,
         'site_title': site_title
     }
 
