@@ -167,6 +167,33 @@ class ReviewSeriesForm(forms.ModelForm):
         series_avaliadas = Series.objects.filter(avaliacoes=usuario)
         self.fields['serie'].queryset = Series.objects.exclude(id__in=series_avaliadas)
 
+class ReviewUpdateSeriesForm(forms.ModelForm):
+    serie = forms.ModelChoiceField(
+        queryset=Series.objects.all(),
+        label='Serie',
+        required=True
+    )
+    nota = forms.FloatField(
+        label='Nota',
+        required=True,
+        validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Review',
+            }
+        ),
+        label='Review',
+        required=False
+    )
+
+    class Meta:
+        model = ReviewsSeries
+        fields = (
+            'serie', 'review', 'nota'
+        )
+
 class SeriesForm(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(

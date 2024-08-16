@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, User
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, NoticiasForm, SeriesForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm
 
 def index(request):
     try:
@@ -328,6 +328,44 @@ def updatereviewfilme(request, review_id):
 
     context = {
         'form': ReviewUpdateFilmeForm(instance=single_reviewfilme),
+        'form_action': form_action,
+    }
+
+    return render(
+        request,
+        'register.html',
+        context
+    )
+
+def updatereviewserie(request, review_id):
+    try:
+        single_reviewserie = ReviewsSeries.objects.get(pk=review_id)
+    except ReviewsSeries.DoesNotExist:
+        return redirect('gestao:index')
+        
+
+    form_action = reverse('gestao:updatereviewserie', args=(review_id,))
+
+    if request.method == 'POST':
+        form = ReviewUpdateSeriesForm(request.POST, instance=single_reviewserie)
+
+        context = {
+            'form': form,
+            'form_action': form_action,
+        }
+
+        if form.is_valid():
+            form.save()
+            return redirect('gestao:index')
+
+        return render(
+            request,
+            'register.html',
+            context
+        )
+
+    context = {
+        'form': ReviewUpdateSeriesForm(instance=single_reviewserie),
         'form_action': form_action,
     }
 
