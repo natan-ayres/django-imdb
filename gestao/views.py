@@ -526,6 +526,7 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
+        'delete': 'gestao:deletefilme',
         'update': 'gestao:updatefilme',
         'counterlink': 'gestao:inforeviewfilme',
         'reviews': reviews,
@@ -557,6 +558,7 @@ def infoserie(request, serie_id):
     site_title = f'{single_serie.nome} - {single_serie.data.year}'
 
     context = {
+        'delete': 'gestao:deleteserie',
         'update': 'gestao:updateserie',
         'counterlink': 'gestao:inforeviewserie',
         'reviews': reviews,
@@ -580,6 +582,7 @@ def inforeviewfilme(request, review_id):
     site_title = f'{single_review.usuario} - {single_review.nota}'
 
     context = {
+        'delete': 'gestao:deletereviewfilme',
         'update': 'gestao:updatereviewfilme',
         'Fonte': 'Filme',
         'fonte': single_review.filme,
@@ -602,6 +605,7 @@ def inforeviewserie(request, review_id):
     site_title = f'{single_review.usuario} - {single_review.nota}'
 
     context = {
+        'delete': 'gestao:deletereviewserie',
         'update': 'gestao:updatereviewserie',
         'Fonte': 'Série',
         'fonte': single_review.serie,

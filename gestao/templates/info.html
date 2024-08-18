@@ -20,6 +20,7 @@
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.sinopse }}</div>
             {% if user.is_admin %}
                 <a href="{% url update item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+                <a href="{% url delete item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Apagar</b></div></a>
             {% endif %}
     {% elif review %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>{{Fonte}}: </b>{{ fonte }}</div>
@@ -28,6 +29,7 @@
         <div class="mx-auto col p-1 filme-info-col mb-4"><b>Review: </b>{{ review.review }}</div>
         {% if review.usuario == user %}
             <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+            <a href="{% url delete review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Apagar</b></div></a>
         {% endif %}
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Username: </b>{{ usuario.username }}</div>
