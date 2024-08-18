@@ -45,7 +45,7 @@ class FilmesForm(forms.ModelForm):
         )
     )
 
-    desc = forms.CharField(
+    sinopse = forms.CharField(
         label='Sinopse', widget=forms.Textarea(
             attrs={
                 'placeholder': 'Sinopse',
@@ -71,7 +71,7 @@ class FilmesForm(forms.ModelForm):
     class Meta:
         model = Filmes
         fields = (
-            'nome', 'diretor', 'classificacao', 'duracao', 'desc', 'data', 'poster'
+            'nome', 'diretor', 'classificacao', 'duracao', 'sinopse', 'data', 'poster'
         )
 
 class ReviewFilmeForm(forms.ModelForm):

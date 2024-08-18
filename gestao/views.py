@@ -174,7 +174,7 @@ def createserie(request):
         if form.is_valid():
             review = form.save(commit=False)
             review.save()
-            return redirect('gestao:index')
+            return redirect('gestao:listarseries')
         
     return render(
         request,
@@ -449,6 +449,16 @@ def listarseries(request):
             context
         )
     
+def deletefilme(request, filme_id):
+    single_filme = Filmes.objects.get(pk=filme_id)
+    single_filme.delete()
+    return redirect('gestao:listarfilmes')
+
+def deleteserie(request, serie_id):
+    single_serie = Series.objects.get(pk=serie_id)
+    single_serie.delete()
+    return redirect('gestao:listarseries')
+
 def infouser(request, user_id):
     try:
         single_user = CustomUser.objects.get(pk=user_id)

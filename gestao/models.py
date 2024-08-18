@@ -57,7 +57,7 @@ class Series(models.Model):
     data_termino = models.DateField(blank=True, null=True)
     episodios = models.PositiveSmallIntegerField()
     temporadas = models.PositiveSmallIntegerField()
-    sinopse = models.TextField(max_length=200)
+    sinopse = models.TextField(max_length=400)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsSeries')
 
