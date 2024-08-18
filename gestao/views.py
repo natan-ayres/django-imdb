@@ -459,6 +459,16 @@ def deleteserie(request, serie_id):
     single_serie.delete()
     return redirect('gestao:listarseries')
 
+def deletereviewfilme(request, review_id):
+    single_review= ReviewsFilmes.objects.get(pk=review_id)
+    single_review.delete()
+    return redirect('gestao:listarfilmes')
+
+def deletereviewserie(request, review_id):
+    single_review = ReviewsSeries.objects.get(pk=review_id)
+    single_review.delete()
+    return redirect('gestao:listarseries')
+
 def infouser(request, user_id):
     try:
         single_user = CustomUser.objects.get(pk=user_id)
