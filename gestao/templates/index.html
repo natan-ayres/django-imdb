@@ -28,10 +28,12 @@
         </div>
         <div class="col d-flex mt-3">
             {% for noticia in noticias %}
+            <a href="{% url 'gestao:infonoticia' noticia.id %}" class="text-decoration-none text-black">
                 <div id="slide-text-{{ forloop.counter }}" class="slidetexto">
                     <div class="col font-noticia mb-1"><b>{{ noticia.nome }}</b></div>
                     <div class="col">{{noticia.texto}}</div>
                 </div>
+            </a>
             {% endfor %}
         </div>
     </div>

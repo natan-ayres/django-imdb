@@ -33,6 +33,20 @@
         {% endif %}
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Username: </b>{{ usuario.username }}</div>
+    {% elif noticia %}
+        <div class="row filme-info-row">
+            <div class="col mb-5">
+                <img src="{% static noticia.imagem %}" alt="{{noticia.nome}}" class="d-block mx-auto img-fluid"/>
+            </div>
+        </div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Titulo: </b>{{ noticia.nome }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ noticia.texto }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Publicação: </b>{{ noticia.data.day }}/{{ noticia.data.month }}/{{ noticia.data.year }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Publicador: </b>{{ noticia.usuario }}</div>
+        {% if user.is_admin %}
+            <a href="{% url 'gestao:updatenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+            <a href="{% url 'gestao:deletenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Apagar</b></div></a>
+        {% endif %}
     {% endif %}
 </div>
 {% if item %}

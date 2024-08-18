@@ -573,6 +573,25 @@ def infoserie(request, serie_id):
         context
     )
 
+def infonoticia(request, noticia_id):
+    try:
+        single_noticia = Noticias.objects.get(pk=noticia_id)
+    except Noticias.DoesNotExist:
+        return redirect('gestao:index')
+    
+    site_title = f'{single_noticia.nome} - {single_noticia.data.day}/{single_noticia.data.month}'
+
+    context = {
+        'noticia': single_noticia,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )
+
 def inforeviewfilme(request, review_id):
     try:
         single_review = ReviewsFilmes.objects.get(pk=review_id)
