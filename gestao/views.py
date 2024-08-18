@@ -459,6 +459,11 @@ def deleteserie(request, serie_id):
     single_serie.delete()
     return redirect('gestao:listarseries')
 
+def deletenoticia(request, noticia_id):
+    single_noticia = Noticias.objects.get(pk=noticia_id)
+    single_noticia.delete()
+    return redirect('gestao:index')
+
 def deletereviewfilme(request, review_id):
     single_review= ReviewsFilmes.objects.get(pk=review_id)
     single_review.delete()
