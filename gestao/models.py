@@ -3,7 +3,11 @@ from django.dispatch import receiver
 from django.db import models
 from django.db.models import Avg
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+from django.conf import settings
+
+class CustomUser(AbstractUser):
+    is_admin = models.BooleanField(default=False)
 
 class Filmes(models.Model):
     class Meta:
@@ -31,11 +35,11 @@ class Filmes(models.Model):
     diretor = models.CharField(max_length=30, blank=True, null=True)
     duracao = models.TimeField(blank=True, null=True)
     classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
-    desc = models.TextField(max_length=200)
+    sinopse = models.TextField(max_length=200)
     data = models.DateField(null=True, blank=True)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     poster = models.ImageField(blank=True, upload_to= 'filmes/')
-    avaliacoes = models.ManyToManyField(User, through='ReviewsFilmes')
+    avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
 
     def calcular_nota_media(self):
         reviews = self.reviews.all() 
@@ -61,7 +65,7 @@ class Series(models.Model):
     temporadas = models.PositiveSmallIntegerField()
     sinopse = models.TextField(max_length=200)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
-    avaliacoes = models.ManyToManyField(User, through='ReviewsSeries')
+    avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsSeries')
 
     def calcular_nota_media(self):
         reviews = self.reviews.all() 
@@ -83,7 +87,7 @@ class Noticias(models.Model):
     texto = models.TextField(max_length=684, validators=[MinLengthValidator(5)])
     data = models.DateTimeField(auto_now_add=True)
     mostrar = models.BooleanField(default=False)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def __str__(self):
         return f"{self.nome} - {self.data.day}/{self.data.month}"
@@ -97,8 +101,8 @@ class ReviewsFilmes(models.Model):
     data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     review = models.TextField(max_length=250)
     nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
-    show = models.BooleanField(default=False)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
+    mostrar = models.BooleanField(default=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
         super(ReviewsFilmes, self).save(*args, **kwargs)
@@ -117,8 +121,8 @@ class ReviewsSeries(models.Model):
     data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     review = models.TextField(max_length=250)
     nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
-    show = models.BooleanField(default=False)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
+    mostrar = models.BooleanField(default=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
         super(ReviewsSeries, self).save(*args, **kwargs)
@@ -127,5 +131,3 @@ class ReviewsSeries(models.Model):
 
     def __str__(self):
         return f"Avaliação de {self.serie.nome} - Nota: {self.nota}"
-
-

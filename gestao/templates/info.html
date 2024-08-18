@@ -14,10 +14,10 @@
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ item.duracao }}</div>
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ item.classificacao }}</div>
             {% else %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ serie.episodios }}</div>
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ serie.temporadas }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ item.episodios }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ item.temporadas }}</div>
             {% endif %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.desc }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.sinopse }}</div>
             <a href="{% url update item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
     {% elif review %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>{{Fonte}}: </b>{{ fonte }}</div>
@@ -27,7 +27,6 @@
         {% if review.usuario == user %}
             <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
         {% endif %}
-        
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Username: </b>{{ usuario.username }}</div>
     {% endif %}

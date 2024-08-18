@@ -1,8 +1,8 @@
-from gestao.models import User, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries
+from gestao.models import CustomUser, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import password_validation
 
 class NoticiasForm(forms.ModelForm):
@@ -212,7 +212,7 @@ class SeriesForm(forms.ModelForm):
             }
         ),required=False
     )
-    data_lancamento = forms.DateField(
+    data = forms.DateField(
         label='Estreia',widget=forms.DateInput(
             attrs={
                 'type': 'date'
@@ -244,7 +244,7 @@ class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
         fields = (
-            'nome', 'diretor', 'data_lancamento', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
+            'nome', 'diretor', 'data', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
         )
 
 class RegisterForm(UserCreationForm):
@@ -282,7 +282,7 @@ class RegisterForm(UserCreationForm):
 
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = (
             'username', 'password1', 'password2',
         )
@@ -291,7 +291,7 @@ class RegisterForm(UserCreationForm):
 
 class RegisterUpdateForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = (
             'first_name', 'last_name', 'email', 'username', 'password1', 'password2',
         )
@@ -332,7 +332,7 @@ class RegisterUpdateForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if email != self.instance.email:
-            if User.objects.filter(email=email).exists():
+            if CustomUser.objects.filter(email=email).exists():
                 self.add_error(
                     'email',
                     ValidationError('Já existe este e-mail', code='invalid')

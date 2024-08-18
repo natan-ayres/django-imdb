@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, User
+from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm
 
 def index(request):
@@ -451,8 +451,8 @@ def listarseries(request):
     
 def infouser(request, user_id):
     try:
-        single_user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
+        single_user = CustomUser.objects.get(pk=user_id)
+    except CustomUser.DoesNotExist:
         return redirect('gestao:index')
 
     site_title = f'{single_user.username} - '
@@ -475,7 +475,7 @@ def infofilme(request, filme_id):
         return redirect('gestao:index')
     
     reviews = ReviewsFilmes.objects \
-        .filter(show=True, filme_id = single_filme)\
+        .filter(mostrar=True, filme_id = single_filme)\
         .order_by('-id')
 
     paginator = Paginator(reviews, 10)
@@ -486,7 +486,7 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
-        'update': 'gestao:updatereviewfilme',
+        'update': 'gestao:updatefilme',
         'counterlink': 'gestao:inforeviewfilme',
         'reviews': reviews,
         'page_obj': page_obj,
@@ -507,7 +507,7 @@ def infoserie(request, serie_id):
         return redirect('gestao:index')
     
     reviews = ReviewsSeries.objects \
-        .filter(show=True, serie_id = single_serie)\
+        .filter(mostrar=True, serie_id = single_serie)\
         .order_by('-id')
 
     paginator = Paginator(reviews, 10)
@@ -517,7 +517,7 @@ def infoserie(request, serie_id):
     site_title = f'{single_serie.nome} - {single_serie.data.year}'
 
     context = {
-        'update': 'gestao:updatereviewserie',
+        'update': 'gestao:updateserie',
         'counterlink': 'gestao:inforeviewserie',
         'reviews': reviews,
         'page_obj': page_obj,
