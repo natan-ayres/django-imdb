@@ -450,29 +450,44 @@ def listarseries(request):
         )
     
 def deletefilme(request, filme_id):
-    single_filme = Filmes.objects.get(pk=filme_id)
-    single_filme.delete()
-    return redirect('gestao:listarfilmes')
+    if request.user.is_admin:
+        single_filme = Filmes.objects.get(pk=filme_id)
+        single_filme.delete()
+        return redirect('gestao:listarfilmes')
+    else:
+        return redirect('gestao:listarfilmes')
 
 def deleteserie(request, serie_id):
-    single_serie = Series.objects.get(pk=serie_id)
-    single_serie.delete()
-    return redirect('gestao:listarseries')
+    if request.user.is_admin:
+        single_serie = Series.objects.get(pk=serie_id)
+        single_serie.delete()
+        return redirect('gestao:listarseries')
+    else:
+        return redirect('gestao:listarseries')
 
 def deletenoticia(request, noticia_id):
-    single_noticia = Noticias.objects.get(pk=noticia_id)
-    single_noticia.delete()
-    return redirect('gestao:index')
+    if request.user.is_admin:
+        single_noticia = Noticias.objects.get(pk=noticia_id)
+        single_noticia.delete()
+        return redirect('gestao:index')
+    else:
+        return redirect('gestao:index')
 
 def deletereviewfilme(request, review_id):
-    single_review= ReviewsFilmes.objects.get(pk=review_id)
-    single_review.delete()
-    return redirect('gestao:listarfilmes')
+    if request.user.is_admin:
+        single_review= ReviewsFilmes.objects.get(pk=review_id)
+        single_review.delete()
+        return redirect('gestao:listarfilmes')
+    else:
+        return redirect('gestao:listarfilmes')
 
 def deletereviewserie(request, review_id):
-    single_review = ReviewsSeries.objects.get(pk=review_id)
-    single_review.delete()
-    return redirect('gestao:listarseries')
+    if request.user.is_admin:
+        single_review = ReviewsSeries.objects.get(pk=review_id)
+        single_review.delete()
+        return redirect('gestao:listarseries')
+    else:
+        return redirect('gestao:listarfilmes')
 
 def infouser(request, user_id):
     try:
