@@ -62,6 +62,14 @@
     background-color: var(--color-dark1);
 }
 
+.container-list{
+    display: grid;
+    place-items: center;
+    color: black;
+    border-radius: 10px;
+    background-color: var(--color-dark1);
+}
+
 .my-container-form2{
     color: black;
     border-radius: 10px;
@@ -160,6 +168,13 @@
 }
 
 .custom-card{
+    max-height: 50px;
+}
+
+.custom-card2{
+    width: 50px;
+    background-color: rgb(109, 31, 126);
+    border-radius: 10px;
     max-height: 50px;
 }
 

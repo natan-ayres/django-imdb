@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container p-2 mb-5 mt-5 my-container-form">
+<div class="container p-2 mb-5 mt-5 container-list">
     {% if items %}
+        {% if user.is_admin %}
+            <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
+                <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
+            </a>
+        {% endif %}
         {% for items in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
             {% with contador=contador %}
