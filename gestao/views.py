@@ -82,232 +82,258 @@ def registerview(request):
     )
 
 def logoutview(request):
-    auth.logout(request)
-    return redirect('gestao:login')
+    if request.user:
+        auth.logout(request)
+        return redirect('gestao:login')
+    else:
+        return redirect('gestao:index')
 
 def createfilme(request):
-    form = FilmesForm()
-    
-    if request.method == 'POST':
-        form = FilmesForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return redirect('gestao:listarfilmes')
+    if request.user.is_admin:
+        form = FilmesForm()
         
-    return render(
-        request,
-        'register.html',
-        {
-            'form': form,
-            'site_title': 'Criar Filme'
-        }
-    )
+        if request.method == 'POST':
+            form = FilmesForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:listarfilmes')
+            
+        return render(
+            request,
+            'register.html',
+            {
+                'form': form,
+                'site_title': 'Criar Filme'
+            }
+        )
+    return redirect('gestao:index')
 
 def createreviewfilme(request):
-    form = ReviewFilmeForm(usuario=request.user)
+    if request.user.is_admin:
+        form = ReviewFilmeForm(usuario=request.user)
 
-    if request.method == 'POST':
-        form = ReviewFilmeForm(request.POST, usuario=request.user)
+        if request.method == 'POST':
+            form = ReviewFilmeForm(request.POST, usuario=request.user)
 
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.usuario = request.user
-            review.save()
-            return redirect('gestao:index')
-        
-    return render(
-        request,
-        'register.html',
-        {
-            'form': form,
-            'site_title': 'Criar Review'
-        }
-    )
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.usuario = request.user
+                review.save()
+                return redirect('gestao:index')
+            
+        return render(
+            request,
+            'register.html',
+            {
+                'form': form,
+                'site_title': 'Criar Review'
+            }
+        )
+    else:
+        return redirect('gestao:index')
 
 def createreviewserie(request):
-    form = ReviewSeriesForm(usuario=request.user)
+    if request.user.is_admin:
+        form = ReviewSeriesForm(usuario=request.user)
 
-    if request.method == 'POST':
-        form = ReviewSeriesForm(request.POST, usuario=request.user)
+        if request.method == 'POST':
+            form = ReviewSeriesForm(request.POST, usuario=request.user)
 
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.usuario = request.user
-            review.save()
-            return redirect('gestao:index')
-        
-    return render(
-        request,
-        'register.html',
-        {
-            'form': form,
-            'site_title': 'Criar Review'
-        }
-    )
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.usuario = request.user
+                review.save()
+                return redirect('gestao:index')
+            
+        return render(
+            request,
+            'register.html',
+            {
+                'form': form,
+                'site_title': 'Criar Review'
+            }
+        )
+    else:
+        return redirect('gestao:index')
 
 def createnoticia(request):
-    form = NoticiasForm()
+    if request.user.is_admin:
+        form = NoticiasForm()
 
-    if request.method == 'POST':
-        form = NoticiasForm(request.POST,  request.FILES)
+        if request.method == 'POST':
+            form = NoticiasForm(request.POST,  request.FILES)
 
-        if form.is_valid():
-            noticia = form.save(commit=False)
-            noticia.usuario = request.user
-            noticia.save()
-            return redirect('gestao:index')
+            if form.is_valid():
+                noticia = form.save(commit=False)
+                noticia.usuario = request.user
+                noticia.save()
+                return redirect('gestao:index')
+            
         
-    
-    return render(
-        request,
-        'register.html',
-        {
-            'form': form,
-            'site_title': 'Criar - Noticia'
-        }
-    )
+        return render(
+            request,
+            'register.html',
+            {
+                'form': form,
+                'site_title': 'Criar - Noticia'
+            }
+        )
+    else:
+        return redirect('gestao:index')
 
 def createserie(request):
-    form = SeriesForm()
+    if request.user.is_admin:
+        form = SeriesForm()
 
-    if request.method == 'POST':
-        form = SeriesForm(request.POST, request.FILES)
+        if request.method == 'POST':
+            form = SeriesForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.save()
-            return redirect('gestao:listarseries')
-        
-    return render(
-        request,
-        'register.html',
-        {
-            'form': form,
-            'site_title': 'Criar Série'
-        }
-    )
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.save()
+                return redirect('gestao:listarseries')
+            
+        return render(
+            request,
+            'register.html',
+            {
+                'form': form,
+                'site_title': 'Criar Série'
+            }
+        )
+    else:
+        return redirect('gestao:index')
 
 def updatefilme(request, filme_id):
-    try:
-        single_filme = Filmes.objects.get(pk=filme_id)
-    except Filmes.DoesNotExist:
-        return redirect('gestao:index')
-        
+    if request.user.is_admin:
+        try:
+            single_filme = Filmes.objects.get(pk=filme_id)
+        except Filmes.DoesNotExist:
+            return redirect('gestao:index')
+            
 
-    form_action = reverse('gestao:updatefilme', args=(filme_id,))
+        form_action = reverse('gestao:updatefilme', args=(filme_id,))
 
-    site_title = f'{single_filme.nome} - {single_filme.data.year}'
+        site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
-    if request.method == 'POST':
-        form = FilmesForm(request.POST, request.FILES, instance=single_filme)
+        if request.method == 'POST':
+            form = FilmesForm(request.POST, request.FILES, instance=single_filme)
+
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                filme = form.save()
+                return redirect('gestao:infofilme', filme_id=filme.pk)
+
+            return render(
+                request,
+                'register.html',
+                context
+            )
 
         context = {
-            'form': form,
+            'form': FilmesForm(instance=single_filme),
             'form_action': form_action,
+            'site_title': site_title,
         }
-
-        if form.is_valid():
-            filme = form.save()
-            return redirect('gestao:infofilme', filme_id=filme.pk)
 
         return render(
             request,
             'register.html',
             context
         )
-
-    context = {
-        'form': FilmesForm(instance=single_filme),
-        'form_action': form_action,
-        'site_title': site_title,
-    }
-
-    return render(
-        request,
-        'register.html',
-        context
-    )
+    else:
+        return redirect('gestao:index')
 
 def updateserie(request, serie_id):
-    try:
-        single_serie = Series.objects.get(pk=serie_id)
-        site_title = f'{single_serie.nome} - {single_serie.data.year}'
-    except Series.DoesNotExist:
-        return redirect('gestao:index')
-        
+    if request.user.is_admin:
+        try:
+            single_serie = Series.objects.get(pk=serie_id)
+            site_title = f'{single_serie.nome} - {single_serie.data.year}'
+        except Series.DoesNotExist:
+            return redirect('gestao:index')
+            
 
-    form_action = reverse('gestao:updateserie', args=(serie_id,))
+        form_action = reverse('gestao:updateserie', args=(serie_id,))
 
-    if request.method == 'POST':
-        form = SeriesForm(request.POST, request.FILES, instance=single_serie)
+        if request.method == 'POST':
+            form = SeriesForm(request.POST, request.FILES, instance=single_serie)
+
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                serie = form.save()
+                return redirect('gestao:infoserie', serie_id=serie.pk)
+
+            return render(
+                request,
+                'register.html',
+                context
+            )
 
         context = {
-            'form': form,
+            'form': SeriesForm(instance=single_serie),
             'form_action': form_action,
+            'site_title': site_title, 
         }
-
-        if form.is_valid():
-            serie = form.save()
-            return redirect('gestao:infoserie', serie_id=serie.pk)
 
         return render(
             request,
             'register.html',
             context
         )
-
-    context = {
-        'form': SeriesForm(instance=single_serie),
-        'form_action': form_action,
-        'site_title': site_title, 
-    }
-
-    return render(
-        request,
-        'register.html',
-        context
-    )
+    else:
+        return redirect('gestao:index')
 
 def updatenoticia(request, noticia_id):
-    try:
-        single_noticia = Noticias.objects.get(pk=noticia_id)
-        site_title = f'{single_noticia.nome} - {single_noticia.data.day}/{single_noticia.data.month}'
-    except Noticias.DoesNotExist:
-        return redirect('gestao:index')
-        
+    if request.user.is_admin:
+        try:
+            single_noticia = Noticias.objects.get(pk=noticia_id)
+            site_title = f'{single_noticia.nome} - {single_noticia.data.day}/{single_noticia.data.month}'
+        except Noticias.DoesNotExist:
+            return redirect('gestao:index')
+            
 
-    form_action = reverse('gestao:updatenoticia', args=(noticia_id,))
+        form_action = reverse('gestao:updatenoticia', args=(noticia_id,))
 
-    if request.method == 'POST':
-        form = NoticiasForm(request.POST, request.FILES, instance=single_noticia)
+        if request.method == 'POST':
+            form = NoticiasForm(request.POST, request.FILES, instance=single_noticia)
+
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:index')
+
+            return render(
+                request,
+                'register.html',
+                context
+            )
 
         context = {
-            'form': form,
+            'form': NoticiasForm(instance=single_noticia),
             'form_action': form_action,
+            'site_title': site_title,
         }
-
-        if form.is_valid():
-            form.save()
-            return redirect('gestao:index')
 
         return render(
             request,
             'register.html',
             context
         )
-
-    context = {
-        'form': NoticiasForm(instance=single_noticia),
-        'form_action': form_action,
-        'site_title': site_title,
-    }
-
-    return render(
-        request,
-        'register.html',
-        context
-    )
+    else:
+        return redirect('gestao:index')
 
 def updatereviewfilme(request, review_id):
     try:
@@ -349,7 +375,7 @@ def updatereviewfilme(request, review_id):
             context
         )
     else:
-        return redirect('gestao:inforeviewfilme', review_id=single_review.pk)
+        return redirect('gestao:index')
 
 def updatereviewserie(request, review_id):
     try:
@@ -391,7 +417,7 @@ def updatereviewserie(request, review_id):
             context
         )
     else:
-        return redirect('gestao:inforeview', review_id=single_review.pk)
+        return redirect('gestao:index')
 
 
 def listarfilmes(request):
