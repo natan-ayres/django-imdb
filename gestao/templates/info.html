@@ -34,6 +34,9 @@
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ usuario.username }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Email: </b>{{ usuario.email }}</div>
+        {% if usuario == user %}
+        <a href="{% url 'gestao:update' usuario.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+        {% endif %}
     {% elif noticia %}
         <div class="row filme-info-row">
             <div class="col mb-5">
