@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie
+from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update
 app_name = 'gestao'
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('update/noticia/<int:noticia_id>/', updatenoticia, name='updatenoticia'),
     path('update/review/filme/<int:review_id>/', updatereviewfilme, name='updatereviewfilme'),
     path('update/review/serie/<int:review_id>/', updatereviewserie, name='updatereviewserie'),
+    path('update/user/<int:user_id>/', update, name='update'),
     
 
     path('filmes/', listarfilmes, name='listarfilmes'),
