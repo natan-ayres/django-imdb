@@ -158,6 +158,17 @@
     color: rgb(104, 37, 142);
 }
 
+.filme-info-col4{
+    background-color: rgb(109, 31, 126);
+    border-radius: 5px;
+    width: 60%;
+    color: black;
+}
+
+.filme-info-col4:hover{
+    background-color: rgb(120, 41, 166);
+}
+
 .alogin:hover{
     color: rgb(120, 41, 166)
 }

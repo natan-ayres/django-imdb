@@ -9,6 +9,21 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
 
+class Comunidades(models.Model):
+    class Meta:
+        verbose_name = 'Comunidade'
+    
+    nome = models.CharField(max_length=30)
+    imagem = models.ImageField(blank=True, upload_to='comunidades/')
+    desc = models.TextField(max_length=200)
+    data = models.DateTimeField(auto_now_add=True)
+    dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')
+    membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros')
+
+    def __str__(self):
+        return f'{self.nome}'
+    
+
 class Filmes(models.Model):
     class Meta:
         verbose_name = 'Filme'
@@ -23,8 +38,6 @@ class Filmes(models.Model):
         ('18', '18'),
     ]
 
-    
-    
     nome = models.CharField(max_length=30)
     diretor = models.CharField(max_length=30, blank=True, null=True)
     duracao = models.TimeField(blank=True, null=True)
