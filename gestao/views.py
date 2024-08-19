@@ -81,17 +81,13 @@ def registerview(request):
         }
     )
 
-def update(request, user_id):
-    try:
-        single_user = CustomUser.objects.get(pk=user_id)
-    except CustomUser.DoesNotExist:
-        return redirect('gestao:index')
-    
-    if single_user == request.user:
-        form_action = reverse('gestao:update', args=(user_id,))
+def update(request):   
+    if request.user:
+        usuario = request.user
+        form_action = reverse('gestao:update')
 
         if request.method == 'POST':
-            form = RegisterUpdateForm(request.POST, instance=single_user)
+            form = RegisterUpdateForm(request.POST, instance=usuario)
 
             context = {
                 'form': form,
@@ -109,7 +105,7 @@ def update(request, user_id):
             )
         
         context = {
-            'form': RegisterUpdateForm(instance=single_user),
+            'form': RegisterUpdateForm(instance=usuario),
             'form_action': form_action,
         }
 

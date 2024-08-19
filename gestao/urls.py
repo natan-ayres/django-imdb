@@ -27,7 +27,7 @@ urlpatterns = [
     path('update/noticia/<int:noticia_id>/', updatenoticia, name='updatenoticia'),
     path('update/review/filme/<int:review_id>/', updatereviewfilme, name='updatereviewfilme'),
     path('update/review/serie/<int:review_id>/', updatereviewserie, name='updatereviewserie'),
-    path('update/user/<int:user_id>/', update, name='update'),
+    path('update/user/', update, name='update'),
     
 
     path('filmes/', listarfilmes, name='listarfilmes'),

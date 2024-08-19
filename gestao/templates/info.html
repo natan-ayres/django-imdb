@@ -34,8 +34,9 @@
     {% elif usuario %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ usuario.username }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Email: </b>{{ usuario.email }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nome: </b>{{ usuario.first_name }} {{ usuario.last_name }}</div>
         {% if usuario == user %}
-        <a href="{% url 'gestao:update' usuario.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
+        <a href="{% url 'gestao:update' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Atualizar</b></div></a>
         <a href="{% url 'gestao:delete' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Apagar</b></div></a>
         {% endif %}
     {% elif noticia %}
