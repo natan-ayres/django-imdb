@@ -81,6 +81,55 @@ def registerview(request):
         }
     )
 
+def update(request, user_id):
+    try:
+        single_user = CustomUser.objects.get(pk=user_id)
+    except CustomUser.DoesNotExist:
+        return redirect('gestao:index')
+    
+    if single_user == request.user:
+        form_action = reverse('gestao:update', args=(user_id,))
+
+        if request.method == 'POST':
+            form = RegisterUpdateForm(request.POST, instance=single_user)
+
+            context = {
+                'form': form,
+                'form_action': form_action,
+            }
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:index')
+            
+            return render(
+                request,
+                'register.html',
+                context
+            )
+        
+        context = {
+            'form': RegisterUpdateForm(instance=single_user),
+            'form_action': form_action,
+        }
+
+        return render(
+            request,
+            'register.html',
+            context
+        )
+    else:
+        return redirect('gestao:index')
+    
+def deleteview(request):
+    if request.user:
+        usuario = request.user
+        usuario.delete()
+        return redirect('gestao:index')
+    else:
+        return redirect('gestao:index')
+
+
 def logoutview(request):
     if request.user:
         auth.logout(request)
@@ -335,45 +384,7 @@ def updatenoticia(request, noticia_id):
     else:
         return redirect('gestao:index')
     
-def update(request, user_id):
-    try:
-        single_user = CustomUser.objects.get(pk=user_id)
-    except CustomUser.DoesNotExist:
-        return redirect('gestao:index')
-    
-    if single_user == request.user:
-        form_action = reverse('gestao:update', args=(user_id,))
-
-        if request.method == 'POST':
-            form = RegisterUpdateForm(request.POST, instance=single_user)
-
-            context = {
-                'form': form,
-                'form_action': form_action,
-            }
-
-            if form.is_valid():
-                form.save()
-                return redirect('gestao:index')
-            
-            return render(
-                request,
-                'register.html',
-                context
-            )
-        
-        context = {
-            'form': RegisterUpdateForm(instance=single_user),
-            'form_action': form_action,
-        }
-
-        return render(
-            request,
-            'register.html',
-            context
-        )
-    else:
-        return redirect('gestao:index')
+ 
 
 def updatereviewfilme(request, review_id):
     try:
