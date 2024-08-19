@@ -244,7 +244,7 @@ class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
         fields = (
-            'nome', 'diretor', 'data', 'data_termino', 'episodios', 'temporadas', 'sinopse', 'poster'
+            'nome', 'diretor', 'data', 'data_termino', 'episodios', 'classificacao','temporadas', 'sinopse', 'poster'
         )
 
 class RegisterForm(UserCreationForm):

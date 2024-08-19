@@ -10,9 +10,9 @@
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ item.nome }}</div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{item.data}}</div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ item.diretor }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ item.classificacao }}{% if item.classificacao != 'Livre'%}+{% endif %}</div>
             {% if item.duracao %}
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ item.duracao }}</div>
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ item.classificacao }}</div>
             {% else %}
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ item.episodios }}</div>
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ item.temporadas }}</div>

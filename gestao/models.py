@@ -49,10 +49,20 @@ class Filmes(models.Model):
 class Series(models.Model):
     class Meta:
         verbose_name = 'Serie'
+
+    CLASSIFICACOES_CHOICES = [
+        ('Livre', 'Livre'),
+        ('10', '10'),
+        ('12', '12'),
+        ('14', '14'),
+        ('16', '16'),
+        ('18', '18'),
+    ]
     
     poster = models.ImageField(blank=True, upload_to='series/')
     nome = models.CharField(max_length=31)
     diretor = models.CharField(max_length=31, blank=True, null=True)
+    classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
     data = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)
     episodios = models.PositiveSmallIntegerField()
