@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser
+from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Comunidades
 from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, ComunidadesForm
 
 def index(request):
@@ -558,6 +558,39 @@ def listarseries(request):
             'listar.html',
             context
         )
+    
+def listarcomunidades(request):
+    try:
+        comunidades = Comunidades.objects \
+        .order_by('-id')\
+        .distinct()
+
+        paginator = Paginator(comunidades, 6)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'comunidades': comunidades,
+            'page_obj': page_obj,
+            'site_title': 'Séries'
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+    except AttributeError:
+        context = {
+            'site_title': 'Comunidades'
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+        
     
 def deletefilme(request, filme_id):
     if request.user.is_admin:
