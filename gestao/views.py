@@ -780,3 +780,22 @@ def inforeviewserie(request, review_id):
         'info.html',
         context
     )
+
+def infocomunidade(request, comunidade_id):
+    try:
+        single_comunidade = Comunidades.objects.get(pk=comunidade_id)
+    except Comunidades.DoesNotExist:
+        return redirect('gestao:index')
+    
+    site_title = f'{single_comunidade.nome}'
+
+    context = {
+        'comunidade': single_comunidade,
+        'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )

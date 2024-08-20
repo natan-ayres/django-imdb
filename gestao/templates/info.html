@@ -53,6 +53,16 @@
             <a href="{% url 'gestao:updatenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
             <a href="{% url 'gestao:deletenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
         {% endif %}
+    {% elif comunidade %}
+        <div class="row filme-info-row">
+            <div class="col mb-5">
+                <img src="{% static comunidade.imagem %}" alt="{{comunidade.nome}}" class="d-block mx-auto img-fluid"/>
+            </div>
+        </div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nome: </b>{{ comunidade.nome }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ comunidade.desc }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ comunidade.data.day }}/{{ comunidade.data.month }}/{{ comunidade.data.year }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ comunidade.dono }}</div>
     {% endif %}
 </div>
 {% if item %}

@@ -8,6 +8,7 @@
             <div class="col-auto d-flex justify-content-end">
                 <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarfilmes' %}">Filmes</a></div>
                 <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarseries' %}">Séries</a></div>
+                <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:listarcomunidades' %}">Comunidades</a></div>
                 {% if user.is_authenticated %}
                     <div class="p-2 my-custom-col mx-1"><a href="{% url 'gestao:infouser' user.id %}" class="redirecttext">{{user.username}}</a></div>
                     <div class="p-2 my-custom-col mx-1"><a class="redirecttext" href="{% url 'gestao:logout' %}">Logout</a></div>
