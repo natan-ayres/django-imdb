@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series, CustomUser
+from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series, CustomUser, Comunidades
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -19,6 +19,14 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('username',)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+
+@admin.register(Comunidades)
+class ComunidadesAdmin(admin.ModelAdmin):
+    list_display = 'id', 'nome', 'data',
+    ordering = '-id',
+    search_fields = 'nome', 'data', 'dono',
+    list_per_page = 10
+    list_editable = 'nome',
 
 @admin.register(Filmes)
 class FilmesAdmin(admin.ModelAdmin):
