@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Comunidades
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, ComunidadesForm
+from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm
 
 def index(request):
     try:
@@ -250,16 +250,16 @@ def createserie(request):
     else:
         return redirect('gestao:index')
     
-def createcomunidade(request):
-    form = ComunidadesForm()
+def creategrupo(request):
+    form = GruposForm()
 
     if request.method == 'POST':
-        form = ComunidadesForm(request.POST, request.FILES)
+        form = GruposForm(request.POST, request.FILES)
 
         if form.is_valid():
-            comunidade = form.save(commit=False)
-            comunidade.dono = request.user
-            comunidade.save()
+            grupo = form.save(commit=False)
+            grupo.dono = request.user
+            grupo.save()
             return redirect('gestao:index')
         
     return render(
@@ -267,7 +267,7 @@ def createcomunidade(request):
         'register.html',
         {
             'form': form,
-            'site_title': 'Criar Comunidade'
+            'site_title': 'Criar Grupo'
         }
     )
 
@@ -559,20 +559,20 @@ def listarseries(request):
             context
         )
     
-def listarcomunidades(request):
+def listargrupos(request):
     try:
-        comunidades = Comunidades.objects \
+        grupos = Grupos.objects \
         .order_by('-id')\
         .distinct()
 
-        paginator = Paginator(comunidades, 6)
+        paginator = Paginator(grupos, 6)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'comunidades': comunidades,
+            'grupos': grupos,
             'page_obj': page_obj,
-            'site_title': 'Séries'
+            'site_title': 'Grupos'
         }
 
         return render(
@@ -582,7 +582,7 @@ def listarcomunidades(request):
         )
     except AttributeError:
         context = {
-            'site_title': 'Comunidades'
+            'site_title': 'Grupos'
         }
 
         return render(
@@ -781,16 +781,16 @@ def inforeviewserie(request, review_id):
         context
     )
 
-def infocomunidade(request, comunidade_id):
+def infogrupo(request, grupo_id):
     try:
-        single_comunidade = Comunidades.objects.get(pk=comunidade_id)
-    except Comunidades.DoesNotExist:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+    except Grupos.DoesNotExist:
         return redirect('gestao:index')
     
-    site_title = f'{single_comunidade.nome}'
+    site_title = f'{single_grupo.nome}'
 
     context = {
-        'comunidade': single_comunidade,
+        'grupo': single_grupo,
         'site_title': site_title
     }
 

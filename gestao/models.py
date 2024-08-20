@@ -9,12 +9,12 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
 
-class Comunidades(models.Model):
+class Grupos(models.Model):
     class Meta:
-        verbose_name = 'Comunidade'
+        verbose_name = 'Grupo'
     
     nome = models.CharField(max_length=30)
-    imagem = models.ImageField(blank=True, upload_to='comunidades/')
+    imagem = models.ImageField(blank=True, upload_to='grupos/')
     desc = models.TextField(max_length=200)
     data = models.DateTimeField(auto_now_add=True)
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')

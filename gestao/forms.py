@@ -1,4 +1,4 @@
-from gestao.models import CustomUser, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries, Comunidades
+from gestao.models import CustomUser, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries, Grupos
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -247,7 +247,7 @@ class SeriesForm(forms.ModelForm):
             'nome', 'diretor', 'data', 'data_termino', 'episodios', 'classificacao','temporadas', 'sinopse', 'poster'
         )
 
-class ComunidadesForm(forms.ModelForm):
+class GruposForm(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -267,7 +267,7 @@ class ComunidadesForm(forms.ModelForm):
 
 
     class Meta:
-        model = Comunidades
+        model = Grupos
         fields = (
             'nome', 'desc', 'imagem'
         )

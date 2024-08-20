@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series, CustomUser, Comunidades
+from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series, CustomUser, Grupos
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -20,8 +20,8 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
-@admin.register(Comunidades)
-class ComunidadesAdmin(admin.ModelAdmin):
+@admin.register(Grupos)
+class GruposAdmin(admin.ModelAdmin):
     list_display = 'id', 'nome', 'data',
     ordering = '-id',
     search_fields = 'nome', 'data', 'dono',

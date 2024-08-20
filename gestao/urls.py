@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, createcomunidade,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listarcomunidades, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infocomunidade
+from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo
 app_name = 'gestao'
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
     path('criar/noticia/', createnoticia, name='criarnoticia'),
     path('criar/review/filme/', createreviewfilme, name='criarreviewfilme'),
     path('criar/review/serie/', createreviewserie, name='criarreviewserie'),
-    path('criar/comunidade/',createcomunidade, name='criarcomunidade'),
+    path('criar/grupo/',creategrupo, name='criargrupo'),
 
     path('delete/filme/<int:filme_id>/', deletefilme, name='deletefilme'),
     path('delete/serie/<int:serie_id>/', deleteserie, name='deleteserie'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('update/review/serie/<int:review_id>/', updatereviewserie, name='updatereviewserie'),
     path('update/user/', update, name='update'),
     
-    path('comunidades/', listarcomunidades, name='listarcomunidades'),
+    path('grupos/', listargrupos, name='listargrupos'),
     path('filmes/', listarfilmes, name='listarfilmes'),
     path('series/', listarseries, name='listarseries'),
 
@@ -40,6 +40,6 @@ urlpatterns = [
     path('noticia/<int:noticia_id>/', infonoticia, name='infonoticia'),
     path('review/filme/<int:review_id>/', inforeviewfilme, name='inforeviewfilme'),
     path('review/serie/<int:review_id>/', inforeviewserie, name='inforeviewserie'),
-    path('comunidade/<int:comunidade_id>/', infocomunidade, name='infocomunidade'),
+    path('grupo/<int:grupo_id>/', infogrupo, name='infogrupo'),
 
 ]

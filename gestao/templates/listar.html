@@ -46,25 +46,25 @@
                 {% endif %}
             {% endwith %}
         {% endfor %}
-    {% elif comunidades %}
+    {% elif grupos %}
         {% if user.is_admin %}
-            <a href="{% url 'gestao:criarcomunidade' %}" class="text-decoration-none custom-card2 text-black">
+            <a href="{% url 'gestao:criargrupo' %}" class="text-decoration-none custom-card2 text-black">
                 <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
             </a>
         {% endif %}
-        {% for comunidade in page_obj %}
+        {% for grupo in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
             {% with contador=contador %}
                 {% if contador == 1 %}
                     <div class="container filmes-container mt-1 p-1">
                 {% endif %}
-                        <a class="text-decoration-none text-black">
+                        <a href="{% url 'gestao:infogrupo' grupo.id %}" class="text-decoration-none text-black">
                             <div class="row filmes-row p-2 mx-1 justify-content-center">
                                 <div class="col-12 col-md-12 custom-card text-center">
-                                    <p>{{ comunidade.nome }}</p>
+                                    <p>{{ grupo.nome }}</p>
                                 </div>
                                 <div class="col-12 col-md-12 images-row mb-3 text-center">
-                                    <img src="{% static comunidade.imagem %}" alt="{{ comunidade.nome }}" class="d-block mx-auto img-fluid"/>
+                                    <img src="{% static grupo.imagem %}" alt="{{ grupo.nome }}" class="d-block mx-auto img-fluid"/>
                                 </div>
                             </div>
                         </a>
