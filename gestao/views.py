@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, ComunidadesForm
 
 def index(request):
     try:
@@ -235,8 +235,8 @@ def createserie(request):
             form = SeriesForm(request.POST, request.FILES)
 
             if form.is_valid():
-                review = form.save(commit=False)
-                review.save()
+                serie = form.save(commit=False)
+                serie.save()
                 return redirect('gestao:listarseries')
             
         return render(
@@ -249,6 +249,27 @@ def createserie(request):
         )
     else:
         return redirect('gestao:index')
+    
+def createcomunidade(request):
+    form = ComunidadesForm()
+
+    if request.method == 'POST':
+        form = ComunidadesForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            comunidade = form.save(commit=False)
+            comunidade.dono = request.user
+            comunidade.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form,
+            'site_title': 'Criar Comunidade'
+        }
+    )
 
 def updatefilme(request, filme_id):
     if request.user.is_admin:

@@ -1,4 +1,4 @@
-from gestao.models import CustomUser, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries
+from gestao.models import CustomUser, Filmes, ReviewsFilmes, Noticias, Series, ReviewsSeries, Comunidades
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -245,6 +245,31 @@ class SeriesForm(forms.ModelForm):
         model = Series
         fields = (
             'nome', 'diretor', 'data', 'data_termino', 'episodios', 'classificacao','temporadas', 'sinopse', 'poster'
+        )
+
+class ComunidadesForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Nome',
+                'class': ''
+            }
+        )
+    )
+    desc = forms.CharField(
+        label='Descrição', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Descrição',
+                'class': ''
+            }
+        ), required=False
+    )
+
+
+    class Meta:
+        model = Comunidades
+        fields = (
+            'nome', 'desc', 'imagem'
         )
 
 class RegisterForm(UserCreationForm):
