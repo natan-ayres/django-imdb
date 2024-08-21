@@ -673,6 +673,14 @@ def deletereviewserie(request, review_id):
         return redirect('gestao:listarseries')
     else:
         return redirect('gestao:listarfilmes')
+    
+def deletegrupo(request, grupo_id):
+    single_grupo = Grupos.objects.get(pk=grupo_id)
+    if single_grupo.dono == request.user:
+        single_grupo.delete()
+        return redirect('gestao:listargrupos')
+    else:
+        return redirect('gestao:listargrupos')
 
 def infouser(request, user_id):
     try:

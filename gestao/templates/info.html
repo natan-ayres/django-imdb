@@ -65,6 +65,7 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
         {% if user.is_admin %}
             <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
+            <a href="{% url 'gestao:deletegrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
         {% endif %}
     {% endif %}
 </div>
