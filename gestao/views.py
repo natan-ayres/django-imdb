@@ -486,6 +486,48 @@ def updatereviewserie(request, review_id):
         )
     else:
         return redirect('gestao:index')
+    
+def updategrupo(request, grupo_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+        site_title = f'{single_grupo.nome}'
+    except Grupos.DoesNotExist:
+        return redirect('gestao:index')
+    
+    if single_grupo.dono == request.user:
+        form_action = reverse('gestao:updategrupo', args=(grupo_id,))
+
+        if request.method == 'POST':
+            form = GruposForm(request.POST, instance=single_grupo)
+
+            context = {
+                'form': form,
+                'form_action': form_action
+            }
+
+            if form.is_valid():
+                form.save()
+                return redirect('gestao:index')
+            
+            return render(
+                request,
+                'register.html',
+                context
+            )
+        context = {
+            'form': GruposForm(instance=single_grupo),
+            'form_action': form_action,
+            'site_title': site_title,
+        }
+
+        return render(
+            request,
+            'register.html',
+            context
+        )
+    else:
+        return redirect('gestao:index')
+        
 
 
 def listarfilmes(request):
