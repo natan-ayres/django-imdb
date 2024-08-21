@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container p-2 mb-5 mt-5 container-list">
-    {% if items %}
+    {% if items or view %}
         {% if user.is_admin %}
             <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
                 <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
@@ -46,7 +46,7 @@
                 {% endif %}
             {% endwith %}
         {% endfor %}
-    {% elif grupos %}
+    {% elif grupos or view_grupo %}
         {% if user.is_admin %}
             <a href="{% url 'gestao:criargrupo' %}" class="text-decoration-none custom-card2 text-black">
                 <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
