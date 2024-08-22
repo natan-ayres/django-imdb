@@ -18,7 +18,7 @@ class Grupos(models.Model):
     desc = models.TextField(max_length=200)
     data = models.DateTimeField(auto_now_add=True)
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')
-    membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros')
+    membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros', blank=True, null=True)
 
     def __str__(self):
         return f'{self.nome}'

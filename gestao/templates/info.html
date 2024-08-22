@@ -63,6 +63,7 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ grupo.desc }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
+        <a href="{% url 'gestao:adicionarmembro' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>
         {% if user.is_admin or grupo.dono == user %}
             <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
             <a href="{% url 'gestao:deletegrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>

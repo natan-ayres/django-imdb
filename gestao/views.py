@@ -528,7 +528,10 @@ def updategrupo(request, grupo_id):
     else:
         return redirect('gestao:index')
         
-
+def adicionarmembro(request, grupo_id):
+    single_grupo = Grupos.objects.get(pk=grupo_id)
+    single_grupo.membros.add(request.user)
+    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
 def listarfilmes(request):
     try:
