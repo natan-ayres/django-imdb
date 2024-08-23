@@ -535,6 +535,14 @@ def adicionarwaitlist(request, grupo_id):
         single_grupo.waitlist.add(request.user)
     return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
+def adicionarmembro(request, grupo_id, user_id):
+    single_grupo = Grupos.objects.get(pk=grupo_id)
+    usuario_esta_no_grupo = single_grupo.membros.filter(id=user_id).exists()
+    if usuario_esta_no_grupo == False:
+        single_grupo.membros.add(user_id)
+        single_grupo.waitlist.remove(user_id)
+    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+
 def listarfilmes(request):
     try:
 
@@ -687,6 +695,13 @@ def deletegrupo(request, grupo_id):
         return redirect('gestao:listargrupos')
     else:
         return redirect('gestao:listargrupos')
+    
+def negarwaitlist(request, grupo_id, user_id):
+    single_grupo = Grupos.objects.get(pk=grupo_id)
+    usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=user_id).exists()
+    if usuario_esta_na_waitlist == True:
+        single_grupo.waitlist.remove(user_id)
+    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
 def infouser(request, user_id):
     try:
@@ -845,9 +860,19 @@ def infogrupo(request, grupo_id):
     
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
 
+    waitlist = CustomUser.objects \
+        .filter(waitlist = single_grupo)\
+        .order_by('-id')
+
+    paginator = Paginator(waitlist, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     site_title = f'{single_grupo.nome}'
 
     context = {
+        'waitlist': waitlist,
+        'page_obj': page_obj,
         'user_waitlist': usuario_esta_na_waitlist,
         'grupo': single_grupo,
         'site_title': site_title

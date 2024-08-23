@@ -266,4 +266,8 @@
 
 }
 
-
+.grupo-list-col{
+    width: 175px;
+    border-radius: 10px;
+    background-color: rgb(109, 31, 126);
+}

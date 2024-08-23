@@ -64,7 +64,7 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
         {% if user_waitlist == False %}
-        <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>         
+            <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>         
         {% endif %}
         {% if user.is_admin or grupo.dono == user %}
             <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
@@ -91,6 +91,34 @@
                             </div>
                         </div>
                     </a>
+                    {% if contador == 6 %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+    </div>
+{% elif waitlist %}
+    <div class="container p-2 mb-5 mt-5 my-container-form">
+        <div class="mx-auto col p-1 filme-info-col2 text-center">
+            <b>WAITLIST</b>
+        </div>
+            {% for waitlist in page_obj %}
+                {% cycle 1 2 3 4 5 6 as contador silent %}
+                {% with contador=contador %}
+                    {% if contador == 1 %}
+                        <div class="container p-3 mb-1 mt-2 my-container-form2">
+                    {% endif %}
+                    <div class="row grupo-list-col text-center">
+                        <a href="{% url 'gestao:infouser' waitlist.id %}" class="text-decoration-none text-black"><div class="col-md-12">
+                            <p class="mt-2"><b>{{ waitlist.username }}</b></p>
+                        </div></a>
+                        <div class="col-md-6">
+                            <a href="{% url 'gestao:adicionarmembro' grupo.id waitlist.id %}" class="btn btn-success w-100 mt-1 text-black"><p class="mt-1"><b>√</b></p></a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'gestao:negarwaitlist' grupo.id waitlist.id %}" class="btn btn-danger w-100 mt-1 text-black"><p class="mt-1"><b>X</b></p></a>
+                        </div>
+                    </div>
                     {% if contador == 6 %}
                         </div>
                     {% endif %}
