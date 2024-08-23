@@ -531,7 +531,7 @@ def updategrupo(request, grupo_id):
 def adicionarwaitlist(request, grupo_id):
     single_grupo = Grupos.objects.get(pk=grupo_id)
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()
-    if usuario_esta_na_waitlist == False:
+    if usuario_esta_na_waitlist == False and request.user != single_grupo.dono:
         single_grupo.waitlist.add(request.user)
     return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
@@ -854,7 +854,15 @@ def infogrupo(request, grupo_id):
     except Grupos.DoesNotExist:
         return redirect('gestao:index')
     
+    contador_membros = single_grupo.membros.all()
+
+    contador = 0
+
+    for i in contador_membros:
+        contador += 1
+
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
+    usuario_e_membro = single_grupo.membros.filter(id=request.user.id).exists()   
 
     if request.user == single_grupo.dono:
         waitlist = CustomUser.objects \
@@ -865,9 +873,21 @@ def infogrupo(request, grupo_id):
         paginator = Paginator(waitlist, 10)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
+
+        membros = CustomUser.objects \
+            .filter(membros = single_grupo)\
+            .order_by('-id')
+
+
+        paginator2 = Paginator(membros, 10)
+        page_number2 = request.GET.get("page")
+        page_obj2 = paginator2.get_page(page_number2)
+
     else:
+        membros = None
         waitlist = None
         page_obj = None
+        page_obj2 = None
 
     site_title = f'{single_grupo.nome}'
 
@@ -875,7 +895,11 @@ def infogrupo(request, grupo_id):
         'users': waitlist,
         'waitlist': True,
         'titulo': 'WAITLIST',
+        'contador': contador,
+        'membros': membros,
         'page_obj': page_obj,
+        'page_obj2': page_obj2,
+        'user_membro': usuario_e_membro,
         'user_waitlist': usuario_esta_na_waitlist,
         'grupo': single_grupo,
         'site_title': site_title
