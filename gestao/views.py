@@ -737,7 +737,8 @@ def infofilme(request, filme_id):
         'delete': 'gestao:deletefilme',
         'update': 'gestao:updatefilme',
         'counterlink': 'gestao:inforeviewfilme',
-        'reviews': reviews,
+        'titulo': 'REVIEWS',
+        'users': reviews,
         'page_obj': page_obj,
         'item': single_filme,
         'site_title': site_title
@@ -769,7 +770,8 @@ def infoserie(request, serie_id):
         'delete': 'gestao:deleteserie',
         'update': 'gestao:updateserie',
         'counterlink': 'gestao:inforeviewserie',
-        'reviews': reviews,
+        'users': reviews,
+        'titulo': 'REVIEWS',
         'page_obj': page_obj,
         'item': single_serie,
         'site_title': site_title
@@ -859,6 +861,7 @@ def infogrupo(request, grupo_id):
             .filter(waitlist = single_grupo)\
             .order_by('-id')
 
+
         paginator = Paginator(waitlist, 10)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
@@ -869,7 +872,9 @@ def infogrupo(request, grupo_id):
     site_title = f'{single_grupo.nome}'
 
     context = {
-        'waitlist': waitlist,
+        'users': waitlist,
+        'waitlist': True,
+        'titulo': 'WAITLIST',
         'page_obj': page_obj,
         'user_waitlist': usuario_esta_na_waitlist,
         'grupo': single_grupo,
