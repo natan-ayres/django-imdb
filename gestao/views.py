@@ -537,10 +537,11 @@ def adicionarwaitlist(request, grupo_id):
 
 def adicionarmembro(request, grupo_id, user_id):
     single_grupo = Grupos.objects.get(pk=grupo_id)
-    usuario_esta_no_grupo = single_grupo.membros.filter(id=user_id).exists()
-    if usuario_esta_no_grupo == False:
-        single_grupo.membros.add(user_id)
-        single_grupo.waitlist.remove(user_id)
+    if request.user == single_grupo.dono:
+        usuario_esta_no_grupo = single_grupo.membros.filter(id=user_id).exists()
+        if usuario_esta_no_grupo == False:
+            single_grupo.membros.add(user_id)
+            single_grupo.waitlist.remove(user_id)
     return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
 def listarfilmes(request):
@@ -652,41 +653,33 @@ def deletefilme(request, filme_id):
     if request.user.is_admin:
         single_filme = Filmes.objects.get(pk=filme_id)
         single_filme.delete()
-        return redirect('gestao:listarfilmes')
-    else:
-        return redirect('gestao:listarfilmes')
+    return redirect('gestao:listarfilmes')
+    
 
 def deleteserie(request, serie_id):
     if request.user.is_admin:
         single_serie = Series.objects.get(pk=serie_id)
         single_serie.delete()
-        return redirect('gestao:listarseries')
-    else:
-        return redirect('gestao:listarseries')
+    return redirect('gestao:listarseries')
 
 def deletenoticia(request, noticia_id):
     if request.user.is_admin:
         single_noticia = Noticias.objects.get(pk=noticia_id)
         single_noticia.delete()
-        return redirect('gestao:index')
-    else:
-        return redirect('gestao:index')
+    return redirect('gestao:index')
+
 
 def deletereviewfilme(request, review_id):
     if request.user.is_admin:
         single_review= ReviewsFilmes.objects.get(pk=review_id)
         single_review.delete()
-        return redirect('gestao:listarfilmes')
-    else:
-        return redirect('gestao:listarfilmes')
+    return redirect('gestao:listarfilmes')
 
 def deletereviewserie(request, review_id):
     if request.user.is_admin:
         single_review = ReviewsSeries.objects.get(pk=review_id)
         single_review.delete()
-        return redirect('gestao:listarseries')
-    else:
-        return redirect('gestao:listarfilmes')
+    return redirect('gestao:listarseries')
     
 def deletegrupo(request, grupo_id):
     single_grupo = Grupos.objects.get(pk=grupo_id)
@@ -698,9 +691,10 @@ def deletegrupo(request, grupo_id):
     
 def negarwaitlist(request, grupo_id, user_id):
     single_grupo = Grupos.objects.get(pk=grupo_id)
-    usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=user_id).exists()
-    if usuario_esta_na_waitlist == True:
-        single_grupo.waitlist.remove(user_id)
+    if request.user == single_grupo.dono:
+        usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=user_id).exists()
+        if usuario_esta_na_waitlist == True:
+            single_grupo.waitlist.remove(user_id)
     return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
 def infouser(request, user_id):
@@ -860,13 +854,17 @@ def infogrupo(request, grupo_id):
     
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
 
-    waitlist = CustomUser.objects \
-        .filter(waitlist = single_grupo)\
-        .order_by('-id')
+    if request.user == single_grupo.dono:
+        waitlist = CustomUser.objects \
+            .filter(waitlist = single_grupo)\
+            .order_by('-id')
 
-    paginator = Paginator(waitlist, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+        paginator = Paginator(waitlist, 10)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+    else:
+        waitlist = None
+        page_obj = None
 
     site_title = f'{single_grupo.nome}'
 
