@@ -7,7 +7,7 @@ from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
 
 class CustomUser(AbstractUser):
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False) 
 
 class Grupos(models.Model):
     class Meta:
@@ -19,10 +19,10 @@ class Grupos(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')
     membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros', blank=True)
+    waitlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='waitlist', blank=True)
 
     def __str__(self):
-        return f'{self.nome}'
-    
+        return f'{self.nome}' 
 
 class Filmes(models.Model):
     class Meta:
