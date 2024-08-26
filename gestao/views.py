@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.urls import reverse
+import requests
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, FilmesApiForm
+
+from IMDB.local_settings import api_key
 
 def index(request):
     try:
@@ -910,3 +913,27 @@ def infogrupo(request, grupo_id):
         'info.html',
         context
     )
+
+def apiomdb(request):
+    form = FilmesApiForm()
+    if request.method == 'POST':
+        form = FilmesApiForm(request.POST, request.FILES)
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+
+            response = requests.get(f'https://www.omdbapi.com/?t={nome}&apikey={api_key}')
+
+            if response.status_code == 200:
+                dados_api = response.json()
+                Filmes.objects.create(
+                    nome = dados_api.get('Title'),
+                    diretor = dados_api.get('Director'),
+                    poster = dados_api.get('Poster'),
+                    sinopse = dados_api.get('Plot'),
+                    data = dados_api.get('Released'),
+                    duracao = dados_api.get('Runtime'),
+                )
+                return redirect('gestao:listarfilmes')
+
+    return render(request, 'register.html', {'form':form, })
+    

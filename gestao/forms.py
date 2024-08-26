@@ -428,3 +428,18 @@ class CustomAuthenticationForm(AuthenticationForm):
             'aria-describedby': 'passwordHelp'
         }),
     )
+
+class FilmesApiForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Nome',
+                'class': ''
+            }
+        )
+    )
+    class Meta:
+        model = Filmes
+        fields = (
+            'nome',
+        )

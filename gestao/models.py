@@ -5,6 +5,7 @@ from django.db.models import Avg
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
+from datetime import time, datetime
 
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False) 
@@ -41,12 +42,21 @@ class Filmes(models.Model):
     nome = models.CharField(max_length=30)
     diretor = models.CharField(max_length=30, blank=True, null=True)
     duracao = models.TimeField(blank=True, null=True)
-    classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
-    sinopse = models.TextField(max_length=400)
+    classificacao = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
+    sinopse = models.TextField(blank=True, null=True, max_length=400)
     data = models.DateField(null=True, blank=True)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
-    poster = models.ImageField(blank=True, upload_to= 'filmes/')
+    poster = models.ImageField(blank=True, null=True, upload_to= 'filmes/')
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.duracao, str) and 'min' in self.duracao:
+            minutes = int(self.duracao.split()[0])
+            hours, minutes = divmod(minutes, 60)
+            self.duracao = time(hour=hours, minute=minutes)
+        if isinstance(self.data, str):
+            self.data = datetime.strptime(self.data, '%d %b %Y').date()
+        super().save(*args, **kwargs)
 
     def calcular_nota_media(self):
         reviews = self.reviews.all() 
@@ -57,7 +67,7 @@ class Filmes(models.Model):
             self.nota_media = None
 
     def __str__(self):
-        return f'{self.nome} ({self.data.year})'
+        return f'{self.nome}'
     
 class Series(models.Model):
     class Meta:
