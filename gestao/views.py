@@ -551,6 +551,7 @@ def listarfilmes(request):
     try:
 
         filmes = Filmes.objects \
+            .filter(mostrar = True) \
             .order_by('-id') \
             .distinct() 
 
@@ -725,33 +726,36 @@ def infofilme(request, filme_id):
     except Filmes.DoesNotExist:
         return redirect('gestao:index')
     
-    reviews = ReviewsFilmes.objects \
-        .filter(mostrar=True, filme_id = single_filme)\
-        .order_by('-id')
+    if single_filme.mostrar == True:
+        reviews = ReviewsFilmes.objects \
+            .filter(mostrar=True, filme_id = single_filme)\
+            .order_by('-id')
 
-    paginator = Paginator(reviews, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+        paginator = Paginator(reviews, 10)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
 
-        
-    site_title = f'{single_filme.nome} - {single_filme.data.year}'
+            
+        site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
-    context = {
-        'delete': 'gestao:deletefilme',
-        'update': 'gestao:updatefilme',
-        'counterlink': 'gestao:inforeviewfilme',
-        'titulo': 'REVIEWS',
-        'users': reviews,
-        'page_obj': page_obj,
-        'item': single_filme,
-        'site_title': site_title
-    }
+        context = {
+            'delete': 'gestao:deletefilme',
+            'update': 'gestao:updatefilme',
+            'counterlink': 'gestao:inforeviewfilme',
+            'titulo': 'REVIEWS',
+            'users': reviews,
+            'page_obj': page_obj,
+            'item': single_filme,
+            'site_title': site_title
+        }
 
-    return render(
-        request,
-        'info.html',
-        context
-    )
+        return render(
+            request,
+            'info.html',
+            context
+        )
+    else:
+        return redirect('gestao:index')
 
 def infoserie(request, serie_id):
     try:

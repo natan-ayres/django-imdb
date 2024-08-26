@@ -30,11 +30,11 @@ class GruposAdmin(admin.ModelAdmin):
 
 @admin.register(Filmes)
 class FilmesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data',
+    list_display = 'id', 'nome', 'data','mostrar'
     ordering = '-id',
     search_fields = 'nome', 'data',
     list_per_page = 10
-    list_editable = 'nome','data',
+    list_editable = 'nome','data','mostrar'
 
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):

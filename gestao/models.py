@@ -48,6 +48,7 @@ class Filmes(models.Model):
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     poster = models.ImageField(blank=True, null=True, upload_to= 'filmes/')
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
+    mostrar = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if isinstance(self.duracao, str) and 'min' in self.duracao:
