@@ -41,6 +41,8 @@ class Filmes(models.Model):
 
     nome = models.CharField(max_length=30)
     diretor = models.CharField(max_length=30, blank=True, null=True)
+    escritor = models.CharField(max_length=200, blank=True, null=True)
+    atores = models.CharField(max_length=200, blank=True, null=True)
     duracao = models.TimeField(blank=True, null=True)
     classificacao = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
     sinopse = models.TextField(blank=True, null=True, max_length=400)
@@ -89,6 +91,8 @@ class Series(models.Model):
     classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
     data = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)
+    escritor = models.CharField(max_length=200, blank=True, null=True)
+    atores = models.CharField(max_length=200, blank=True, null=True)
     episodios = models.PositiveSmallIntegerField()
     temporadas = models.PositiveSmallIntegerField()
     sinopse = models.TextField(max_length=400)
