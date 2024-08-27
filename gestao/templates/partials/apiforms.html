@@ -1,67 +1,66 @@
 {% if buscado %} 
-<div class="my-custom-form p-1 mb-4 mx-5">
-    <div class=''>
-        <img src="{{ apiposter }}" alt="{{ apinome }}" class="d-block">
+    <div class="my-custom-form p-1 mb-4 mx-5">
+        <div class=''>
+            <img src="{{ apiposter }}" alt="{{ apinome }}" class="d-block">
+        </div>
+        <div>
+            Nome: {{ apinome }}
+        </div>
+        <div>
+            Diretor: {{ apidiretor }}
+        </div>
+        <div>
+            Sinopse: {{ apisinopse }}
+        </div>
+        <div>
+            Duração: {{ apiduracao }}
+        </div>
+        <div>
+            Data: {{ apidata }}
+        </div>
     </div>
-    <div>
-        Nome: {{ apinome }}
-    </div>
-    <div>
-        Diretor: {{ apidiretor }}
-    </div>
-    <div>
-        Sinopse: {{ apisinopse }}
-    </div>
-    <div>
-        Duração: {{ apiduracao }}
-    </div>
-    <div>
-        Data: {{ apidata }}
-    </div>
-</div>
 {% endif %}
-<form 
-      action="{{ form_action }}"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      {% csrf_token %}      
 
-      <div class="form-content">
+<form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-content">
 
         {% for field in form %}
-          <div class="form-group my-custom-form p-1 mb-4 mx-5">
-            <label class="my-custom-form2 mb-2 mx-2" for="{{ field.id_for_label }}">{{ field.label }}:</label>
-            
-            <div class="my-custom-form3 mb-2 mx-2">{{ field }}{{ field.errors }}</div>
-            
-
-            {% if field.help_text %}
-              <p class="help-text">{{ field.help_text }}</p>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
-
-      {% if form.non_field_errors %}
-        <div class="form-content">
-          <div class="form-group">
-            <div class="message error">
-              {{ form.non_field_errors }}
+            <div class="form-group my-custom-form p-1 mb-4 mx-5 {% if buscado %}hidden{% endif %}">
+                <label class="my-custom-form2 mb-2 mx-2" for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                <div class="my-custom-form3 mb-2 mx-2">{{ field }}{{ field.errors }}</div>
+                {% if field.help_text %}
+                    <p class="help-text">{{ field.help_text }}</p>
+                {% endif %}
             </div>
-          </div>
-        </div>
-      {% endif %}
+        {% endfor %}
+    </div>
 
-      <div class="form-content">
+    {% if form.non_field_errors %}
+        <div class="form-content">
+            <div class="form-group">
+                <div class="message error">
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="form-content">
         <div class="form-group">
-        {% if buscado %}
-            <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_segundo">Confirmar</button>
-            <button class="btn-my-custom-button p-2 border-0" type="submit" name="submit_terceiro">Voltar</button>
-        {% else %}
-            <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_primeiro">Buscar</button>
-        {% endif %}
+            {% if buscado %}
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_segundo">Confirmar</button>
+                <button class="btn-my-custom-button p-2 border-0" type="submit" name="submit_terceiro">Voltar</button>
+            {% else %}
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_primeiro">Buscar</button>
+            {% endif %}
         </div>
-      </div>
+    </div>
+</form>
 
-    </form>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
