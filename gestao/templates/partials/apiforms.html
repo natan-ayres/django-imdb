@@ -3,27 +3,37 @@
         <div class=''>
             <img src="{{ apiposter }}" alt="{{ apinome }}" class="d-block">
         </div>
-        <div>
+        <div>   
             Nome: {{ apinome }}
         </div>
+        {% if apidiretor != 'N/A' %}
         <div>
             Diretor: {{ apidiretor }}
         </div>
+        {% endif %}
         <div>
             Sinopse: {{ apisinopse }}
         </div>
         <div>
+            {% if apiduracao %}
             Duração: {{ apiduracao }}
+            {% else %}
+            Temporadas: {{ apitemporadas }}
+            {% endif %}
         </div>
         <div>
             Data: {{ apidata }}
         </div>
+        {% if apiatores != 'N/A' %}
         <div>
             Atores: {{ apiatores }}
         </div>
+        {% endif %}
+        {% if apiescritor != 'N/A' %}
         <div>
             Escritor: {{ apiescritor }}
         </div>
+        {% endif %}
     </div>
 {% endif %}
 

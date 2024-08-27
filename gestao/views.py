@@ -965,7 +965,7 @@ def apiomdb(request):
                             duracao = dados_api.get('Runtime'),
                         )
                         return redirect('gestao:listarfilmes')
-                    else:
+                    elif tipo == 'series':
                         Series.objects.create(
                             nome = dados_api.get('Title'),
                             diretor = dados_api.get('Director'),

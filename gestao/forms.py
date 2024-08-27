@@ -71,7 +71,7 @@ class FilmesForm(forms.ModelForm):
     class Meta:
         model = Filmes
         fields = (
-            'nome', 'diretor', 'classificacao', 'duracao', 'sinopse', 'data', 'poster'
+            'nome', 'diretor', 'classificacao', 'duracao', 'sinopse', 'escritor', 'atores', 'data', 'poster'
         )
 
 class ReviewFilmeForm(forms.ModelForm):
@@ -244,7 +244,7 @@ class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
         fields = (
-            'nome', 'diretor', 'data', 'data_termino', 'episodios', 'classificacao','temporadas', 'sinopse', 'poster'
+            'nome', 'diretor', 'data', 'data_termino', 'episodios', 'atores', 'escritor', 'classificacao','temporadas', 'sinopse', 'poster'
         )
 
 class GruposForm(forms.ModelForm):
