@@ -429,7 +429,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         }),
     )
 
-class FilmesApiForm(forms.ModelForm):
+class ApiForm(forms.Form):
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -438,11 +438,10 @@ class FilmesApiForm(forms.ModelForm):
             }
         )
     )
-    class Meta:
-        model = Filmes
-        fields = (
-            'nome',
-        )
+    ano = forms.IntegerField(
+        label="Ano",
+        min_value=1900,  
+        max_value=2024,  
+        required=False,
+    )
 
-class EmptyForm(forms.Form):
-    pass

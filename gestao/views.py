@@ -4,7 +4,7 @@ from django.urls import reverse
 import requests
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, FilmesApiForm, EmptyForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, ApiForm
 
 from IMDB.local_settings import api_key
 
@@ -919,14 +919,18 @@ def infogrupo(request, grupo_id):
     )
 
 def apiomdb(request):
-    form = FilmesApiForm()
+    form = ApiForm()
     buscado = False
     if request.method == 'POST':
-        form = FilmesApiForm(request.POST)
+        form = ApiForm(request.POST)
         if form.is_valid():
             nome = form.cleaned_data['nome']
+            ano = form.cleaned_data['ano']
 
-            response = requests.get(f'https://www.omdbapi.com/?t={nome}&apikey={api_key}')
+            if ano:
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&y={ano}&apikey={api_key}')
+            else:
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&apikey={api_key}')
 
             if response.status_code == 200:
                 dados_api = response.json()
@@ -937,7 +941,7 @@ def apiomdb(request):
                 sinopse = dados_api.get('Plot')
                 data = dados_api.get('Released')
                 duracao = dados_api.get('Runtime')
-                if 'submit_primeiro' in request.POST:
+                if 'submit_primeiro' in request.POST and nome != None:
                     buscado = True
                     return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado,})
                 if 'submit_segundo' in request.POST:
