@@ -443,3 +443,6 @@ class FilmesApiForm(forms.ModelForm):
         fields = (
             'nome',
         )
+
+class EmptyForm(forms.Form):
+    pass

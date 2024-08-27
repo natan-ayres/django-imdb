@@ -49,5 +49,6 @@ urlpatterns = [
     path('review/filme/<int:review_id>/', inforeviewfilme, name='inforeviewfilme'),
     path('review/serie/<int:review_id>/', inforeviewserie, name='inforeviewserie'),
     path('grupo/<int:grupo_id>/', infogrupo, name='infogrupo'),
+    
 
 ]

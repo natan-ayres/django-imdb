@@ -1,7 +1,11 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <body>
     <div class="container mt-5 p-5 mb-5 my-container-form">
-        {% include 'partials/forms.html'%}
+        {% if api %}
+            {% include 'partials/apiforms.html'%}
+        {% else %}
+            {% include 'partials/forms.html'%}
+        {% endif %}
     </div>
 </body>
 {% endblock content %}

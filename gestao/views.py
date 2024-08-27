@@ -4,7 +4,7 @@ from django.urls import reverse
 import requests
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, FilmesApiForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, FilmesApiForm, EmptyForm
 
 from IMDB.local_settings import api_key
 
@@ -920,8 +920,9 @@ def infogrupo(request, grupo_id):
 
 def apiomdb(request):
     form = FilmesApiForm()
+    buscado = False
     if request.method == 'POST':
-        form = FilmesApiForm(request.POST, request.FILES)
+        form = FilmesApiForm(request.POST)
         if form.is_valid():
             nome = form.cleaned_data['nome']
 
@@ -929,15 +930,26 @@ def apiomdb(request):
 
             if response.status_code == 200:
                 dados_api = response.json()
-                Filmes.objects.create(
-                    nome = dados_api.get('Title'),
-                    diretor = dados_api.get('Director'),
-                    poster = dados_api.get('Poster'),
-                    sinopse = dados_api.get('Plot'),
-                    data = dados_api.get('Released'),
-                    duracao = dados_api.get('Runtime'),
-                )
-                return redirect('gestao:listarfilmes')
+                
+                nome = dados_api.get('Title')
+                diretor = dados_api.get('Director')
+                poster = dados_api.get('Poster')
+                sinopse = dados_api.get('Plot')
+                data = dados_api.get('Released')
+                duracao = dados_api.get('Runtime')
+                if 'submit_primeiro' in request.POST:
+                    buscado = True
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado,})
+                if 'submit_segundo' in request.POST:
+                    Filmes.objects.create(
+                        nome = dados_api.get('Title'),
+                        diretor = dados_api.get('Director'),
+                        poster = dados_api.get('Poster'),
+                        sinopse = dados_api.get('Plot'),
+                        data = dados_api.get('Released'),
+                        duracao = dados_api.get('Runtime'),
+                    )
+                    return redirect('gestao:listarfilmes')
 
-    return render(request, 'register.html', {'form':form, })
-    
+        
+    return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
