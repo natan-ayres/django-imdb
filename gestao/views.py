@@ -934,7 +934,7 @@ def apiomdb(request):
 
             if response.status_code == 200:
                 dados_api = response.json()
-                
+                tipo = dados_api.get('Type')
                 nome = dados_api.get('Title')
                 diretor = dados_api.get('Director')
                 escritor = dados_api.get('Writer')
@@ -942,11 +942,16 @@ def apiomdb(request):
                 poster = dados_api.get('Poster')
                 sinopse = dados_api.get('Plot')
                 data = dados_api.get('Released')
-                duracao = dados_api.get('Runtime')
-                tipo = dados_api.get('Type')
+                if tipo == 'movie':
+                    duracao = dados_api.get('Runtime')
+                else:
+                    temporadas = dados_api.get('totalSeasons')
                 if 'submit_primeiro' in request.POST and nome != None:
                     buscado = True
-                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                    if tipo == 'movie':
+                        return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                    elif tipo == 'series':
+                        return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
                 if 'submit_segundo' in request.POST:
                     if tipo == 'movie':
                         Filmes.objects.create(
@@ -961,6 +966,16 @@ def apiomdb(request):
                         )
                         return redirect('gestao:listarfilmes')
                     else:
+                        Series.objects.create(
+                            nome = dados_api.get('Title'),
+                            diretor = dados_api.get('Director'),
+                            escritor = dados_api.get('Writer'),
+                            poster = dados_api.get('Poster'),
+                            atores = dados_api.get('Actors'),
+                            sinopse = dados_api.get('Plot'),
+                            data = dados_api.get('Released'),
+                            temporadas = dados_api.get('totalSeasons'),
+                        )
                         return redirect('gestao:listarseries')
                 if 'submit_terceiro' in request.POST:
                     return redirect('gestao:apiomdb')

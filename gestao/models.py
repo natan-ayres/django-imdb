@@ -88,16 +88,21 @@ class Series(models.Model):
     poster = models.ImageField(blank=True, upload_to='series/')
     nome = models.CharField(max_length=31)
     diretor = models.CharField(max_length=31, blank=True, null=True)
+    escritor = models.CharField(max_length=200, blank=True, null=True)
+    atores = models.CharField(max_length=200, blank=True, null=True)
     classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
     data = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)
-    escritor = models.CharField(max_length=200, blank=True, null=True)
-    atores = models.CharField(max_length=200, blank=True, null=True)
-    episodios = models.PositiveSmallIntegerField()
+    episodios = models.PositiveSmallIntegerField(blank=True, null=True)
     temporadas = models.PositiveSmallIntegerField()
     sinopse = models.TextField(max_length=400)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsSeries')
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.data, str):
+            self.data = datetime.strptime(self.data, '%d %b %Y').date()
+        super().save(*args, **kwargs)
 
     def calcular_nota_media(self):
         reviews = self.reviews.all() 
