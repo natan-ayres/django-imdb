@@ -950,6 +950,8 @@ def apiomdb(request):
                         duracao = dados_api.get('Runtime'),
                     )
                     return redirect('gestao:listarfilmes')
+                if 'submit_terceiro' in request.POST:
+                    return redirect('gestao:apiomdb')
 
         
     return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
