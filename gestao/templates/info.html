@@ -77,7 +77,7 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ grupo.desc }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Membros: </b>{{ contador }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Membros: </b>{{ grupo.qntdmembros}}</div>
         {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
             <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>         
         {% endif %}

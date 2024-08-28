@@ -61,6 +61,9 @@
                                 <div class="col-12 col-md-12 images-row mb-3 text-center">
                                     <img src="{% static grupo.imagem %}" alt="{{ grupo.nome }}" class="d-block mx-auto img-fluid"/>
                                 </div>
+                                <div class="col-12 col-md-12 custom-card text-center">
+                                    <p>{{ grupo.qntdmembros }}</p>
+                                </div>
                             </div>
                         </a>
                 {% if contador == 6 %}

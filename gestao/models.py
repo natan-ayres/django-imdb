@@ -20,6 +20,7 @@ class Grupos(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')
     membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros', blank=True)
+    qntdmembros = models.IntegerField(default=0)
     waitlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='waitlist', blank=True)
 
     def __str__(self):

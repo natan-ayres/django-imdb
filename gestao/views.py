@@ -539,7 +539,9 @@ def adicionarmembro(request, grupo_id, user_id):
         usuario_esta_no_grupo = single_grupo.membros.filter(id=user_id).exists()
         if usuario_esta_no_grupo == False:
             single_grupo.membros.add(user_id)
+            single_grupo.qntdmembros += 1
             single_grupo.waitlist.remove(user_id)
+            single_grupo.save()
     return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
 
 def listarfilmes(request):
@@ -848,13 +850,6 @@ def infogrupo(request, grupo_id):
         single_grupo = Grupos.objects.get(pk=grupo_id)
     except Grupos.DoesNotExist:
         return redirect('gestao:index')
-    
-    contador_membros = single_grupo.membros.all()
-
-    contador = 0
-
-    for i in contador_membros:
-        contador += 1
 
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
     usuario_e_membro = single_grupo.membros.filter(id=request.user.id).exists()   
@@ -890,7 +885,6 @@ def infogrupo(request, grupo_id):
         'users': waitlist,
         'waitlist': True,
         'titulo': 'WAITLIST',
-        'contador': contador,
         'membros': membros,
         'page_obj': page_obj,
         'page_obj2': page_obj2,
