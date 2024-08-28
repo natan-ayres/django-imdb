@@ -3,7 +3,7 @@
     {% if item %}
             <div class="row filme-info-row">
                 <div class="col mb-5">
-                    <img src="{% static item.poster %}" alt="Poster" class="d-block mx-auto img-fluid"/>
+                    <img src="{{ item.poster }}" alt="Poster" class="d-block mx-auto img-fluid"/>
                 </div>
             </div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ item.nota_media }}</div>

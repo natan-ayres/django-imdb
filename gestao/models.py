@@ -41,14 +41,14 @@ class Filmes(models.Model):
 
     nome = models.CharField(max_length=30)
     diretor = models.CharField(max_length=30, blank=True, null=True)
-    escritor = models.CharField(max_length=200, blank=True, null=True)
-    atores = models.CharField(max_length=200, blank=True, null=True)
+    escritor = models.TextField(max_length=200, blank=True, null=True)
+    atores = models.TextField(max_length=200, blank=True, null=True)
     duracao = models.TimeField(blank=True, null=True)
     classificacao = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
     sinopse = models.TextField(blank=True, null=True, max_length=400)
     data = models.DateField(null=True, blank=True)
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
-    poster = models.ImageField(blank=True, null=True, upload_to= 'filmes/')
+    poster = models.ImageField(max_length=200, blank=True, null=True, upload_to= 'filmes/')
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
     mostrar = models.BooleanField(default=False)
 
@@ -85,11 +85,11 @@ class Series(models.Model):
         ('18', '18'),
     ]
     
-    poster = models.ImageField(blank=True, upload_to='series/')
+    poster = models.ImageField(max_length=200, blank=True, upload_to='series/')
     nome = models.CharField(max_length=31)
     diretor = models.CharField(max_length=31, blank=True, null=True)
-    escritor = models.CharField(max_length=200, blank=True, null=True)
-    atores = models.CharField(max_length=200, blank=True, null=True)
+    escritor = models.TextField(max_length=200, blank=True, null=True)
+    atores = models.TextField(max_length=200, blank=True, null=True)
     classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
     data = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)

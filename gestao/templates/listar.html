@@ -2,12 +2,12 @@
 {% load static %}
 {% block content %}
 <div class="container p-2 mb-5 mt-5 container-list">
-    {% if items or view %}
-        {% if user.is_admin %}
-            <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
-                <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
-            </a>
-        {% endif %}
+    {% if user.is_admin %}
+        <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
+            <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
+        </a>
+    {% endif %}
+    {% if items or view %}    
         {% for items in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
             {% with contador=contador %}
@@ -20,7 +20,7 @@
                                     <p>{{ items.nome }} ({{ items.data.year }})</p>
                                 </div>
                                 <div class="col-12 col-md-12 images-row mb-3 text-center">
-                                    <img src="{% static items.poster %}" alt="{{ items.nome }}" class="d-block mx-auto img-fluid"/>
+                                    <img src="{{ items.poster }}" alt="{{ items.nome }}" class="d-block mx-auto img-fluid"/>
                                 </div>
                                 {% if items.nota_media > 7 %}
                                     <div class="col-12 col-md-3 p-1 filme-nota-boa text-center">
@@ -47,11 +47,6 @@
             {% endwith %}
         {% endfor %}
     {% elif grupos or view_grupo %}
-        {% if user.is_admin %}
-            <a href="{% url 'gestao:criargrupo' %}" class="text-decoration-none custom-card2 text-black">
-                <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
-            </a>
-        {% endif %}
         {% for grupo in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
             {% with contador=contador %}

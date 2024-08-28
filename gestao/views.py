@@ -630,7 +630,7 @@ def listargrupos(request):
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'view_grupo': True,
+            'create': 'gestao:criargrupo',
             'grupos': grupos,
             'page_obj': page_obj,
             'site_title': 'Grupos'
