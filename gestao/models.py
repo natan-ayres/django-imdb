@@ -39,7 +39,7 @@ class Filmes(models.Model):
         ('18', '18'),
     ]
 
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(max_length=40)
     diretor = models.CharField(max_length=30, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)
@@ -50,7 +50,6 @@ class Filmes(models.Model):
     nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
     poster = models.ImageField(max_length=200, blank=True, null=True, upload_to= 'filmes/')
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
-    mostrar = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if isinstance(self.duracao, str) and 'min' in self.duracao:
@@ -86,7 +85,7 @@ class Series(models.Model):
     ]
     
     poster = models.ImageField(max_length=200, blank=True, upload_to='series/')
-    nome = models.CharField(max_length=31)
+    nome = models.CharField(max_length=40)
     diretor = models.CharField(max_length=31, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)

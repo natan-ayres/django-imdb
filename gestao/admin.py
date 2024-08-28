@@ -30,11 +30,11 @@ class GruposAdmin(admin.ModelAdmin):
 
 @admin.register(Filmes)
 class FilmesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data','mostrar'
+    list_display = 'id', 'nome', 'data'
     ordering = '-id',
     search_fields = 'nome', 'data',
     list_per_page = 10
-    list_editable = 'nome','data','mostrar'
+    list_editable = 'nome','data',
 
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):
@@ -46,14 +46,14 @@ class SeriesAdmin(admin.ModelAdmin):
 
 @admin.register(ReviewsFilmes)
 class ReviewsFilmesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'usuario', 'filme', 'nota',
+    list_display = 'id', 'usuario', 'filme', 'nota', 'mostrar',
     ordering = '-id',
     search_fields = 'filme', 'nota', 'usuario'
     list_per_page = 10
 
 @admin.register(ReviewsSeries)
 class ReviewsSeriesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'usuario', 'serie', 'nota',
+    list_display = 'id', 'usuario', 'serie', 'nota', 'mostrar',
     ordering = '-id',
     search_fields = 'serie', 'nota', 'usuario'
     list_per_page = 10

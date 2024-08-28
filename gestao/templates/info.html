@@ -6,17 +6,29 @@
                     <img src="{{ item.poster }}" alt="Poster" class="d-block mx-auto img-fluid"/>
                 </div>
             </div>
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ item.nota_media }}</div>
+            {% if item.nota_media != None %}
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ item.nota_media }}</div>
+            {% endif %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ item.nome }}</div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{item.data}}</div>
+            {% if item.diretor != 'N/A' %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ item.diretor }}</div>
+            {% endif %}
+            {% if item.escritor != 'N/A' %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Escritor: </b>{{ item.escritor }}</div>
+            {% endif %}
+            {% if item.atores != 'N/A' %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Atores: </b>{{ item.atores }}</div>
+            {% endif %}
+            {% if item.classificacao != None %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ item.classificacao }}{% if item.classificacao != 'Livre' %}+{% endif %}</div>
+            {% endif %}
             {% if item.duracao %}
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ item.duracao }}</div>
             {% else %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ item.episodios }}</div>
+                {% if item.episodios != None %}
+                    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ item.episodios }}</div>
+                {% endif %}
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ item.temporadas }}</div>
             {% endif %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.sinopse }}</div>
@@ -75,8 +87,16 @@
         {% endif %}
     {% endif %}
 </div>
+
+{% if infoitem == True %}
+<div class="container p-2 mb-5 mt-5 my-container-form">
+    <div class="container p-1 mb-1 mt-1 container-list">
+        <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
+            <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
+        </a>
+    </div>
+{% endif%}
 {% if users %}
-    <div class="container p-2 mb-5 mt-5 my-container-form">
         <div class="mx-auto col p-1 filme-info-col2 text-center">
             <b>{{ titulo }}</b>
         </div>
@@ -117,6 +137,7 @@
                     {% endif %}
                 {% endwith %}
             {% endfor %}
-    </div>
-{% endif %}
+        {% endif %}
+</div>
+
 {% endblock content %}

@@ -158,52 +158,47 @@ def createfilme(request):
     return redirect('gestao:index')
 
 def createreviewfilme(request):
-    if request.user.is_admin:
-        form = ReviewFilmeForm(usuario=request.user)
+    form = ReviewFilmeForm(usuario=request.user)
 
-        if request.method == 'POST':
-            form = ReviewFilmeForm(request.POST, usuario=request.user)
+    if request.method == 'POST':
+        form = ReviewFilmeForm(request.POST, usuario=request.user)
 
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.usuario = request.user
-                review.save()
-                return redirect('gestao:index')
-            
-        return render(
-            request,
-            'register.html',
-            {
-                'form': form,
-                'site_title': 'Criar Review'
-            }
-        )
-    else:
-        return redirect('gestao:index')
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form,
+            'site_title': 'Criar Review'
+        }
+    )
+
 
 def createreviewserie(request):
-    if request.user.is_admin:
-        form = ReviewSeriesForm(usuario=request.user)
+    form = ReviewSeriesForm(usuario=request.user)
 
-        if request.method == 'POST':
-            form = ReviewSeriesForm(request.POST, usuario=request.user)
+    if request.method == 'POST':
+        form = ReviewSeriesForm(request.POST, usuario=request.user)
 
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.usuario = request.user
-                review.save()
-                return redirect('gestao:index')
-            
-        return render(
-            request,
-            'register.html',
-            {
-                'form': form,
-                'site_title': 'Criar Review'
-            }
-        )
-    else:
-        return redirect('gestao:index')
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form,
+            'site_title': 'Criar Review'
+        }
+    )
 
 def createnoticia(request):
     if request.user.is_admin:
@@ -551,19 +546,13 @@ def listarfilmes(request):
     try:
 
         filmes = Filmes.objects \
-            .filter(mostrar = True) \
             .order_by('-id') \
             .distinct() 
-
-        paginator = Paginator(filmes, 6)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
 
         context = {
             'create': 'gestao:apifilmes',
             'redirect': 'gestao:infofilme',
             'items': filmes,
-            'page_obj': page_obj,
             'site_title': 'Filmes'
         }
 
@@ -590,15 +579,10 @@ def listarseries(request):
         .order_by('-id')\
         .distinct()
 
-        paginator = Paginator(series, 6)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-
         context = {
             'create': 'gestao:apiseries',
             'redirect': 'gestao:infoserie',
             'items': series,
-            'page_obj': page_obj,
             'site_title': 'Séries'
         }
 
@@ -746,7 +730,9 @@ def infofilme(request, filme_id):
             'users': reviews,
             'page_obj': page_obj,
             'item': single_filme,
-            'site_title': site_title
+            'site_title': site_title,
+            'infoitem': True,
+            'create': 'gestao:criarreviewfilme',
         }
 
         return render(
@@ -781,7 +767,9 @@ def infoserie(request, serie_id):
         'titulo': 'REVIEWS',
         'page_obj': page_obj,
         'item': single_serie,
-        'site_title': site_title
+        'site_title': site_title,
+        'infoitem': True,
+        'create': 'gestao:criarreviewserie',
     }
 
     return render(
