@@ -560,7 +560,7 @@ def listarfilmes(request):
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'create': 'gestao:criarfilme',
+            'create': 'gestao:apifilmes',
             'redirect': 'gestao:infofilme',
             'items': filmes,
             'page_obj': page_obj,
@@ -595,7 +595,7 @@ def listarseries(request):
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'create': 'gestao:criarserie',
+            'create': 'gestao:apiseries',
             'redirect': 'gestao:infoserie',
             'items': series,
             'page_obj': page_obj,
@@ -918,7 +918,7 @@ def infogrupo(request, grupo_id):
         context
     )
 
-def apiomdb(request):
+def apifilmes(request):
     form = ApiForm()
     buscado = False
     if request.method == 'POST':
@@ -928,9 +928,9 @@ def apiomdb(request):
             ano = form.cleaned_data['ano']
 
             if ano:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&y={ano}&apikey={api_key}')
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=movie&y={ano}&apikey={api_key}')
             else:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&apikey={api_key}')
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=movie&apikey={api_key}')
 
             if response.status_code == 200:
                 dados_api = response.json()
@@ -942,43 +942,75 @@ def apiomdb(request):
                 poster = dados_api.get('Poster')
                 sinopse = dados_api.get('Plot')
                 data = dados_api.get('Released')
-                if tipo == 'movie':
-                    duracao = dados_api.get('Runtime')
-                else:
-                    temporadas = dados_api.get('totalSeasons')
+                duracao = dados_api.get('Runtime')
                 if 'submit_primeiro' in request.POST and nome != None:
                     buscado = True
-                    if tipo == 'movie':
-                        return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
-                    elif tipo == 'series':
-                        return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
                 if 'submit_segundo' in request.POST:
-                    if tipo == 'movie':
-                        Filmes.objects.create(
-                            nome = dados_api.get('Title'),
-                            diretor = dados_api.get('Director'),
-                            escritor = dados_api.get('Writer'),
-                            poster = dados_api.get('Poster'),
-                            atores = dados_api.get('Actors'),
-                            sinopse = dados_api.get('Plot'),
-                            data = dados_api.get('Released'),
-                            duracao = dados_api.get('Runtime'),
-                        )
-                        return redirect('gestao:listarfilmes')
-                    elif tipo == 'series':
-                        Series.objects.create(
-                            nome = dados_api.get('Title'),
-                            diretor = dados_api.get('Director'),
-                            escritor = dados_api.get('Writer'),
-                            poster = dados_api.get('Poster'),
-                            atores = dados_api.get('Actors'),
-                            sinopse = dados_api.get('Plot'),
-                            data = dados_api.get('Released'),
-                            temporadas = dados_api.get('totalSeasons'),
-                        )
-                        return redirect('gestao:listarseries')
+                    Filmes.objects.create(
+                        nome = dados_api.get('Title'),
+                        diretor = dados_api.get('Director'),
+                        escritor = dados_api.get('Writer'),
+                        poster = dados_api.get('Poster'),
+                        atores = dados_api.get('Actors'),
+                        sinopse = dados_api.get('Plot'),
+                        data = dados_api.get('Released'),
+                        duracao = dados_api.get('Runtime'),
+                    )
+                    return redirect('gestao:listarfilmes')
                 if 'submit_terceiro' in request.POST:
-                    return redirect('gestao:apiomdb')
+                    return redirect('gestao:apifilmes')
+                elif 'submit_quarto' in request.POST:
+                    return redirect('gestao:criarfilme')
+
+        
+    return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
+
+
+def apiseries(request):
+    form = ApiForm()
+    buscado = False
+    if request.method == 'POST':
+        form = ApiForm(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            ano = form.cleaned_data['ano']
+
+            if ano:
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=series&y={ano}&apikey={api_key}')
+            else:
+                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=series&apikey={api_key}')
+
+            if response.status_code == 200:
+                dados_api = response.json()
+                tipo = dados_api.get('Type')
+                nome = dados_api.get('Title')
+                diretor = dados_api.get('Director')
+                escritor = dados_api.get('Writer')
+                atores = dados_api.get('Actors')
+                poster = dados_api.get('Poster')
+                sinopse = dados_api.get('Plot')
+                data = dados_api.get('Released')
+                temporadas = dados_api.get('totalSeasons')
+                if 'submit_primeiro' in request.POST and nome != None:
+                    buscado = True
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                elif 'submit_segundo' in request.POST:
+                    Series.objects.create(
+                        nome = dados_api.get('Title'),
+                        diretor = dados_api.get('Director'),
+                        escritor = dados_api.get('Writer'),
+                        poster = dados_api.get('Poster'),
+                        atores = dados_api.get('Actors'),
+                        sinopse = dados_api.get('Plot'),
+                        data = dados_api.get('Released'),
+                        temporadas = dados_api.get('totalSeasons'),
+                    )
+                    return redirect('gestao:listarseries')
+                elif 'submit_terceiro' in request.POST:
+                    return redirect('gestao:apiseries')
+                elif 'submit_quarto' in request.POST:
+                    return redirect('gestao:criarserie')
 
         
     return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
