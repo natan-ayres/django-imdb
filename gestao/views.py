@@ -679,6 +679,16 @@ def deletegrupo(request, grupo_id):
     else:
         return redirect('gestao:listargrupos')
     
+def removermembro(request, user_id, grupo_id):
+    single_grupo = Grupos.objects.get(pk=grupo_id)
+    if single_grupo.dono == request.user:
+        single_grupo.membros.remove(user_id)
+        single_grupo.qntdmembros += -1
+        if single_grupo.qntdmembros < 0: 
+            single_grupo.qntdmembros = 0
+        single_grupo.save()
+    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+    
 def negarwaitlist(request, grupo_id, user_id):
     single_grupo = Grupos.objects.get(pk=grupo_id)
     if request.user == single_grupo.dono:
@@ -712,38 +722,35 @@ def infofilme(request, filme_id):
     except Filmes.DoesNotExist:
         return redirect('gestao:index')
     
-    if single_filme.mostrar == True:
-        reviews = ReviewsFilmes.objects \
-            .filter(mostrar=True, filme_id = single_filme)\
-            .order_by('-id')
+    reviews = ReviewsFilmes.objects \
+        .filter(mostrar=True, filme_id = single_filme)\
+        .order_by('-id')
 
-        paginator = Paginator(reviews, 10)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+    paginator = Paginator(reviews, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
-            
-        site_title = f'{single_filme.nome} - {single_filme.data.year}'
+        
+    site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
-        context = {
-            'delete': 'gestao:deletefilme',
-            'update': 'gestao:updatefilme',
-            'counterlink': 'gestao:inforeviewfilme',
-            'titulo': 'REVIEWS',
-            'users': reviews,
-            'page_obj': page_obj,
-            'item': single_filme,
-            'site_title': site_title,
-            'infoitem': True,
-            'create': 'gestao:criarreviewfilme',
-        }
+    context = {
+        'delete': 'gestao:deletefilme',
+        'update': 'gestao:updatefilme',
+        'counterlink': 'gestao:inforeviewfilme',
+        'titulo': 'REVIEWS',
+        'users': reviews,
+        'page_obj': page_obj,
+        'item': single_filme,
+        'site_title': site_title,
+        'infoitem': True,
+        'create': 'gestao:criarreviewfilme',
+    }
 
-        return render(
-            request,
-            'info.html',
-            context
-        )
-    else:
-        return redirect('gestao:index')
+    return render(
+        request,
+        'info.html',
+        context
+    )
 
 def infoserie(request, serie_id):
     try:
@@ -864,20 +871,10 @@ def infogrupo(request, grupo_id):
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
-        membros = CustomUser.objects \
-            .filter(membros = single_grupo)\
-            .order_by('-id')
-
-
-        paginator2 = Paginator(membros, 10)
-        page_number2 = request.GET.get("page")
-        page_obj2 = paginator2.get_page(page_number2)
-
     else:
-        membros = None
         waitlist = None
+        page_number = None
         page_obj = None
-        page_obj2 = None
 
     site_title = f'{single_grupo.nome}'
 
@@ -885,13 +882,35 @@ def infogrupo(request, grupo_id):
         'users': waitlist,
         'waitlist': True,
         'titulo': 'WAITLIST',
-        'membros': membros,
         'page_obj': page_obj,
-        'page_obj2': page_obj2,
         'user_membro': usuario_e_membro,
         'user_waitlist': usuario_esta_na_waitlist,
         'grupo': single_grupo,
         'site_title': site_title
+    }
+
+    return render(
+        request,
+        'info.html',
+        context
+    )
+
+def infomembros(request, grupo_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+    except Grupos.DoesNotExist:
+        return redirect('gestao:index')
+    
+    membros = CustomUser.objects \
+            .filter(membros = single_grupo)\
+            .order_by('-id')
+
+    site_title = f'Membros de {single_grupo.nome}'
+
+    context = {
+        'grupos': single_grupo,
+        'membros': membros,
+        'site_title': site_title,
     }
 
     return render(

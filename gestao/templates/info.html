@@ -77,7 +77,11 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ grupo.desc }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
+        {% if user.is_admin or grupo.dono == user %}
+        <a href="{% url 'gestao:infomembros' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Membros: </b>{{ grupo.qntdmembros}}</div></a>
+        {% else %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Membros: </b>{{ grupo.qntdmembros}}</div>
+        {% endif %}
         {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
             <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>         
         {% endif %}
@@ -85,6 +89,19 @@
             <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
             <a href="{% url 'gestao:deletegrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
         {% endif %}
+    {% elif grupos %}
+        <div class="mx-auto col filme-info-col2 text-center">
+            <b>{{grupos.nome}}</b>
+        </div>
+        {% for membro in membros %}
+            <div class="row row grupo-list-col2 text-center mt-2">
+                <a href="{% url 'gestao:infouser' membro.id %}" class="text-decoration-none text-black">
+                    <div>
+                        <b>{{membro}}</b><a href="{% url 'gestao:removermembro' grupos.id membro.id %}" class="text-decoration-none x-vermelho mx-5">X</a>
+                    </div>
+                </a>
+            </div>
+    {% endfor %}
     {% endif %}
 </div>
 

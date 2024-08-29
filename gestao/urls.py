@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries
+from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries, infomembros, removermembro
 app_name = 'gestao'
 
 urlpatterns = [
@@ -38,6 +38,7 @@ urlpatterns = [
     path('entrar/grupo/<int:grupo_id>/', adicionarwaitlist, name='adicionarwaitlist'),
     path('aceitar/<int:grupo_id>/<int:user_id>/', adicionarmembro, name='adicionarmembro'),
     path('negar/<int:grupo_id>/<int:user_id>/', negarwaitlist, name='negarwaitlist'),
+    path('sair/<int:grupo_id>/<int:user_id>/', removermembro, name='removermembro'),
     
     path('grupos/', listargrupos, name='listargrupos'),
     path('filmes/', listarfilmes, name='listarfilmes'),
@@ -50,6 +51,7 @@ urlpatterns = [
     path('review/filme/<int:review_id>/', inforeviewfilme, name='inforeviewfilme'),
     path('review/serie/<int:review_id>/', inforeviewserie, name='inforeviewserie'),
     path('grupo/<int:grupo_id>/', infogrupo, name='infogrupo'),
+    path('grupo/<int:grupo_id>/membros/', infomembros, name='infomembros'),
     
 
 ]
