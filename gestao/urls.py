@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries, infomembros, removermembro
+from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries, infomembros, removermembro, infofilmegrupo
 app_name = 'gestao'
 
 urlpatterns = [
@@ -52,6 +52,7 @@ urlpatterns = [
     path('review/serie/<int:review_id>/', inforeviewserie, name='inforeviewserie'),
     path('grupo/<int:grupo_id>/', infogrupo, name='infogrupo'),
     path('grupo/<int:grupo_id>/membros/', infomembros, name='infomembros'),
+    path('filme/<int:filme_id>/<int:grupo_id>/', infofilmegrupo, name='infofilmegrupo'),
     
 
 ]

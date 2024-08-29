@@ -919,6 +919,38 @@ def infomembros(request, grupo_id):
         context
     )
 
+def infofilmegrupo(request, grupo_id, filme_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+        single_filme = Filmes.objects.get(pk=filme_id)
+    except Grupos.DoesNotExist or Filmes.DoesNotExist:
+        return redirect('gestao:index')
+    
+    reviews = ReviewsFilmes.objects \
+            .filter(filme=filme_id,)\
+            .order_by('-id')
+    
+    membros = CustomUser.objects \
+            .filter(membros = single_grupo)\
+            .order_by('-id') 
+    
+    contador = 0
+    nota = 0
+
+    for review in reviews:
+        for membro in membros:
+            if review.usuario == membro:
+                nota += review.nota
+                contador += 1
+
+    try: 
+        nota = nota / contador
+    except ZeroDivisionError:
+        nota = 'N/A'
+
+    return render(request, 'info.html', {'item': single_filme, 'nota': nota})
+
+
 def apifilmes(request):
     form = ApiForm()
     buscado = False
@@ -935,7 +967,6 @@ def apifilmes(request):
 
             if response.status_code == 200:
                 dados_api = response.json()
-                tipo = dados_api.get('Type')
                 nome = dados_api.get('Title')
                 diretor = dados_api.get('Director')
                 escritor = dados_api.get('Writer')
@@ -984,7 +1015,6 @@ def apiseries(request):
 
             if response.status_code == 200:
                 dados_api = response.json()
-                tipo = dados_api.get('Type')
                 nome = dados_api.get('Title')
                 diretor = dados_api.get('Director')
                 escritor = dados_api.get('Writer')

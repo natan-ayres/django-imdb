@@ -7,7 +7,7 @@
                 </div>
             </div>
             {% if item.nota_media != None %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ item.nota_media }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ nota }}</div>
             {% endif %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ item.nome }}</div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{item.data}}</div>
@@ -32,7 +32,7 @@
                 <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ item.temporadas }}</div>
             {% endif %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.sinopse }}</div>
-            {% if user.is_admin %}
+            {% if user.is_admin and infoitem %}
                 <a href="{% url update item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
                 <a href="{% url delete item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
             {% endif %}
