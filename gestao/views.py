@@ -734,6 +734,7 @@ def infofilme(request, filme_id):
     site_title = f'{single_filme.nome} - {single_filme.data.year}'
 
     context = {
+        'nota': single_filme.nota_media,
         'delete': 'gestao:deletefilme',
         'update': 'gestao:updatefilme',
         'counterlink': 'gestao:inforeviewfilme',
@@ -769,6 +770,7 @@ def infoserie(request, serie_id):
     site_title = f'{single_serie.nome} - {single_serie.data.year}'
 
     context = {
+        'nota': single_serie.nota_media,
         'delete': 'gestao:deleteserie',
         'update': 'gestao:updateserie',
         'counterlink': 'gestao:inforeviewserie',
@@ -949,6 +951,37 @@ def infofilmegrupo(request, grupo_id, filme_id):
         nota = 'N/A'
 
     return render(request, 'info.html', {'item': single_filme, 'nota': nota})
+
+def infoseriegrupo(request, grupo_id, serie_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+        single_serie = Series.objects.get(pk=serie_id)
+    except Grupos.DoesNotExist or Series.DoesNotExist:
+        return redirect('gestao:index')
+    
+    reviews = ReviewsSeries.objects \
+            .filter(serie=serie_id,)\
+            .order_by('-id')
+    
+    membros = CustomUser.objects \
+            .filter(membros = single_grupo)\
+            .order_by('-id') 
+    
+    contador = 0
+    nota = 0
+
+    for review in reviews:
+        for membro in membros:
+            if review.usuario == membro:
+                nota += review.nota
+                contador += 1
+
+    try: 
+        nota = nota / contador
+    except ZeroDivisionError:
+        nota = 'N/A'
+
+    return render(request, 'info.html', {'item': single_serie, 'nota': nota})
 
 
 def apifilmes(request):
