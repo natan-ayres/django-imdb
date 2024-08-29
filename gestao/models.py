@@ -10,25 +10,25 @@ from datetime import time, datetime
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False) 
 
-class Groups(models.Model):
+class Grupos(models.Model):
     class Meta:
-        verbose_name = 'Group'
+        verbose_name = 'Grupo'
     
-    name = models.CharField(max_length=30)
-    image = models.ImageField(blank=True, upload_to='groups/')
+    nome = models.CharField(max_length=30)
+    imagem = models.ImageField(blank=True, upload_to='grupos/')
     desc = models.TextField(max_length=200)
-    date = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='owner')
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='members', blank=True)
-    countmembers = models.IntegerField(default=0)
+    data = models.DateTimeField(auto_now_add=True)
+    dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name='dono')
+    membros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='membros', blank=True)
+    qntdmembros = models.IntegerField(default=0)
     waitlist = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='waitlist', blank=True)
 
     def __str__(self):
-        return f'{self.name}' 
+        return f'{self.nome}' 
 
-class Movies(models.Model):
+class Filmes(models.Model):
     class Meta:
-        verbose_name = 'Movie'
+        verbose_name = 'Filme'
 
 
     CLASSIFICACOES_CHOICES = [
@@ -40,37 +40,37 @@ class Movies(models.Model):
         ('18', '18'),
     ]
 
-    name = models.CharField(max_length=40)
-    director = models.CharField(max_length=30, blank=True, null=True)
-    writer = models.TextField(max_length=200, blank=True, null=True)
-    actors = models.TextField(max_length=200, blank=True, null=True)
-    runtime = models.TimeField(blank=True, null=True)
-    rating = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
-    plot = models.TextField(blank=True, null=True, max_length=400)
-    date = models.DateField(null=True, blank=True)
-    grade_avg = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
-    poster = models.ImageField(max_length=200, blank=True, null=True, upload_to= 'movies/')
-    reviews = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsMovies')
+    nome = models.CharField(max_length=40)
+    diretor = models.CharField(max_length=30, blank=True, null=True)
+    escritor = models.TextField(max_length=200, blank=True, null=True)
+    atores = models.TextField(max_length=200, blank=True, null=True)
+    duracao = models.TimeField(blank=True, null=True)
+    classificacao = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
+    sinopse = models.TextField(blank=True, null=True, max_length=400)
+    data = models.DateField(null=True, blank=True)
+    nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
+    poster = models.ImageField(max_length=200, blank=True, null=True, upload_to= 'filmes/')
+    avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
 
     def save(self, *args, **kwargs):
-        if isinstance(self.runtime, str) and 'min' in self.runtime:
-            minutes = int(self.runtime.split()[0])
+        if isinstance(self.duracao, str) and 'min' in self.duracao:
+            minutes = int(self.duracao.split()[0])
             hours, minutes = divmod(minutes, 60)
-            self.runtime = time(hour=hours, minute=minutes)
-        if isinstance(self.date, str):
-            self.date = datetime.strptime(self.date, '%d %b %Y').date()
+            self.duracao = time(hour=hours, minute=minutes)
+        if isinstance(self.data, str):
+            self.data = datetime.strptime(self.data, '%d %b %Y').date()
         super().save(*args, **kwargs)
 
-    def calc_avg(self):
+    def calcular_nota_media(self):
         reviews = self.reviews.all() 
         if reviews.exists():
-            avg = reviews.aggregate(Avg('grade'))['grade__avg']
-            self.grade_avg = avg
+            media = reviews.aggregate(Avg('nota'))['nota__avg']
+            self.nota_media = media
         else:
-            self.grade_avg = None
+            self.nota_media = None
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.nome}'
     
 class Series(models.Model):
     class Meta:
@@ -86,85 +86,85 @@ class Series(models.Model):
     ]
     
     poster = models.ImageField(max_length=200, blank=True, upload_to='series/')
-    name = models.CharField(max_length=40)
-    director = models.CharField(max_length=31, blank=True, null=True)
-    writer = models.TextField(max_length=200, blank=True, null=True)
-    actors = models.TextField(max_length=200, blank=True, null=True)
-    rating = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
-    date = models.DateField(blank=True, null=True)
-    date_end = models.DateField(blank=True, null=True)
-    episodes = models.PositiveSmallIntegerField(blank=True, null=True)
-    seasons = models.PositiveSmallIntegerField()
-    plot = models.TextField(max_length=400)
-    grade_avg = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
-    reviews = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsSeries')
+    nome = models.CharField(max_length=40)
+    diretor = models.CharField(max_length=31, blank=True, null=True)
+    escritor = models.TextField(max_length=200, blank=True, null=True)
+    atores = models.TextField(max_length=200, blank=True, null=True)
+    classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
+    data = models.DateField(blank=True, null=True)
+    data_termino = models.DateField(blank=True, null=True)
+    episodios = models.PositiveSmallIntegerField(blank=True, null=True)
+    temporadas = models.PositiveSmallIntegerField()
+    sinopse = models.TextField(max_length=400)
+    nota_media = models.DecimalField(blank=True, null=True, max_digits=3, decimal_places=1)
+    avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsSeries')
 
     def save(self, *args, **kwargs):
-        if isinstance(self.date, str):
-            self.date = datetime.strptime(self.date, '%d %b %Y').date()
+        if isinstance(self.data, str):
+            self.data = datetime.strptime(self.data, '%d %b %Y').date()
         super().save(*args, **kwargs)
 
-    def calc_avg(self):
+    def calcular_nota_media(self):
         reviews = self.reviews.all() 
         if reviews.exists():
-            avg = reviews.aggregate(Avg('grade'))['grade__avg']
-            self.grade_avg = avg
+            media = reviews.aggregate(Avg('nota'))['nota__avg']
+            self.nota_media = media
         else:
-            self.grade_avg = None
+            self.nota_media = None
 
     def __str__(self):
-        return f"{self.name} ({self.date.year})"
+        return f"{self.nome} ({self.data.year})"
     
-class News(models.Model):
+class Noticias(models.Model):
     class Meta:
-        verbose_name = 'News'
+        verbose_name = 'Noticia'
 
-    name = models.CharField(max_length=31, validators=[MinLengthValidator(5)])
-    image = models.ImageField(blank=True, upload_to='news/')
-    text = models.TextField(max_length=684, validators=[MinLengthValidator(5)])
-    date = models.DateTimeField(auto_now_add=True)
-    show = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
+    nome = models.CharField(max_length=31, validators=[MinLengthValidator(5)])
+    imagem = models.ImageField(blank=True, upload_to='noticias/')
+    texto = models.TextField(max_length=684, validators=[MinLengthValidator(5)])
+    data = models.DateTimeField(auto_now_add=True)
+    mostrar = models.BooleanField(default=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def __str__(self):
-        return f"{self.name} - {self.date.day}/{self.date.month}"
+        return f"{self.nome} - {self.data.day}/{self.data.month}"
 
 
-class ReviewsMovies(models.Model):
+class ReviewsFilmes(models.Model):
     class Meta:
-        verbose_name = 'Review - Movie'
+        verbose_name = 'Review - Filme'
 
-    movie = models.ForeignKey(Movies, related_name='reviewsmovie', on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    filme = models.ForeignKey(Filmes, related_name='reviews', on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     review = models.TextField(max_length=250)
-    grade = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
-    show = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
+    nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
+    mostrar = models.BooleanField(default=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
-        super(ReviewsMovies, self).save(*args, **kwargs)
-        self.movie.calc_avg()
-        self.movie.save()
+        super(ReviewsFilmes, self).save(*args, **kwargs)
+        self.filme.calcular_nota_media()
+        self.filme.save()
 
     def __str__(self):
-        return f"Reviem from {self.movie.name} - Grade: {self.grade}"
+        return f"Avaliação de {self.filme.nome} - Nota: {self.nota}"
 
 
 class ReviewsSeries(models.Model):
     class Meta:
         verbose_name = 'Review - Serie'
 
-    serie = models.ForeignKey(Series, related_name='reviewsserie', on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    serie = models.ForeignKey(Series, related_name='reviews', on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     review = models.TextField(max_length=250)
-    grade = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
-    show = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
+    nota = models.FloatField(validators=[MinValueValidator(0,0), MaxValueValidator(10,0)])
+    mostrar = models.BooleanField(default=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
         super(ReviewsSeries, self).save(*args, **kwargs)
-        self.serie.calc_avg()
+        self.serie.calcular_nota_media()
         self.serie.save()
 
     def __str__(self):
-        return f"Reviem from {self.serie.name} - Grade: {self.grade}"
+        return f"Avaliação de {self.serie.nome} - Nota: {self.nota}"

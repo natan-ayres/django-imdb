@@ -1,37 +1,37 @@
-{% if searched %} 
+{% if buscado %} 
     <div class="my-custom-form p-1 mb-4 mx-5">
         <div class=''>
-            <img src="{{ apiposter }}" alt="{{ apiname }}" class="d-block">
+            <img src="{{ apiposter }}" alt="{{ apinome }}" class="d-block">
         </div>
         <div>   
-            Name: {{ apiname }}
+            Nome: {{ apinome }}
         </div>
         {% if apidiretor != 'N/A' %}
         <div>
-            Director: {{ apidirector }}
+            Diretor: {{ apidiretor }}
         </div>
         {% endif %}
         <div>
-            Plot: {{ apiplot }}
+            Sinopse: {{ apisinopse }}
         </div>
         <div>
             {% if apiduracao %}
-            Runtime: {{ apiruntime }}
+            Duração: {{ apiduracao }}
             {% else %}
-            Seasons: {{ apiseasons }}
+            Temporadas: {{ apitemporadas }}
             {% endif %}
         </div>
         <div>
-            Date: {{ apidate }}
+            Data: {{ apidata }}
         </div>
         {% if apiatores != 'N/A' %}
         <div>
-            Actors: {{ apiactors }}
+            Atores: {{ apiatores }}
         </div>
         {% endif %}
         {% if apiescritor != 'N/A' %}
         <div>
-            Writer: {{ apiwriter }}
+            Escritor: {{ apiescritor }}
         </div>
         {% endif %}
     </div>
@@ -43,7 +43,7 @@
     <div class="form-content">
 
         {% for field in form %}
-            <div class="form-group my-custom-form p-1 mb-4 mx-5 {% if searched %}hidden{% endif %}">
+            <div class="form-group my-custom-form p-1 mb-4 mx-5 {% if buscado %}hidden{% endif %}">
                 <label class="my-custom-form2 mb-2 mx-2" for="{{ field.id_for_label }}">{{ field.label }}:</label>
                 <div class="my-custom-form3 mb-2 mx-2">{{ field }}{{ field.errors }}</div>
                 {% if field.help_text %}
@@ -65,12 +65,12 @@
 
     <div class="form-content">
         <div class="form-group">
-            {% if searched %}
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_second">Confirm</button>
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_third">Back</button>
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_fourth">Create</button>
+            {% if buscado %}
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_segundo">Confirmar</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_terceiro">Voltar</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_quarto">Criar</button>
             {% else %}
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_first">Search</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_primeiro">Buscar</button>
             {% endif %}
         </div>
     </div>
