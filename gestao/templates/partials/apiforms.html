@@ -4,34 +4,37 @@
             <img src="{{ apiposter }}" alt="{{ apinome }}" class="d-block">
         </div>
         <div>   
-            Nome: {{ apinome }}
+            Name: {{ apinome }}
         </div>
         {% if apidiretor != 'N/A' %}
         <div>
-            Diretor: {{ apidiretor }}
+            Director: {{ apidiretor }}
         </div>
         {% endif %}
         <div>
-            Sinopse: {{ apisinopse }}
+            Plot: {{ apisinopse }}
         </div>
         <div>
             {% if apiduracao %}
-            Duração: {{ apiduracao }}
+            Runtime: {{ apiduracao }}
             {% else %}
-            Temporadas: {{ apitemporadas }}
+            Seasons: {{ apitemporadas }}
             {% endif %}
         </div>
         <div>
-            Data: {{ apidata }}
+            Rated: {{ apiclassificacao}}
+        </div>
+        <div>
+            Date: {{ apidata }}
         </div>
         {% if apiatores != 'N/A' %}
         <div>
-            Atores: {{ apiatores }}
+            Actors: {{ apiatores }}
         </div>
         {% endif %}
         {% if apiescritor != 'N/A' %}
         <div>
-            Escritor: {{ apiescritor }}
+            Writer: {{ apiescritor }}
         </div>
         {% endif %}
     </div>
@@ -66,11 +69,11 @@
     <div class="form-content">
         <div class="form-group">
             {% if buscado %}
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_segundo">Confirmar</button>
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_terceiro">Voltar</button>
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_quarto">Criar</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_segundo">Confirm</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_terceiro">Back</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_quarto">Create</button>
             {% else %}
-                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_primeiro">Buscar</button>
+                <button class="btn-my-custom-button p-2 border-0 mx-5" type="submit" name="submit_primeiro">Search</button>
             {% endif %}
         </div>
     </div>

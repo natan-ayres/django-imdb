@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
 
 class Grupos(models.Model):
     class Meta:
-        verbose_name = 'Grupo'
+        verbose_name = 'Group'
     
     nome = models.CharField(max_length=30)
     imagem = models.ImageField(blank=True, upload_to='grupos/')
@@ -28,23 +28,22 @@ class Grupos(models.Model):
 
 class Filmes(models.Model):
     class Meta:
-        verbose_name = 'Filme'
+        verbose_name = 'Movie'
 
 
     CLASSIFICACOES_CHOICES = [
-        ('Livre', 'Livre'),
-        ('10', '10'),
-        ('12', '12'),
-        ('14', '14'),
-        ('16', '16'),
-        ('18', '18'),
+    ('G', 'G'),
+    ('PG', 'PG'),
+    ('PG-13', 'PG-13'),
+    ('R', 'R'),
+    ('NC-17', 'NC-17'),
     ]
 
     nome = models.CharField(max_length=40)
     diretor = models.CharField(max_length=30, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)
-    duracao = models.TimeField(blank=True, null=True)
+    duracao = models.CharField(blank=True, null=True)
     classificacao = models.CharField(blank=True, null=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
     sinopse = models.TextField(blank=True, null=True, max_length=400)
     data = models.DateField(null=True, blank=True)
@@ -53,10 +52,6 @@ class Filmes(models.Model):
     avaliacoes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ReviewsFilmes')
 
     def save(self, *args, **kwargs):
-        if isinstance(self.duracao, str) and 'min' in self.duracao:
-            minutes = int(self.duracao.split()[0])
-            hours, minutes = divmod(minutes, 60)
-            self.duracao = time(hour=hours, minute=minutes)
         if isinstance(self.data, str):
             self.data = datetime.strptime(self.data, '%d %b %Y').date()
         super().save(*args, **kwargs)
@@ -77,13 +72,14 @@ class Series(models.Model):
         verbose_name = 'Serie'
 
     CLASSIFICACOES_CHOICES = [
-        ('Livre', 'Livre'),
-        ('10', '10'),
-        ('12', '12'),
-        ('14', '14'),
-        ('16', '16'),
-        ('18', '18'),
-    ]
+    ('TV-Y', 'TV-Y'),
+    ('TV-Y7', 'TV-Y7'),
+    ('TV-Y7-FV', 'TV-Y7-FV'),
+    ('TV-G', 'TV-G'),
+    ('TV-PG', 'TV-PG'),
+    ('TV-14', 'TV-14'),
+    ('TV-MA', 'TV-MA'),
+]   
     
     poster = models.ImageField(max_length=200, blank=True, upload_to='series/')
     nome = models.CharField(max_length=40)
@@ -117,7 +113,8 @@ class Series(models.Model):
     
 class Noticias(models.Model):
     class Meta:
-        verbose_name = 'Noticia'
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
 
     nome = models.CharField(max_length=31, validators=[MinLengthValidator(5)])
     imagem = models.ImageField(blank=True, upload_to='noticias/')
@@ -132,7 +129,8 @@ class Noticias(models.Model):
 
 class ReviewsFilmes(models.Model):
     class Meta:
-        verbose_name = 'Review - Filme'
+        verbose_name = 'Review - Movie'
+        verbose_name_plural = 'Reviews - Movies'
 
     filme = models.ForeignKey(Filmes, related_name='reviews', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -147,12 +145,13 @@ class ReviewsFilmes(models.Model):
         self.filme.save()
 
     def __str__(self):
-        return f"Avaliação de {self.filme.nome} - Nota: {self.nota}"
+        return f"{self.filme.nome} Review - {self.nota}"
 
 
 class ReviewsSeries(models.Model):
     class Meta:
         verbose_name = 'Review - Serie'
+        verbose_name_plural = 'Reviews - Series'
 
     serie = models.ForeignKey(Series, related_name='reviews', on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -167,4 +166,4 @@ class ReviewsSeries(models.Model):
         self.serie.save()
 
     def __str__(self):
-        return f"Avaliação de {self.serie.nome} - Nota: {self.nota}"
+        return f"{self.serie.nome} Review - {self.nota}"

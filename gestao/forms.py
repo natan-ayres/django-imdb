@@ -7,18 +7,23 @@ from django.contrib.auth import password_validation
 
 class NoticiasForm(forms.ModelForm):
     nome = forms.CharField(
+        label='Title',
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nome'
+                'placeholder': 'Title'
             }
         )
     )
     texto = forms.CharField(
+        label='Info',
         widget=forms.Textarea(
             attrs={
-                'placeholder': 'Matéria'
+                'placeholder': 'Information'
             }
         )
+    )
+    imagem = forms.ImageField(
+        label='Image'
     )
     class Meta:
         model = Noticias
@@ -28,40 +33,42 @@ class NoticiasForm(forms.ModelForm):
 
 class FilmesForm(forms.ModelForm):
     nome = forms.CharField(
+        label='Name',
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nome',
+                'placeholder': 'Name',
                 'class': ''
             }
         )
     )
 
     diretor = forms.CharField(
+        label='Director',
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Diretor',
+                'placeholder': 'Director',
                 'class': ''
             }
         )
     )
 
     sinopse = forms.CharField(
-        label='Sinopse', widget=forms.Textarea(
+        label='Plot', widget=forms.Textarea(
             attrs={
-                'placeholder': 'Sinopse',
+                'placeholder': 'Plot',
                 'class': ''
             }
         ), required=False
     )
     data = forms.DateField(
-        label='Data',widget=forms.DateInput(
+        label='Date',widget=forms.DateInput(
             attrs={
                 'type': 'date'
             }
         ), required=True
     )
     duracao = forms.TimeField(
-        label='Duração', widget=forms.TimeInput(
+        label='Runtime', widget=forms.TimeInput(
             attrs={
                 'type': 'time'
             }
@@ -77,11 +84,11 @@ class FilmesForm(forms.ModelForm):
 class ReviewFilmeForm(forms.ModelForm):
     filme = forms.ModelChoiceField(
         queryset=Filmes.objects.all(),
-        label='Filme',
+        label='Movie',
         required=True
     )
     nota = forms.FloatField(
-        label='Nota',
+        label='Grade',
         required=True,
         validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
     )
@@ -110,11 +117,11 @@ class ReviewFilmeForm(forms.ModelForm):
 class ReviewUpdateFilmeForm(forms.ModelForm):
     filme = forms.ModelChoiceField(
         queryset=Filmes.objects.all(),
-        label='Filme',
+        label='Movie',
         required=True
     )
     nota = forms.FloatField(
-        label='Nota',
+        label='Grade',
         required=True,
         validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
     )
@@ -141,7 +148,7 @@ class ReviewSeriesForm(forms.ModelForm):
         required=True
     )
     nota = forms.FloatField(
-        label='Nota',
+        label='Grade',
         required=True,
         validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
     )
@@ -174,7 +181,7 @@ class ReviewUpdateSeriesForm(forms.ModelForm):
         required=True
     )
     nota = forms.FloatField(
-        label='Nota',
+        label='Grade',
         required=True,
         validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
     )
@@ -196,46 +203,48 @@ class ReviewUpdateSeriesForm(forms.ModelForm):
 
 class SeriesForm(forms.ModelForm):
     nome = forms.CharField(
+        label='Name',
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nome',
+                'placeholder': 'Name',
                 'class': ''
             }
         )
     )
 
     diretor = forms.CharField(
+        label='Director',
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Diretor',
+                'placeholder': 'Director',
                 'class': ''
             }
         ),required=False
     )
     data = forms.DateField(
-        label='Estreia',widget=forms.DateInput(
+        label='Start Date',widget=forms.DateInput(
             attrs={
                 'type': 'date'
             }
         ), required=True
     )
     data_termino = forms.DateField(
-        label='Término',widget=forms.DateInput(
+        label='End Date',widget=forms.DateInput(
             attrs={
                 'type': 'date'
             }
         ), required=False
     )
     episodios = forms.IntegerField(
-        label='Episódios', widget=forms.NumberInput()
+        label='Episodes', widget=forms.NumberInput()
     )
     temporadas = forms.IntegerField(
-        label='Temporadas', widget=forms.NumberInput()
+        label='Seasons', widget=forms.NumberInput()
     )
     sinopse = forms.CharField(
-        label='Sinopse', widget=forms.Textarea(
+        label='Plot', widget=forms.Textarea(
             attrs={
-                'placeholder': 'Sinopse',
+                'placeholder': 'Plot',
                 'class': ''
             }
         ), required=False
@@ -251,18 +260,22 @@ class GruposForm(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nome',
+                'placeholder': 'Name',
                 'class': ''
             }
-        )
+        ),
+        label='Name'
     )
     desc = forms.CharField(
-        label='Descrição', widget=forms.Textarea(
+        label='Description', widget=forms.Textarea(
             attrs={
-                'placeholder': 'Descrição',
+                'placeholder': 'Description',
                 'class': ''
             }
         ), required=False
+    )
+    imagem = forms.ImageField(
+        label='Image'
     )
 
 
@@ -276,32 +289,29 @@ class RegisterForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Usuário',
+                'placeholder': 'Username',
                 'class': 'inputlogin',
             }
         ),
-        label = 'Usuário',
         required=True,
     )
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Senha',
+                'placeholder': 'Password',
                 'class': 'inputlogin',
             }
         ),
-        label = 'Senha',
         required=True,
-        help_text= 'Acima de 8 dígitos'
+        help_text= 'Above 8 digits!'
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': 'Digite novamente',
+                'placeholder': 'Confirm your Password',
                 'class': 'inputlogin',
             }
         ),
-        label = 'Confirme a senha' ,
         required=True,
     )
 
@@ -326,8 +336,8 @@ class RegisterUpdateForm(forms.ModelForm):
         max_length=30,
         required=True,
         error_messages={
-            'min_length': 'Porfavor, acima de 2 digitos.',
-            'max_length': 'Porfavor, abaixo de 30 digitos.'
+            'min_length': 'Please, above 2 digits.',
+            'max_length': 'Please, below 30 digits.'
         },
     )
     last_name = forms.CharField(
@@ -335,18 +345,18 @@ class RegisterUpdateForm(forms.ModelForm):
         max_length=30,
         required=True,
         error_messages={
-            'min_length': 'Porfavor, acima de 2 digitos.',
-            'max_length': 'Porfavor, abaixo de 30 digitos.'
+            'min_length': 'Please, above 2 digits.',
+            'max_length': 'Please, below 30 digits.'
         },
     )
     password1 = forms.CharField(
-        label='Senha',
+        label='Password',
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         required=False
     )
     password2 = forms.CharField(
-        label='Confirme a senha',
+        label='Confirm Password',
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         required=False
@@ -416,7 +426,7 @@ class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'inputlogin',
-            'placeholder': 'Nome',
+            'placeholder': 'Username',
             'aria-describedby': 'usernameHelp'
         }),
     )
@@ -424,7 +434,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         label='Senha',
         widget=forms.PasswordInput(attrs={
             'class': 'inputlogin',
-            'placeholder': 'Senha',
+            'placeholder': 'Password',
             'aria-describedby': 'passwordHelp'
         }),
     )
@@ -433,13 +443,14 @@ class ApiForm(forms.Form):
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Nome',
+                'placeholder': 'Name',
                 'class': ''
             }
-        )
+        ),
+        label='Name'
     )
     ano = forms.IntegerField(
-        label="Ano",
+        label="Year",
         min_value=1900,  
         max_value=2024,  
         required=False,

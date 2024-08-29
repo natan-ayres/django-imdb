@@ -53,9 +53,9 @@ def loginview(request):
         request,
         'login.html',
         {
-            'countertext': 'Não possui conta? Cadastre-se aqui',
+            'countertext': 'No Account Yet? Sign-up here',
             'counterlink': 'gestao:register',
-            'botao': 'Entrar',
+            'botao': 'Join',
             'site_title': 'Login',
             'form': form
         }
@@ -76,10 +76,10 @@ def registerview(request):
         request,
         'login.html',
         {
-            'countertext': 'Já possui conta? Entre por aqui',
+            'countertext': 'Already Have an Account? Join Here!',
             'counterlink': 'gestao:login',
-            'botao': 'Cadastre-se',
-            'site_title': 'Cadastro',
+            'botao': 'Sign-up',
+            'site_title': 'Register',
             'form': form
         }
     )
@@ -1006,21 +1006,24 @@ def apifilmes(request):
                 atores = dados_api.get('Actors')
                 poster = dados_api.get('Poster')
                 sinopse = dados_api.get('Plot')
+                classificacao = dados_api.get('Rated'),
+                classificacao_limpa = classificacao[0]
                 data = dados_api.get('Released')
                 duracao = dados_api.get('Runtime')
                 if 'submit_primeiro' in request.POST and nome != None:
                     buscado = True
-                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apiclassificacao': classificacao_limpa, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
                 if 'submit_segundo' in request.POST:
                     Filmes.objects.create(
-                        nome = dados_api.get('Title'),
-                        diretor = dados_api.get('Director'),
-                        escritor = dados_api.get('Writer'),
-                        poster = dados_api.get('Poster'),
-                        atores = dados_api.get('Actors'),
-                        sinopse = dados_api.get('Plot'),
-                        data = dados_api.get('Released'),
-                        duracao = dados_api.get('Runtime'),
+                        nome = nome,
+                        diretor = diretor,
+                        escritor = escritor,
+                        poster = poster,
+                        classificacao = classificacao_limpa,
+                        atores = atores,
+                        sinopse = sinopse,
+                        data = data,
+                        duracao = duracao,
                     )
                     return redirect('gestao:listarfilmes')
                 if 'submit_terceiro' in request.POST:
@@ -1053,22 +1056,25 @@ def apiseries(request):
                 escritor = dados_api.get('Writer')
                 atores = dados_api.get('Actors')
                 poster = dados_api.get('Poster')
+                classificacao = dados_api.get('Rated')
+                classificacao_limpa = classificacao[0]
                 sinopse = dados_api.get('Plot')
                 data = dados_api.get('Released')
                 temporadas = dados_api.get('totalSeasons')
                 if 'submit_primeiro' in request.POST and nome != None:
                     buscado = True
-                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data,'apiclassificacao': classificacao_limpa, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
                 elif 'submit_segundo' in request.POST:
                     Series.objects.create(
-                        nome = dados_api.get('Title'),
-                        diretor = dados_api.get('Director'),
-                        escritor = dados_api.get('Writer'),
-                        poster = dados_api.get('Poster'),
-                        atores = dados_api.get('Actors'),
-                        sinopse = dados_api.get('Plot'),
-                        data = dados_api.get('Released'),
-                        temporadas = dados_api.get('totalSeasons'),
+                        nome = nome,
+                        diretor = diretor,
+                        escritor = escritor,
+                        poster = poster,
+                        classificacao = classificacao_limpa,
+                        atores = atores,
+                        sinopse = sinopse,
+                        data = data,
+                        temporadas = temporadas,
                     )
                     return redirect('gestao:listarseries')
                 elif 'submit_terceiro' in request.POST:

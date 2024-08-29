@@ -7,51 +7,51 @@
                 </div>
             </div>
             {% if item.nota_media != None %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ nota }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Rating</b>{{ nota }}</div>
             {% endif %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Título: </b>{{ item.nome }}</div>
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Lançamento: </b>{{item.data}}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Title: </b>{{ item.nome }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Date: </b>{{item.data}}</div>
             {% if item.diretor != 'N/A' %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Diretor: </b>{{ item.diretor }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Director: </b>{{ item.diretor }}</div>
             {% endif %}
             {% if item.escritor != 'N/A' %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Escritor: </b>{{ item.escritor }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Writer: </b>{{ item.escritor }}</div>
             {% endif %}
             {% if item.atores != 'N/A' %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Atores: </b>{{ item.atores }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Actors: </b>{{ item.atores }}</div>
             {% endif %}
             {% if item.classificacao != None %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Classificação: </b>{{ item.classificacao }}{% if item.classificacao != 'Livre' %}+{% endif %}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Rated: </b>{{ item.classificacao }}</div>
             {% endif %}
             {% if item.duracao %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Duração: </b>{{ item.duracao }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Runtime: </b>{{ item.duracao }}</div>
             {% else %}
                 {% if item.episodios != None %}
-                    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episódios: </b>{{ item.episodios }}</div>
+                    <div class="mx-auto col p-1 filme-info-col mb-3"><b>Episodes: </b>{{ item.episodios }}</div>
                 {% endif %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Temporadas: </b>{{ item.temporadas }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Seasons: </b>{{ item.temporadas }}</div>
             {% endif %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Sinopse: </b>{{ item.sinopse }}</div>
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Plot: </b>{{ item.sinopse }}</div>
             {% if user.is_admin and infoitem %}
-                <a href="{% url update item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
-                <a href="{% url delete item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
+                <a href="{% url update item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
+                <a href="{% url delete item.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
             {% endif %}
     {% elif review %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>{{Fonte}}: </b>{{ fonte }}</div>
-        <a href="{% url 'gestao:infouser' review.usuario.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ review.usuario }}</div></a>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nota: </b>{{ review.nota }}</div>
+        <a href="{% url 'gestao:infouser' review.usuario.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col mb-3"><b>User: </b>{{ review.usuario }}</div></a>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Grade: </b>{{ review.nota }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-4"><b>Review: </b>{{ review.review }}</div>
         {% if review.usuario == user %}
-            <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
-            <a href="{% url delete review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
+            <a href="{% url update review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
+            <a href="{% url delete review.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
         {% endif %}
     {% elif usuario %}
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Usuário: </b>{{ usuario.username }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Username: </b>{{ usuario.username }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Email: </b>{{ usuario.email }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nome: </b>{{ usuario.first_name }} {{ usuario.last_name }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Name: </b>{{ usuario.first_name }} {{ usuario.last_name }}</div>
         {% if usuario == user %}
-        <a href="{% url 'gestao:update' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
-        <a href="{% url 'gestao:delete' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
+        <a href="{% url 'gestao:update' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
+        <a href="{% url 'gestao:delete' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
         {% endif %}
     {% elif noticia %}
         <div class="row filme-info-row">
@@ -59,13 +59,13 @@
                 <img src="{% static noticia.imagem %}" alt="{{noticia.nome}}" class="d-block mx-auto img-fluid"/>
             </div>
         </div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Titulo: </b>{{ noticia.nome }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ noticia.texto }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Publicação: </b>{{ noticia.data.day }}/{{ noticia.data.month }}/{{ noticia.data.year }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Publicador: </b>{{ noticia.usuario }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Title: </b>{{ noticia.nome }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Description: </b>{{ noticia.texto }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Publish Date: </b>{{ noticia.data.day }}/{{ noticia.data.month }}/{{ noticia.data.year }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Publisher: </b>{{ noticia.usuario }}</div>
         {% if user.is_admin %}
-            <a href="{% url 'gestao:updatenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
-            <a href="{% url 'gestao:deletenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
+            <a href="{% url 'gestao:updatenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
+            <a href="{% url 'gestao:deletenoticia' noticia.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
         {% endif %}
     {% elif grupo %}
         <div class="row filme-info-row">
@@ -73,21 +73,21 @@
                 <img src="{% static grupo.imagem %}" alt="{{grupo.nome}}" class="d-block mx-auto img-fluid"/>
             </div>
         </div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Nome: </b>{{ grupo.nome }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Descrição: </b>{{ grupo.desc }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Data de Criação: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Dono: </b>{{ grupo.dono }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Name: </b>{{ grupo.nome }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Description: </b>{{ grupo.desc }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Creation Date: </b>{{ grupo.data.day }}/{{ grupo.data.month }}/{{ grupo.data.year }}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Owner: </b>{{ grupo.dono }}</div>
         {% if user.is_admin or grupo.dono == user %}
         <a href="{% url 'gestao:infomembros' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Membros: </b>{{ grupo.qntdmembros}}</div></a>
         {% else %}
-        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Membros: </b>{{ grupo.qntdmembros}}</div>
+        <div class="mx-auto col p-1 filme-info-col mb-3"><b>Members: </b>{{ grupo.qntdmembros}}</div>
         {% endif %}
         {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
-            <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Entrar</b></div></a>         
+            <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Join</b></div></a>         
         {% endif %}
         {% if user.is_admin or grupo.dono == user %}
-            <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Atualizar</b></div></a>
-            <a href="{% url 'gestao:deletegrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Apagar</b></div></a>
+            <a href="{% url 'gestao:updategrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
+            <a href="{% url 'gestao:deletegrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
         {% endif %}
     {% elif grupos %}
         <div class="mx-auto col filme-info-col2 text-center">
