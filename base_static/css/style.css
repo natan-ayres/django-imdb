@@ -158,14 +158,14 @@
     color: rgb(104, 37, 142);
 }
 
-.filme-info-col4{
+.movie-info-col4{
     background-color: rgb(109, 31, 126);
     border-radius: 5px;
     width: 60%;
     color: black;
 }
 
-.filme-info-col4:hover{
+.movie-info-col4:hover{
     background-color: rgb(120, 41, 166);
 }
 
@@ -189,14 +189,14 @@
     max-height: 50px;
 }
 
-.filmes-container{
+.movies-container{
     border-radius: 7px;
     display: flex;
     height: 310px;
     justify-content: space-between; 
 }
 
-.filmes-row{
+.movies-row{
     width: 200px;
     height: 350px;
     max-height: 300px;
@@ -212,67 +212,67 @@
 }
 
 
-.filmes-row img{
+.movies-row img{
     border-radius: 5px;
     width: 160px;
     height: 170px;
 }
 
-.filme-info-row img{
+.movie-info-row img{
     border-radius: 10px;  
     width: 500px;
     height: 500px;
 }
 
-.filme-nota-boa{
+.movie-nota-boa{
     border-radius: 5px;
     width: 40px;
     height: 32px;
     background-color: goldenrod;
 }
 
-.filme-nota-media{
+.movie-nota-media{
     border-radius: 5px;
     width: 40px;
     height: 32px;
     background-color: rgb(196, 186, 160);
 }
 
-.filme-nota-ruim{
+.movie-nota-ruim{
     border-radius: 5px;
     width: 40px;
     height: 32px;
     background-color: rgb(184, 19, 19);
 }
 
-.filme-info-col {
+.movie-info-col {
     background-color: rgb(109, 31, 126);
     border-radius: 5px;
     width: 60%;
     color: black;
 }
 
-.filme-info-col2 {
+.movie-info-col2 {
     font-size: 35px;
     border-radius: 5px;
     width: 60%;
     color: rgb(109, 31, 126);
 }
 
-.filme-reviews-col{
+.movie-reviews-col{
     width: 200px;
     border-radius: 10px;
     background-color: rgb(109, 31, 126);
 
 }
 
-.grupo-list-col{
+.group-list-col{
     width: 175px;
     border-radius: 10px;
     background-color: rgb(109, 31, 126);
 }
 
-.grupo-list-col2{
+.group-list-col2{
     width: 180px;
     height: 50px;
     border-radius: 10px;

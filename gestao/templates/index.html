@@ -4,7 +4,7 @@
 <div class="container my-container-form mt-5">
     {% if user.is_admin %}
         <div class="container p-1 mb-1 mt-1 container-list">
-            <a href="{% url 'gestao:criarnoticia' %}" class="text-decoration-none custom-card2 text-black">
+            <a href="{% url 'gestao:createnews' %}" class="text-decoration-none custom-card2 text-black">
                 <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
             </a>
         </div>
@@ -13,14 +13,14 @@
         <div class="col">
             <div class="carousel slide" data-bs-ride="carousel" id="ads">
                 <div class="carousel-inner my-custom-carousel">
-                    {% for noticia in noticias %}
+                    {% for news in news %}
                         {% if forloop.first %}
                             <div class="carousel-item active">
-                                <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
+                                <img src="{% static news.image %}" alt="News" class="d-block imgslidercustom">
                             </div>
                         {% else %}
                             <div class="carousel-item">
-                                <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
+                                <img src="{% static news.image %}" alt="News" class="d-block imgslidercustom">
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -34,11 +34,11 @@
             </div>
         </div>
         <div class="col d-flex mt-3">
-            {% for noticia in noticias %}
-            <a href="{% url 'gestao:infonoticia' noticia.id %}" class="text-decoration-none text-black">
+            {% for news in news %}
+            <a href="{% url 'gestao:infonews' news.id %}" class="text-decoration-none text-black">
                 <div id="slide-text-{{ forloop.counter }}" class="slidetexto">
-                    <div class="col font-noticia mb-1"><b>{{ noticia.nome }}</b></div>
-                    <div class="col">{{noticia.texto}}</div>
+                    <div class="col font-news mb-1"><b>{{ news.name }}</b></div>
+                    <div class="col">{{news.text}}</div>
                 </div>
             </a>
             {% endfor %}

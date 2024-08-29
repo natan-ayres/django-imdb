@@ -3,21 +3,21 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 import requests
 from django.contrib import auth
-from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, ApiForm
+from . models import News, Movies, ReviewsMovies, ReviewsSeries, Series, CustomUser, Groups
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, MoviesForm, ReviewMovieForm, ReviewUpdateMovieForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NewsForm, SeriesForm, GroupsForm, ApiForm
 
 from IMDB.local_settings import api_key
 
 def index(request):
     try:
 
-        noticias = Noticias.objects \
-            .filter(mostrar = True) \
-            .order_by('-data') \
+        news = News.objects \
+            .filter(show = True) \
+            .order_by('-date') \
             .distinct() 
 
         context = {
-            'noticias': noticias,
+            'news': news,
             'site_title': 'Imdb-Django'
         }
 
@@ -53,9 +53,9 @@ def loginview(request):
         request,
         'login.html',
         {
-            'countertext': 'Não possui conta? Cadastre-se aqui',
+            'countertext': 'No account yet? Sign-in here!',
             'counterlink': 'gestao:register',
-            'botao': 'Entrar',
+            'botao': 'Login',
             'site_title': 'Login',
             'form': form
         }
@@ -76,21 +76,21 @@ def registerview(request):
         request,
         'login.html',
         {
-            'countertext': 'Já possui conta? Entre por aqui',
+            'countertext': 'Already have an Account? Login here!',
             'counterlink': 'gestao:login',
-            'botao': 'Cadastre-se',
-            'site_title': 'Cadastro',
+            'botao': 'Sign-in',
+            'site_title': 'Register',
             'form': form
         }
     )
 
 def update(request):   
     if request.user:
-        usuario = request.user
+        user = request.user
         form_action = reverse('gestao:update')
 
         if request.method == 'POST':
-            form = RegisterUpdateForm(request.POST, instance=usuario)
+            form = RegisterUpdateForm(request.POST, instance=user)
 
             context = {
                 'form': form,
@@ -108,7 +108,7 @@ def update(request):
             )
         
         context = {
-            'form': RegisterUpdateForm(instance=usuario),
+            'form': RegisterUpdateForm(instance=user),
             'form_action': form_action,
         }
 
@@ -122,8 +122,8 @@ def update(request):
     
 def deleteview(request):
     if request.user:
-        usuario = request.user
-        usuario.delete()
+        user = request.user
+        user.delete()
         return redirect('gestao:index')
     else:
         return redirect('gestao:index')
@@ -136,36 +136,36 @@ def logoutview(request):
     else:
         return redirect('gestao:index')
 
-def createfilme(request):
+def createmovie(request):
     if request.user.is_admin:
-        form = FilmesForm()
+        form = MoviesForm()
         
         if request.method == 'POST':
-            form = FilmesForm(request.POST, request.FILES)
+            form = MoviesForm(request.POST, request.FILES)
 
             if form.is_valid():
                 form.save()
-                return redirect('gestao:listarfilmes')
+                return redirect('gestao:listmovies')
             
         return render(
             request,
             'register.html',
             {
                 'form': form,
-                'site_title': 'Criar Filme'
+                'site_title': 'Create Movie'
             }
         )
     return redirect('gestao:index')
 
-def createreviewfilme(request):
-    form = ReviewFilmeForm(usuario=request.user)
+def createreviewmovie(request):
+    form = ReviewMovieForm(user=request.user)
 
     if request.method == 'POST':
-        form = ReviewFilmeForm(request.POST, usuario=request.user)
+        form = ReviewMovieForm(request.POST, user=request.user)
 
         if form.is_valid():
             review = form.save(commit=False)
-            review.usuario = request.user
+            review.user = request.user
             review.save()
             return redirect('gestao:index')
         
@@ -174,20 +174,20 @@ def createreviewfilme(request):
         'register.html',
         {
             'form': form,
-            'site_title': 'Criar Review'
+            'site_title': 'Create Review'
         }
     )
 
 
 def createreviewserie(request):
-    form = ReviewSeriesForm(usuario=request.user)
+    form = ReviewSeriesForm(user=request.user)
 
     if request.method == 'POST':
-        form = ReviewSeriesForm(request.POST, usuario=request.user)
+        form = ReviewSeriesForm(request.POST, user=request.user)
 
         if form.is_valid():
             review = form.save(commit=False)
-            review.usuario = request.user
+            review.user = request.user
             review.save()
             return redirect('gestao:index')
         
@@ -196,21 +196,21 @@ def createreviewserie(request):
         'register.html',
         {
             'form': form,
-            'site_title': 'Criar Review'
+            'site_title': 'Create Review'
         }
     )
 
-def createnoticia(request):
+def createnews(request):
     if request.user.is_admin:
-        form = NoticiasForm()
+        form = NewsForm()
 
         if request.method == 'POST':
-            form = NoticiasForm(request.POST,  request.FILES)
+            form = NewsForm(request.POST,  request.FILES)
 
             if form.is_valid():
-                noticia = form.save(commit=False)
-                noticia.usuario = request.user
-                noticia.save()
+                news = form.save(commit=False)
+                news.user = request.user
+                news.save()
                 return redirect('gestao:index')
             
         
@@ -219,7 +219,7 @@ def createnoticia(request):
             'register.html',
             {
                 'form': form,
-                'site_title': 'Criar - Noticia'
+                'site_title': 'Create News'
             }
         )
     else:
@@ -235,29 +235,29 @@ def createserie(request):
             if form.is_valid():
                 serie = form.save(commit=False)
                 serie.save()
-                return redirect('gestao:listarseries')
+                return redirect('gestao:listseries')
             
         return render(
             request,
             'register.html',
             {
                 'form': form,
-                'site_title': 'Criar Série'
+                'site_title': 'Create Serie'
             }
         )
     else:
         return redirect('gestao:index')
     
-def creategrupo(request):
-    form = GruposForm()
+def creategroup(request):
+    form = GroupsForm()
 
     if request.method == 'POST':
-        form = GruposForm(request.POST, request.FILES)
+        form = GroupsForm(request.POST, request.FILES)
 
         if form.is_valid():
-            grupo = form.save(commit=False)
-            grupo.dono = request.user
-            grupo.save()
+            group = form.save(commit=False)
+            group.owner = request.user
+            group.save()
             return redirect('gestao:index')
         
     return render(
@@ -265,24 +265,24 @@ def creategrupo(request):
         'register.html',
         {
             'form': form,
-            'site_title': 'Criar Grupo'
+            'site_title': 'Create Group'
         }
     )
 
-def updatefilme(request, filme_id):
+def updatemovie(request, movie_id):
     if request.user.is_admin:
         try:
-            single_filme = Filmes.objects.get(pk=filme_id)
-        except Filmes.DoesNotExist:
+            single_movie = Movies.objects.get(pk=movie_id)
+        except Movies.DoesNotExist:
             return redirect('gestao:index')
             
 
-        form_action = reverse('gestao:updatefilme', args=(filme_id,))
+        form_action = reverse('gestao:updatemovie', args=(movie_id,))
 
-        site_title = f'{single_filme.nome} - {single_filme.data.year}'
+        site_title = f'{single_movie.name} - {single_movie.date.year}'
 
         if request.method == 'POST':
-            form = FilmesForm(request.POST, request.FILES, instance=single_filme)
+            form = MoviesForm(request.POST, request.FILES, instance=single_movie)
 
             context = {
                 'form': form,
@@ -290,8 +290,8 @@ def updatefilme(request, filme_id):
             }
 
             if form.is_valid():
-                filme = form.save()
-                return redirect('gestao:infofilme', filme_id=filme.pk)
+                movie = form.save()
+                return redirect('gestao:infomovie', movie_id=movie.pk)
 
             return render(
                 request,
@@ -300,7 +300,7 @@ def updatefilme(request, filme_id):
             )
 
         context = {
-            'form': FilmesForm(instance=single_filme),
+            'form': MoviesForm(instance=single_movie),
             'form_action': form_action,
             'site_title': site_title,
         }
@@ -317,7 +317,7 @@ def updateserie(request, serie_id):
     if request.user.is_admin:
         try:
             single_serie = Series.objects.get(pk=serie_id)
-            site_title = f'{single_serie.nome} - {single_serie.data.year}'
+            site_title = f'{single_serie.name} - {single_serie.date.year}'
         except Series.DoesNotExist:
             return redirect('gestao:index')
             
@@ -356,19 +356,19 @@ def updateserie(request, serie_id):
     else:
         return redirect('gestao:index')
 
-def updatenoticia(request, noticia_id):
+def updatenews(request, news_id):
     if request.user.is_admin:
         try:
-            single_noticia = Noticias.objects.get(pk=noticia_id)
-            site_title = f'{single_noticia.nome} - {single_noticia.data.day}/{single_noticia.data.month}'
-        except Noticias.DoesNotExist:
+            single_news = News.objects.get(pk=news_id)
+            site_title = f'{single_news.name} - {single_news.date.day}/{single_news.date.month}'
+        except News.DoesNotExist:
             return redirect('gestao:index')
             
 
-        form_action = reverse('gestao:updatenoticia', args=(noticia_id,))
+        form_action = reverse('gestao:updatenews', args=(news_id,))
 
         if request.method == 'POST':
-            form = NoticiasForm(request.POST, request.FILES, instance=single_noticia)
+            form = NewsForm(request.POST, request.FILES, instance=single_news)
 
             context = {
                 'form': form,
@@ -386,7 +386,7 @@ def updatenoticia(request, noticia_id):
             )
 
         context = {
-            'form': NoticiasForm(instance=single_noticia),
+            'form': NewsForm(instance=single_news),
             'form_action': form_action,
             'site_title': site_title,
         }
@@ -401,18 +401,18 @@ def updatenoticia(request, noticia_id):
     
  
 
-def updatereviewfilme(request, review_id):
+def updatereviewmovie(request, review_id):
     try:
-        single_review = ReviewsFilmes.objects.get(pk=review_id)
-        site_title = f'{single_review.usuario} - {single_review.nota}'
-    except ReviewsFilmes.DoesNotExist:
+        single_review = ReviewsMovies.objects.get(pk=review_id)
+        site_title = f'{single_review.user} - {single_review.grade}'
+    except ReviewsMovies.DoesNotExist:
         return redirect('gestao:index')
         
-    if single_review.usuario == request.user:
-        form_action = reverse('gestao:updatereviewfilme', args=(review_id,))
+    if single_review.user == request.user:
+        form_action = reverse('gestao:updatereviewmovie', args=(review_id,))
 
         if request.method == 'POST':
-            form = ReviewUpdateFilmeForm(request.POST, instance=single_review)
+            form = ReviewUpdateMovieForm(request.POST, instance=single_review)
 
             context = {
                 'form': form,
@@ -430,7 +430,7 @@ def updatereviewfilme(request, review_id):
             )
 
         context = {
-            'form': ReviewUpdateFilmeForm(instance=single_review),
+            'form': ReviewUpdateMovieForm(instance=single_review),
             'form_action': form_action,
             'site_title': site_title,
         }
@@ -446,11 +446,11 @@ def updatereviewfilme(request, review_id):
 def updatereviewserie(request, review_id):
     try:
         single_review = ReviewsSeries.objects.get(pk=review_id)
-        site_title = f'{single_review.usuario} - {single_review.nota}'
+        site_title = f'{single_review.user} - {single_review.grade}'
     except ReviewsSeries.DoesNotExist:
         return redirect('gestao:index')
         
-    if single_review.usuario == request.user:
+    if single_review.user == request.user:
         form_action = reverse('gestao:updatereviewserie', args=(review_id,))
 
         if request.method == 'POST':
@@ -485,18 +485,18 @@ def updatereviewserie(request, review_id):
     else:
         return redirect('gestao:index')
     
-def updategrupo(request, grupo_id):
+def updategroup(request, group_id):
     try:
-        single_grupo = Grupos.objects.get(pk=grupo_id)
-        site_title = f'{single_grupo.nome}'
-    except Grupos.DoesNotExist:
+        single_group = Groups.objects.get(pk=group_id)
+        site_title = f'{single_group.name}'
+    except Groups.DoesNotExist:
         return redirect('gestao:index')
     
-    if single_grupo.dono == request.user:
-        form_action = reverse('gestao:updategrupo', args=(grupo_id,))
+    if single_group.owner == request.user:
+        form_action = reverse('gestao:updategroup', args=(group_id,))
 
         if request.method == 'POST':
-            form = GruposForm(request.POST, instance=single_grupo)
+            form = GroupsForm(request.POST, instance=single_group)
 
             context = {
                 'form': form,
@@ -513,7 +513,7 @@ def updategrupo(request, grupo_id):
                 context
             )
         context = {
-            'form': GruposForm(instance=single_grupo),
+            'form': GroupsForm(instance=single_group),
             'form_action': form_action,
             'site_title': site_title,
         }
@@ -526,56 +526,56 @@ def updategrupo(request, grupo_id):
     else:
         return redirect('gestao:index')
         
-def adicionarwaitlist(request, grupo_id):
-    single_grupo = Grupos.objects.get(pk=grupo_id)
-    usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()
-    if usuario_esta_na_waitlist == False and request.user != single_grupo.dono:
-        single_grupo.waitlist.add(request.user)
-    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+def addwaitlist(request, group_id):
+    single_group = Groups.objects.get(pk=group_id)
+    user_is_in_waitlist = single_group.waitlist.filter(id=request.user.id).exists()
+    if user_is_in_waitlist == False and request.user != single_group.owner:
+        single_group.waitlist.add(request.user)
+    return redirect('gestao:infogroup', group_id=single_group.pk)
 
-def adicionarmembro(request, grupo_id, user_id):
-    single_grupo = Grupos.objects.get(pk=grupo_id)
-    if request.user == single_grupo.dono:
-        usuario_esta_no_grupo = single_grupo.membros.filter(id=user_id).exists()
-        if usuario_esta_no_grupo == False:
-            single_grupo.membros.add(user_id)
-            single_grupo.qntdmembros += 1
-            single_grupo.waitlist.remove(user_id)
-            single_grupo.save()
-    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+def addmember(request, group_id, user_id):
+    single_group = Groups.objects.get(pk=group_id)
+    if request.user == single_group.owner:
+        user_is_in_group = single_group.members.filter(id=user_id).exists()
+        if user_is_in_group == False:
+            single_group.members.add(user_id)
+            single_group.countmembers += 1
+            single_group.waitlist.remove(user_id)
+            single_group.save()
+    return redirect('gestao:infogroup', group_id=single_group.pk)
 
-def listarfilmes(request):
+def listmovies(request):
     try:
 
-        filmes = Filmes.objects \
+        movies = Movies.objects \
             .order_by('-id') \
             .distinct() 
 
         context = {
-            'create': 'gestao:apifilmes',
-            'redirect': 'gestao:infofilme',
-            'items': filmes,
-            'site_title': 'Filmes'
+            'create': 'gestao:apimovies',
+            'redirect': 'gestao:infomovie',
+            'items': movies,
+            'site_title': 'Movies'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
     
     except AttributeError:
         context = {
-            'site_title': 'Filmes'
+            'site_title': 'Movies'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
     
-def listarseries(request):
+def listseries(request):
     try:
         series = Series.objects \
         .order_by('-id')\
@@ -585,117 +585,117 @@ def listarseries(request):
             'create': 'gestao:apiseries',
             'redirect': 'gestao:infoserie',
             'items': series,
-            'site_title': 'Séries'
+            'site_title': 'Series'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
     
     except AttributeError:
         context = {
-            'site_title': 'Séries'
+            'site_title': 'Series'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
     
-def listargrupos(request):
+def listgroups(request):
     try:
-        grupos = Grupos.objects \
+        groups = Groups.objects \
         .order_by('-id')\
         .distinct()
 
-        paginator = Paginator(grupos, 6)
+        paginator = Paginator(groups, 6)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
         context = {
-            'create': 'gestao:criargrupo',
-            'grupos': grupos,
+            'create': 'gestao:creategroup',
+            'groups': groups,
             'page_obj': page_obj,
-            'site_title': 'Grupos'
+            'site_title': 'Groups'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
     except AttributeError:
         context = {
-            'site_title': 'Grupos'
+            'site_title': 'Groups'
         }
 
         return render(
             request,
-            'listar.html',
+            'list.html',
             context
         )
         
     
-def deletefilme(request, filme_id):
+def deletemovie(request, movie_id):
     if request.user.is_admin:
-        single_filme = Filmes.objects.get(pk=filme_id)
-        single_filme.delete()
-    return redirect('gestao:listarfilmes')
+        single_movie = Movies.objects.get(pk=movie_id)
+        single_movie.delete()
+    return redirect('gestao:listmovies')
     
 
 def deleteserie(request, serie_id):
     if request.user.is_admin:
         single_serie = Series.objects.get(pk=serie_id)
         single_serie.delete()
-    return redirect('gestao:listarseries')
+    return redirect('gestao:listseries')
 
-def deletenoticia(request, noticia_id):
+def deletenews(request, news_id):
     if request.user.is_admin:
-        single_noticia = Noticias.objects.get(pk=noticia_id)
-        single_noticia.delete()
+        single_news = News.objects.get(pk=news_id)
+        single_news.delete()
     return redirect('gestao:index')
 
 
-def deletereviewfilme(request, review_id):
+def deletereviewmovie(request, review_id):
     if request.user.is_admin:
-        single_review= ReviewsFilmes.objects.get(pk=review_id)
+        single_review= ReviewsMovies.objects.get(pk=review_id)
         single_review.delete()
-    return redirect('gestao:listarfilmes')
+    return redirect('gestao:listmovies')
 
 def deletereviewserie(request, review_id):
     if request.user.is_admin:
         single_review = ReviewsSeries.objects.get(pk=review_id)
         single_review.delete()
-    return redirect('gestao:listarseries')
+    return redirect('gestao:listseries')
     
-def deletegrupo(request, grupo_id):
-    single_grupo = Grupos.objects.get(pk=grupo_id)
-    if single_grupo.dono == request.user:
-        single_grupo.delete()
-        return redirect('gestao:listargrupos')
+def deletegroup(request, group_id):
+    single_group = Groups.objects.get(pk=group_id)
+    if single_group.owner == request.user:
+        single_group.delete()
+        return redirect('gestao:listgroups')
     else:
-        return redirect('gestao:listargrupos')
+        return redirect('gestao:listgroups')
     
-def removermembro(request, user_id, grupo_id):
-    single_grupo = Grupos.objects.get(pk=grupo_id)
-    if single_grupo.dono == request.user:
-        single_grupo.membros.remove(user_id)
-        single_grupo.qntdmembros += -1
-        if single_grupo.qntdmembros < 0: 
-            single_grupo.qntdmembros = 0
-        single_grupo.save()
-    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+def removemember(request, user_id, group_id):
+    single_group = Groups.objects.get(pk=group_id)
+    if single_group.owner == request.user:
+        single_group.members.remove(user_id)
+        single_group.countmembers += -1
+        if single_group.countmembers < 0: 
+            single_group.countmembers = 0
+        single_group.save()
+    return redirect('gestao:infogroup', group_id=single_group.pk)
     
-def negarwaitlist(request, grupo_id, user_id):
-    single_grupo = Grupos.objects.get(pk=grupo_id)
-    if request.user == single_grupo.dono:
-        usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=user_id).exists()
-        if usuario_esta_na_waitlist == True:
-            single_grupo.waitlist.remove(user_id)
-    return redirect('gestao:infogrupo', grupo_id=single_grupo.pk)
+def negarwaitlist(request, group_id, user_id):
+    single_group = Groups.objects.get(pk=group_id)
+    if request.user == single_group.owner:
+        user_is_in_waitlist = single_group.waitlist.filter(id=user_id).exists()
+        if user_is_in_waitlist == True:
+            single_group.waitlist.remove(user_id)
+    return redirect('gestao:infogroup', group_id=single_group.pk)
 
 def infouser(request, user_id):
     try:
@@ -706,7 +706,7 @@ def infouser(request, user_id):
     site_title = f'{single_user.username} - '
 
     context = {
-        'usuario': single_user,
+        'user': single_user,
         'site_title': site_title
     }
 
@@ -716,14 +716,14 @@ def infouser(request, user_id):
         context
     )
 
-def infofilme(request, filme_id):
+def infomovie(request, movie_id):
     try:
-        single_filme = Filmes.objects.get(pk=filme_id)
-    except Filmes.DoesNotExist:
+        single_movie = Movies.objects.get(pk=movie_id)
+    except Movies.DoesNotExist:
         return redirect('gestao:index')
     
-    reviews = ReviewsFilmes.objects \
-        .filter(mostrar=True, filme_id = single_filme)\
+    reviews = ReviewsMovies.objects \
+        .filter(show=True, movie_id = single_movie)\
         .order_by('-id')
 
     paginator = Paginator(reviews, 10)
@@ -731,20 +731,20 @@ def infofilme(request, filme_id):
     page_obj = paginator.get_page(page_number)
 
         
-    site_title = f'{single_filme.nome} - {single_filme.data.year}'
+    site_title = f'{single_movie.name} - {single_movie.date.year}'
 
     context = {
-        'nota': single_filme.nota_media,
-        'delete': 'gestao:deletefilme',
-        'update': 'gestao:updatefilme',
-        'counterlink': 'gestao:inforeviewfilme',
+        'grade': single_movie.grade_avg,
+        'delete': 'gestao:deletemovie',
+        'update': 'gestao:updatemovie',
+        'counterlink': 'gestao:inforeviewmovie',
         'titulo': 'REVIEWS',
         'users': reviews,
         'page_obj': page_obj,
-        'item': single_filme,
+        'item': single_movie,
         'site_title': site_title,
         'infoitem': True,
-        'create': 'gestao:criarreviewfilme',
+        'create': 'gestao:createreviewmovie',
     }
 
     return render(
@@ -760,17 +760,17 @@ def infoserie(request, serie_id):
         return redirect('gestao:index')
     
     reviews = ReviewsSeries.objects \
-        .filter(mostrar=True, serie_id = single_serie)\
+        .filter(show=True, serie_id = single_serie)\
         .order_by('-id')
 
     paginator = Paginator(reviews, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
         
-    site_title = f'{single_serie.nome} - {single_serie.data.year}'
+    site_title = f'{single_serie.name} - {single_serie.date.year}'
 
     context = {
-        'nota': single_serie.nota_media,
+        'grade': single_serie.grade_avg,
         'delete': 'gestao:deleteserie',
         'update': 'gestao:updateserie',
         'counterlink': 'gestao:inforeviewserie',
@@ -780,7 +780,7 @@ def infoserie(request, serie_id):
         'item': single_serie,
         'site_title': site_title,
         'infoitem': True,
-        'create': 'gestao:criarreviewserie',
+        'create': 'gestao:createreviewserie',
     }
 
     return render(
@@ -789,16 +789,16 @@ def infoserie(request, serie_id):
         context
     )
 
-def infonoticia(request, noticia_id):
+def infonews(request, news_id):
     try:
-        single_noticia = Noticias.objects.get(pk=noticia_id)
-    except Noticias.DoesNotExist:
+        single_news = News.objects.get(pk=news_id)
+    except News.DoesNotExist:
         return redirect('gestao:index')
     
-    site_title = f'{single_noticia.nome} - {single_noticia.data.day}/{single_noticia.data.month}'
+    site_title = f'{single_news.name} - {single_news.date.day}/{single_news.date.month}'
 
     context = {
-        'noticia': single_noticia,
+        'news': single_news,
         'site_title': site_title
     }
 
@@ -808,19 +808,19 @@ def infonoticia(request, noticia_id):
         context
     )
 
-def inforeviewfilme(request, review_id):
+def inforeviewmovie(request, review_id):
     try:
-        single_review = ReviewsFilmes.objects.get(pk=review_id)
-    except ReviewsFilmes.DoesNotExist:
+        single_review = ReviewsMovies.objects.get(pk=review_id)
+    except ReviewsMovies.DoesNotExist:
         return redirect('gestao:index')
     
-    site_title = f'{single_review.usuario} - {single_review.nota}'
+    site_title = f'{single_review.user} - {single_review.grade}'
 
     context = {
-        'delete': 'gestao:deletereviewfilme',
-        'update': 'gestao:updatereviewfilme',
-        'Fonte': 'Filme',
-        'fonte': single_review.filme,
+        'delete': 'gestao:deletereviewmovie',
+        'update': 'gestao:updatereviewmovie',
+        'Fonte': 'Movie',
+        'fonte': single_review.movie,
         'review': single_review,
         'site_title': site_title
     }
@@ -837,12 +837,12 @@ def inforeviewserie(request, review_id):
     except ReviewsSeries.DoesNotExist:
         return redirect('gestao:index')
     
-    site_title = f'{single_review.usuario} - {single_review.nota}'
+    site_title = f'{single_review.user} - {single_review.grade}'
 
     context = {
         'delete': 'gestao:deletereviewserie',
         'update': 'gestao:updatereviewserie',
-        'Fonte': 'Série',
+        'Fonte': 'Serie',
         'fonte': single_review.serie,
         'review': single_review,
         'site_title': site_title
@@ -854,18 +854,18 @@ def inforeviewserie(request, review_id):
         context
     )
 
-def infogrupo(request, grupo_id):
+def infogroup(request, group_id):
     try:
-        single_grupo = Grupos.objects.get(pk=grupo_id)
-    except Grupos.DoesNotExist:
+        single_group = Groups.objects.get(pk=group_id)
+    except Groups.DoesNotExist:
         return redirect('gestao:index')
 
-    usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
-    usuario_e_membro = single_grupo.membros.filter(id=request.user.id).exists()   
+    user_is_in_waitlist = single_group.waitlist.filter(id=request.user.id).exists()   
+    user_is_member = single_group.members.filter(id=request.user.id).exists()   
 
-    if request.user == single_grupo.dono:
+    if request.user == single_group.owner:
         waitlist = CustomUser.objects \
-            .filter(waitlist = single_grupo)\
+            .filter(waitlist = single_group)\
             .order_by('-id')
 
 
@@ -878,16 +878,16 @@ def infogrupo(request, grupo_id):
         page_number = None
         page_obj = None
 
-    site_title = f'{single_grupo.nome}'
+    site_title = f'{single_group.name}'
 
     context = {
         'users': waitlist,
         'waitlist': True,
         'titulo': 'WAITLIST',
         'page_obj': page_obj,
-        'user_membro': usuario_e_membro,
-        'user_waitlist': usuario_esta_na_waitlist,
-        'grupo': single_grupo,
+        'user_member': user_is_member,
+        'user_waitlist': user_is_in_waitlist,
+        'group': single_group,
         'site_title': site_title
     }
 
@@ -897,21 +897,21 @@ def infogrupo(request, grupo_id):
         context
     )
 
-def infomembros(request, grupo_id):
+def infomembers(request, group_id):
     try:
-        single_grupo = Grupos.objects.get(pk=grupo_id)
-    except Grupos.DoesNotExist:
+        single_group = Groups.objects.get(pk=group_id)
+    except Groups.DoesNotExist:
         return redirect('gestao:index')
     
-    membros = CustomUser.objects \
-            .filter(membros = single_grupo)\
+    members = CustomUser.objects \
+            .filter(members = single_group)\
             .order_by('-id')
 
-    site_title = f'Membros de {single_grupo.nome}'
+    site_title = f'Members of {single_group.name}'
 
     context = {
-        'grupos': single_grupo,
-        'membros': membros,
+        'groups': single_group,
+        'members': members,
         'site_title': site_title,
     }
 
@@ -921,160 +921,160 @@ def infomembros(request, grupo_id):
         context
     )
 
-def infofilmegrupo(request, grupo_id, filme_id):
+def infomoviegroup(request, group_id, movie_id):
     try:
-        single_grupo = Grupos.objects.get(pk=grupo_id)
-        single_filme = Filmes.objects.get(pk=filme_id)
-    except Grupos.DoesNotExist or Filmes.DoesNotExist:
+        single_group = Groups.objects.get(pk=group_id)
+        single_movie = Movies.objects.get(pk=movie_id)
+    except Groups.DoesNotExist or Movies.DoesNotExist:
         return redirect('gestao:index')
     
-    reviews = ReviewsFilmes.objects \
-            .filter(filme=filme_id,)\
+    reviews = ReviewsMovies.objects \
+            .filter(movie=movie_id,)\
             .order_by('-id')
     
-    membros = CustomUser.objects \
-            .filter(membros = single_grupo)\
+    members = CustomUser.objects \
+            .filter(members = single_group)\
             .order_by('-id') 
     
     contador = 0
-    nota = 0
+    grade = 0
 
     for review in reviews:
-        for membro in membros:
-            if review.usuario == membro:
-                nota += review.nota
+        for member in members:
+            if review.user == member:
+                grade += review.grade
                 contador += 1
 
     try: 
-        nota = nota / contador
+        grade = grade / contador
     except ZeroDivisionError:
-        nota = 'N/A'
+        grade = 'N/A'
 
-    return render(request, 'info.html', {'item': single_filme, 'nota': nota})
+    return render(request, 'info.html', {'item': single_movie, 'grade': grade})
 
-def infoseriegrupo(request, grupo_id, serie_id):
+def infoseriegroup(request, group_id, serie_id):
     try:
-        single_grupo = Grupos.objects.get(pk=grupo_id)
+        single_group = Groups.objects.get(pk=group_id)
         single_serie = Series.objects.get(pk=serie_id)
-    except Grupos.DoesNotExist or Series.DoesNotExist:
+    except Groups.DoesNotExist or Series.DoesNotExist:
         return redirect('gestao:index')
     
     reviews = ReviewsSeries.objects \
             .filter(serie=serie_id,)\
             .order_by('-id')
     
-    membros = CustomUser.objects \
-            .filter(membros = single_grupo)\
+    members = CustomUser.objects \
+            .filter(members = single_group)\
             .order_by('-id') 
     
     contador = 0
-    nota = 0
+    grade = 0
 
     for review in reviews:
-        for membro in membros:
-            if review.usuario == membro:
-                nota += review.nota
+        for member in members:
+            if review.user == member:
+                grade += review.grade
                 contador += 1
 
     try: 
-        nota = nota / contador
+        grade = grade / contador
     except ZeroDivisionError:
-        nota = 'N/A'
+        grade = 'N/A'
 
-    return render(request, 'info.html', {'item': single_serie, 'nota': nota})
+    return render(request, 'info.html', {'item': single_serie, 'grade': grade})
 
 
-def apifilmes(request):
+def apimovies(request):
     form = ApiForm()
-    buscado = False
+    searched = False
     if request.method == 'POST':
         form = ApiForm(request.POST)
         if form.is_valid():
-            nome = form.cleaned_data['nome']
-            ano = form.cleaned_data['ano']
+            name = form.cleaned_data['name']
+            year = form.cleaned_data['year']
 
-            if ano:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=movie&y={ano}&apikey={api_key}')
+            if year:
+                response = requests.get(f'https://www.omdbapi.com/?t={name}&type=movie&y={year}&apikey={api_key}')
             else:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=movie&apikey={api_key}')
+                response = requests.get(f'https://www.omdbapi.com/?t={name}&type=movie&apikey={api_key}')
 
             if response.status_code == 200:
                 dados_api = response.json()
-                nome = dados_api.get('Title')
-                diretor = dados_api.get('Director')
-                escritor = dados_api.get('Writer')
-                atores = dados_api.get('Actors')
+                name = dados_api.get('Title')
+                director = dados_api.get('Director')
+                writer = dados_api.get('Writer')
+                actors = dados_api.get('Actors')
                 poster = dados_api.get('Poster')
-                sinopse = dados_api.get('Plot')
-                data = dados_api.get('Released')
-                duracao = dados_api.get('Runtime')
-                if 'submit_primeiro' in request.POST and nome != None:
-                    buscado = True
-                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apiduracao': duracao, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
-                if 'submit_segundo' in request.POST:
-                    Filmes.objects.create(
-                        nome = dados_api.get('Title'),
-                        diretor = dados_api.get('Director'),
-                        escritor = dados_api.get('Writer'),
+                plot = dados_api.get('Plot')
+                date = dados_api.get('Released')
+                runtime = dados_api.get('Runtime')
+                if 'submit_first' in request.POST and name != None:
+                    searched = True
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apiname': name, 'apidirector': director, 'apiposter': poster, 'apiplot': plot, 'apidate': date, 'apiruntime': runtime, 'searched': searched, 'apiactors': actors, 'apiwriter': writer})
+                if 'submit_second' in request.POST:
+                    Movies.objects.create(
+                        name = dados_api.get('Title'),
+                        director = dados_api.get('Director'),
+                        writer = dados_api.get('Writer'),
                         poster = dados_api.get('Poster'),
-                        atores = dados_api.get('Actors'),
-                        sinopse = dados_api.get('Plot'),
-                        data = dados_api.get('Released'),
-                        duracao = dados_api.get('Runtime'),
+                        actors = dados_api.get('Actors'),
+                        plot = dados_api.get('Plot'),
+                        date = dados_api.get('Released'),
+                        runtime = dados_api.get('Runtime'),
                     )
-                    return redirect('gestao:listarfilmes')
-                if 'submit_terceiro' in request.POST:
-                    return redirect('gestao:apifilmes')
-                elif 'submit_quarto' in request.POST:
-                    return redirect('gestao:criarfilme')
+                    return redirect('gestao:listmovies')
+                if 'submit_third' in request.POST:
+                    return redirect('gestao:apimovies')
+                elif 'submit_fourth' in request.POST:
+                    return redirect('gestao:createmovie')
 
         
-    return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
+    return render(request, 'register.html', {'form':form, 'searched': searched, 'api':True})
 
 
 def apiseries(request):
     form = ApiForm()
-    buscado = False
+    searched = False
     if request.method == 'POST':
         form = ApiForm(request.POST)
         if form.is_valid():
-            nome = form.cleaned_data['nome']
-            ano = form.cleaned_data['ano']
+            name = form.cleaned_data['name']
+            year = form.cleaned_data['year']
 
-            if ano:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=series&y={ano}&apikey={api_key}')
+            if year:
+                response = requests.get(f'https://www.omdbapi.com/?t={name}&type=series&y={year}&apikey={api_key}')
             else:
-                response = requests.get(f'https://www.omdbapi.com/?t={nome}&type=series&apikey={api_key}')
+                response = requests.get(f'https://www.omdbapi.com/?t={name}&type=series&apikey={api_key}')
 
             if response.status_code == 200:
                 dados_api = response.json()
-                nome = dados_api.get('Title')
-                diretor = dados_api.get('Director')
-                escritor = dados_api.get('Writer')
-                atores = dados_api.get('Actors')
+                name = dados_api.get('Title')
+                director = dados_api.get('Director')
+                writer = dados_api.get('Writer')
+                actors = dados_api.get('Actors')
                 poster = dados_api.get('Poster')
-                sinopse = dados_api.get('Plot')
-                data = dados_api.get('Released')
-                temporadas = dados_api.get('totalSeasons')
-                if 'submit_primeiro' in request.POST and nome != None:
-                    buscado = True
-                    return render(request, 'register.html', {'form':form, 'api': True, 'apinome': nome, 'apidiretor': diretor, 'apiposter': poster, 'apisinopse': sinopse, 'apidata': data, 'apitemporadas': temporadas, 'buscado': buscado, 'apiatores': atores, 'apiescritor': escritor})
-                elif 'submit_segundo' in request.POST:
+                plot = dados_api.get('Plot')
+                date = dados_api.get('Released')
+                seasons = dados_api.get('totalSeasons')
+                if 'submit_first' in request.POST and name != None:
+                    searched = True
+                    return render(request, 'register.html', {'form':form, 'api': True, 'apiname': name, 'apidirector': director, 'apiposter': poster, 'apiplot': plot, 'apidate': date, 'apiseasons': seasons, 'searched': searched, 'apiactors': actors, 'apiwriter': writer})
+                elif 'submit_second' in request.POST:
                     Series.objects.create(
-                        nome = dados_api.get('Title'),
-                        diretor = dados_api.get('Director'),
-                        escritor = dados_api.get('Writer'),
+                        name = dados_api.get('Title'),
+                        director = dados_api.get('Director'),
+                        writer = dados_api.get('Writer'),
                         poster = dados_api.get('Poster'),
-                        atores = dados_api.get('Actors'),
-                        sinopse = dados_api.get('Plot'),
-                        data = dados_api.get('Released'),
-                        temporadas = dados_api.get('totalSeasons'),
+                        actors = dados_api.get('Actors'),
+                        plot = dados_api.get('Plot'),
+                        date = dados_api.get('Released'),
+                        seasons = dados_api.get('totalSeasons'),
                     )
-                    return redirect('gestao:listarseries')
-                elif 'submit_terceiro' in request.POST:
+                    return redirect('gestao:listseries')
+                elif 'submit_third' in request.POST:
                     return redirect('gestao:apiseries')
-                elif 'submit_quarto' in request.POST:
-                    return redirect('gestao:criarserie')
+                elif 'submit_fourth' in request.POST:
+                    return redirect('gestao:createserie')
 
         
-    return render(request, 'register.html', {'form':form, 'buscado': buscado, 'api':True})
+    return render(request, 'register.html', {'form':form, 'searched': searched, 'api':True})

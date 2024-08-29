@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from gestao.models import Filmes, ReviewsFilmes, ReviewsSeries, Noticias, Series, CustomUser, Grupos
+from gestao.models import Movies, ReviewsMovies, ReviewsSeries, News, Series, CustomUser, Groups
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -20,47 +20,47 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
-@admin.register(Grupos)
-class GruposAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data',
+@admin.register(Groups)
+class GroupsAdmin(admin.ModelAdmin):
+    list_display = 'id', 'name', 'date',
     ordering = '-id',
-    search_fields = 'nome', 'data', 'dono',
+    search_fields = 'name', 'date', 'owner',
     list_per_page = 10
-    list_editable = 'nome',
+    list_editable = 'name',
 
-@admin.register(Filmes)
-class FilmesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data'
+@admin.register(Movies)
+class MoviesAdmin(admin.ModelAdmin):
+    list_display = 'id', 'name', 'date'
     ordering = '-id',
-    search_fields = 'nome', 'data',
+    search_fields = 'name', 'date',
     list_per_page = 10
-    list_editable = 'nome','data',
+    list_editable = 'name','date',
 
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome', 'data',
+    list_display = 'id', 'name', 'date',
     ordering = '-id',
-    search_fields = 'nome','data',
+    search_fields = 'name','date',
     list_per_page = 10
-    list_editable = 'nome','data',
+    list_editable = 'name','date',
 
-@admin.register(ReviewsFilmes)
-class ReviewsFilmesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'usuario', 'filme', 'nota', 'mostrar',
+@admin.register(ReviewsMovies)
+class ReviewsMoviesAdmin(admin.ModelAdmin):
+    list_display = 'id', 'user', 'movie', 'grade', 'show',
     ordering = '-id',
-    search_fields = 'filme', 'nota', 'usuario'
+    search_fields = 'movie', 'grade', 'user'
     list_per_page = 10
 
 @admin.register(ReviewsSeries)
 class ReviewsSeriesAdmin(admin.ModelAdmin):
-    list_display = 'id', 'usuario', 'serie', 'nota', 'mostrar',
+    list_display = 'id', 'user', 'serie', 'grade', 'show',
     ordering = '-id',
-    search_fields = 'serie', 'nota', 'usuario'
+    search_fields = 'serie', 'grade', 'user'
     list_per_page = 10
 
-@admin.register(Noticias)
-class NoticiasAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome','data'
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = 'id', 'name','date'
     ordering = '-id',
-    search_fields = 'data', 'nome'
+    search_fields = 'date', 'name'
     list_per_page = 5
