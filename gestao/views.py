@@ -582,12 +582,42 @@ def listarfilmesgrupo(request, grupo_id):
         reviews__usuario__in=single_grupo.membros.all()
         ).distinct()
 
+        contador = 0
+        nota = 0
+        notas = []
+        filmes_com_notas = []
+        
+        membros = CustomUser.objects \
+                .filter(membros = single_grupo)\
+                .order_by('-id')
+        
+        for filme in filmes_avaliados:
+            contador = 0
+            nota = 0
+            reviews = ReviewsFilmes.objects \
+                .filter(filme=filme.id,)\
+                .order_by('-id')
+            for review in reviews:
+                for membro in membros:
+                    if review.usuario == membro:
+                        nota += review.nota
+                        contador += 1
+            if contador > 0: 
+                nota = nota / contador
+                notas.append(nota)
+            else:
+                notas.append('?')
+
+            filmes_com_notas.append((filme, notas[-1]))
+        
+
         context = {
             'create': 'gestao:apifilmes',
             'redirect': 'gestao:infofilmegrupo',
-            'items': filmes_avaliados,
+            'items_notas': filmes_com_notas,
             'site_title': 'Filmes',
             'grupo_id': grupo_id,
+            'notas': notas,
         }
 
         return render(

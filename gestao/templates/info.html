@@ -7,7 +7,7 @@
                 </div>
             </div>
             {% if item.nota_media != None %}
-                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Rating</b>{{ nota }}</div>
+                <div class="mx-auto col p-1 filme-info-col mb-3"><b>Rating: </b>{{ nota }}</div>
             {% endif %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Title: </b>{{ item.nome }}</div>
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Date: </b>{{item.data}}</div>
@@ -82,7 +82,11 @@
         {% else %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Members: </b>{{ grupo.qntdmembros}}</div>
         {% endif %}
-        <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador }}</div></a>
+        {% if user_membro or user == grupo.dono %}
+            <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador }}</div></a>
+        {% else %}
+            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Movies Reviewd: </b>{{ contador }}</div>
+        {% endif %}
         {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
             <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Join</b></div></a>         
         {% endif %}

@@ -46,6 +46,45 @@
                 {% endif %}
             {% endwith %}
         {% endfor %}
+    {% elif items_notas %}  
+        {% for items, nota in items_notas %}
+            {% cycle 1 2 3 4 5 6 as contador silent %}
+            {% with contador=contador %}
+                {% if contador == 1 %}
+                    <div class="container filmes-container mt-1 p-1">
+                {% endif %}
+                        {% if grupo_id %}<a href="{% url redirect items.id grupo_id%}"{% else %}<a href="{% url redirect items.id %}"{% endif %} class="text-decoration-none text-black">
+                            <div class="row filmes-row p-2 mx-1 justify-content-center">
+                                <div class="col-12 col-md-12 custom-card text-center">
+                                    <p>{{ items.nome }} ({{ items.data.year }})</p>
+                                </div>
+                                <div class="col-12 col-md-12 images-row mb-3 text-center">
+                                    <img src="{{ items.poster }}" alt="{{ items.nome }}" class="d-block mx-auto img-fluid"/>
+                                </div>
+                                {% if nota > 7 %}
+                                    <div class="col-12 col-md-3 p-1 filme-nota-boa text-center">
+                                        {{ nota }}
+                                    </div>
+                                {% elif nota > 5 and nota < 8 %}
+                                    <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
+                                        {{ nota }}
+                                    </div>
+                                {% elif nota < 6 %}
+                                    <div class="col-12 col-md-2 p-1 filme-nota-ruim text-center">
+                                        {{ nota }}
+                                    </div>
+                                {% else %}
+                                    <div class="col-12 col-md-2 p-1 filme-nota-media text-center">
+                                        ?
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                {% if contador == 6 %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
     {% elif grupos or view_grupo %}
         {% for grupo in page_obj %}
             {% cycle 1 2 3 4 5 6 as contador silent %}
