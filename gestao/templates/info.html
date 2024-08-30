@@ -50,9 +50,56 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Email: </b>{{ usuario.email }}</div>
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Name: </b>{{ usuario.first_name }} {{ usuario.last_name }}</div>
         {% if usuario == user %}
+        <a href="{% url 'gestao:criarreviewfilme' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Add Review(Movies)</b></div></a>
+        <a href="{% url 'gestao:criarreviewserie' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Add Review(Series)</b></div></a>
         <a href="{% url 'gestao:update' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Update</b></div></a>
         <a href="{% url 'gestao:delete' %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Delete</b></div></a>
         {% endif %}
+        {% if reviewsfilmes %}
+            <div class="mx-auto col p-1 filme-info-col2 text-center">
+                <b>REVIEWS(Movies)</b>
+            </div>
+            {% for reviews in reviewsfilmes %}
+                {% cycle 1 2 3 4 5 6 as contador silent %}
+                {% if contador == 1 %}
+                    <div class="container p-3 mb-1 mt-2 my-container-form2">
+                {% endif %}
+                    <div class="row filme-reviews-col text-center">
+                        <a href="{% url 'gestao:inforeviewfilme' reviews.id %}" class="text-decoration-none text-black">
+                            <div class="col-md-12">
+                                    <p class="mt-2"><b>{{ reviews.filme }}</b> - <b>{{ reviews.nota }}</b></p>
+                            </div>
+                        </a>
+                    </div> 
+                {% if contador == 6 %}
+                    </div> 
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% if reviewseries %}
+            <div class="mx-auto col p-1 filme-info-col2 text-center">
+                <b>REVIEWS(Series)</b>
+            </div>
+            {% for reviews in reviewsseries %}
+                {% cycle 1 2 3 4 5 6 as contador silent %}
+                {% if contador == 1 %}
+                    <div class="container p-3 mb-1 mt-2 my-container-form2">
+                {% endif %}
+                    <div class="row filme-reviews-col text-center">
+                        <a href="{% url 'gestao:inforeviewserie' reviews.id %}" class="text-decoration-none text-black">
+                            <div class="col-md-12">
+                                    <p class="mt-2"><b>{{ review.serie }}</b> - <b>{{ reviews.nota }}</b></p>
+                            </div>
+                        </a>
+                    </div> 
+                {% if contador == 6 %}
+                    </div> 
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        
     {% elif noticia %}
         <div class="row filme-info-row">
             <div class="col mb-5">
@@ -147,11 +194,11 @@
                         <a href="{% url 'gestao:negarwaitlist' grupo.id users.id %}" class="btn btn-danger w-100 mt-1 text-black"><p class="mt-1"><b>X</b></p></a>
                     </div>
                 {% endif %}
-            </div> <!-- End row -->
+            </div> 
         {% if contador == 6 %}
-            </div> <!-- End container -->
+            </div> 
         {% endif %}
     {% endfor %}
 {% endif %}
-</div> <!-- End outer container -->
+</div> 
 {% endblock content %}

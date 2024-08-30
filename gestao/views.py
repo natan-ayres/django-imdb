@@ -765,10 +765,28 @@ def infouser(request, user_id):
         single_user = CustomUser.objects.get(pk=user_id)
     except CustomUser.DoesNotExist:
         return redirect('gestao:index')
+    
+    try:
+        reviewsfilmes = ReviewsFilmes.objects \
+        .filter(usuario=user_id)\
+        .order_by('-id')\
+        .distinct()
+    except AttributeError:
+        reviewsfilmes = None
+
+    try:
+        reviewsseries = ReviewsSeries.objects \
+        .filter(usuario=user_id)\
+        .order_by('-id')\
+        .distinct()
+    except AttributeError:
+        reviewsseries = None
 
     site_title = f'{single_user.username} - '
 
     context = {
+        'reviewsfilmes': reviewsfilmes,
+        'reviewsseries': reviewsseries,
         'usuario': single_user,
         'site_title': site_title
     }
@@ -1055,7 +1073,6 @@ def infoseriegrupo(request, grupo_id, serie_id):
         nota = 'N/A'
 
     return render(request, 'info.html', {'item': single_serie, 'nota': nota})
-
 
 def apifilmes(request):
     form = ApiForm()
