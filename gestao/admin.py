@@ -50,6 +50,7 @@ class ReviewsFilmesAdmin(admin.ModelAdmin):
     ordering = '-id',
     search_fields = 'filme', 'nota', 'usuario'
     list_per_page = 10
+    list_editable = 'mostrar',
 
 @admin.register(ReviewsSeries)
 class ReviewsSeriesAdmin(admin.ModelAdmin):
@@ -57,10 +58,12 @@ class ReviewsSeriesAdmin(admin.ModelAdmin):
     ordering = '-id',
     search_fields = 'serie', 'nota', 'usuario'
     list_per_page = 10
+    list_editable = 'mostrar',
 
 @admin.register(Noticias)
 class NoticiasAdmin(admin.ModelAdmin):
-    list_display = 'id', 'nome','data'
+    list_display = 'id', 'nome','data', 'mostrar',
     ordering = '-id',
     search_fields = 'data', 'nome'
     list_per_page = 5
+    list_editable = 'mostrar',

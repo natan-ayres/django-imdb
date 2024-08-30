@@ -110,56 +110,48 @@
     {% endif %}
 </div>
 
-{% if infoitem == True %}
+{% if users %}
 <div class="container p-2 mb-5 mt-5 my-container-form">
+{% endif %}
+{% if infoitem %}
     <div class="container p-1 mb-1 mt-1 container-list">
         <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
             <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
         </a>
     </div>
-{% endif%}
+{% endif %}
 {% if users %}
-        <div class="mx-auto col p-1 filme-info-col2 text-center">
-            <b>{{ titulo }}</b>
-        </div>
-            {% for users in page_obj %}
-                {% cycle 1 2 3 4 5 6 as contador silent %}
-                {% with contador=contador %}
-                    {% if contador == 1 %}
-                        <div class="container p-3 mb-1 mt-2 my-container-form2">
-                    {% endif %}
-
-                    
+    <div class="mx-auto col p-1 filme-info-col2 text-center">
+        <b>{{ titulo }}</b>
+    </div>
+    {% for users in page_obj %}
+        {% cycle 1 2 3 4 5 6 as contador silent %}
+        {% if contador == 1 %}
+            <div class="container p-3 mb-1 mt-2 my-container-form2">
+        {% endif %}
+            <div class="row {% if waitlist %}grupo-list-col{% else %}filme-reviews-col{% endif %} text-center">
+                <a href="{% if waitlist %}{% url 'gestao:infouser' users.id %}{% else %}{% url counterlink users.id %}{% endif %}" class="text-decoration-none text-black">
+                    <div class="col-md-12">
                         {% if waitlist %}
-                            <div class="row row grupo-list-col text-center">
-                                <a href="{% url 'gestao:infouser' users.id %}" class="text-decoration-none text-black">
-                                    <div class="col-md-12">
-                                        <p class="mt-2"><b>{{ users.username }}</b></p>
-                                    </div>
-                                </a>
-                                <div class="col-md-6">
-                                    <a href="{% url 'gestao:adicionarmembro' grupo.id users.id %}" class="btn btn-success w-100 mt-1 text-black"><p class="mt-1"><b>√</b></p></a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="{% url 'gestao:negarwaitlist' grupo.id users.id %}" class="btn btn-danger w-100 mt-1 text-black"><p class="mt-1"><b>X</b></p></a>
-                                </div>
-                            </div>
+                            <p class="mt-2"><b>{{ users.username }}</b></p>
                         {% else %}
-                            <div class="row filme-reviews-col text-center">
-                                <a href="{% url counterlink users.id %}" class="text-decoration-none text-black">
-                                    <div class="col-md-12">
-                                        <p class="mt-2"><b>{{ users.usuario }}</b> - <b>{{ users.nota}}</b></p>
-                                    </div>
-                                </a>
-                            </div>
+                            <p class="mt-2"><b>{{ users.usuario }}</b> - <b>{{ users.nota }}</b></p>
                         {% endif %}
                     </div>
-                    {% if contador == 6 %}
-                        </div>
-                    {% endif %}
-                {% endwith %}
-            {% endfor %}
+                </a>
+                {% if waitlist %}
+                    <div class="col-md-6">
+                        <a href="{% url 'gestao:adicionarmembro' grupo.id users.id %}" class="btn btn-success w-100 mt-1 text-black"><p class="mt-1"><b>√</b></p></a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'gestao:negarwaitlist' grupo.id users.id %}" class="btn btn-danger w-100 mt-1 text-black"><p class="mt-1"><b>X</b></p></a>
+                    </div>
+                {% endif %}
+            </div> <!-- End row -->
+        {% if contador == 6 %}
+            </div> <!-- End container -->
         {% endif %}
-</div>
-
+    {% endfor %}
+{% endif %}
+</div> <!-- End outer container -->
 {% endblock content %}
