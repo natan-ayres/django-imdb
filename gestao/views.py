@@ -575,6 +575,39 @@ def listarfilmes(request):
             context
         )
     
+def listarfilmesgrupo(request, grupo_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+        filmes_avaliados = Filmes.objects.filter(
+        reviews__usuario__in=single_grupo.membros.all()
+        ).distinct()
+
+        context = {
+            'create': 'gestao:apifilmes',
+            'redirect': 'gestao:infofilmegrupo',
+            'items': filmes_avaliados,
+            'site_title': 'Filmes',
+            'grupo_id': grupo_id,
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+    
+    except AttributeError:
+        context = {
+            'site_title': 'Filmes'
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+
+    
 def listarseries(request):
     try:
         series = Series.objects \
@@ -862,6 +895,14 @@ def infogrupo(request, grupo_id):
 
     usuario_esta_na_waitlist = single_grupo.waitlist.filter(id=request.user.id).exists()   
     usuario_e_membro = single_grupo.membros.filter(id=request.user.id).exists()   
+    filmes_avaliados = Filmes.objects.filter(
+        reviews__usuario__in=single_grupo.membros.all()
+    ).distinct()
+
+    contador = 0
+
+    for filmes in filmes_avaliados:
+        contador += 1
 
     if request.user == single_grupo.dono:
         waitlist = CustomUser.objects \
@@ -888,7 +929,9 @@ def infogrupo(request, grupo_id):
         'user_membro': usuario_e_membro,
         'user_waitlist': usuario_esta_na_waitlist,
         'grupo': single_grupo,
-        'site_title': site_title
+        'site_title': site_title,
+        'filmes_avaliados': filmes_avaliados,
+        'contador': contador,
     }
 
     return render(

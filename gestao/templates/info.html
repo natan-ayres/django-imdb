@@ -82,6 +82,7 @@
         {% else %}
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Members: </b>{{ grupo.qntdmembros}}</div>
         {% endif %}
+        <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador }}</div></a>
         {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
             <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Join</b></div></a>         
         {% endif %}
@@ -101,7 +102,7 @@
                     </div>
                 </a>
             </div>
-    {% endfor %}
+        {% endfor %}
     {% endif %}
 </div>
 

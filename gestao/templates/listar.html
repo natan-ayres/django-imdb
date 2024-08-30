@@ -14,7 +14,7 @@
                 {% if contador == 1 %}
                     <div class="container filmes-container mt-1 p-1">
                 {% endif %}
-                        <a href="{% url redirect items.id %}" class="text-decoration-none text-black">
+                        {% if grupo_id %}<a href="{% url redirect items.id grupo_id%}"{% else %}<a href="{% url redirect items.id %}"{% endif %} class="text-decoration-none text-black">
                             <div class="row filmes-row p-2 mx-1 justify-content-center">
                                 <div class="col-12 col-md-12 custom-card text-center">
                                     <p>{{ items.nome }} ({{ items.data.year }})</p>
