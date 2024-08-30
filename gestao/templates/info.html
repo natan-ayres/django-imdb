@@ -132,10 +132,8 @@
         {% if user_membro or user == grupo.dono %}
             <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador_filmes }}</div></a>
             <a href="{% url 'gestao:listarseriesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Series Reviewd: </b>{{ contador_series }}</div></a>
-        {% else %}
-            <div class="mx-auto col p-1 filme-info-col mb-3"><b>Movies Reviewd: </b>{{ contador }}</div>
         {% endif %}
-        {% if user_waitlist == False and user_membro == False and grupo.dono != user %}
+        {% if user.is_authenticated and user_waitlist == False and user_membro == False and grupo.dono != user %}
             <a href="{% url 'gestao:adicionarwaitlist' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Join</b></div></a>         
         {% endif %}
         {% if user.is_admin or grupo.dono == user %}
@@ -161,7 +159,7 @@
 {% if users %}
 <div class="container p-2 mb-5 mt-5 my-container-form">
 {% endif %}
-{% if infoitem %}
+{% if infoitem and user.is_authenticated %}
     <div class="container p-1 mb-1 mt-1 container-list">
         <a href="{% url create item.id %}" class="text-decoration-none custom-card2 text-black">
             <div class="col-12 col-md-12 custom-card2 text-center"> + </div>

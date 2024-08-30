@@ -40,7 +40,7 @@ class Filmes(models.Model):
     ]
 
     nome = models.CharField(max_length=40)
-    diretor = models.CharField(max_length=30, blank=True, null=True)
+    diretor = models.CharField(max_length=100, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)
     duracao = models.CharField(blank=True, null=True)
@@ -83,7 +83,7 @@ class Series(models.Model):
     
     poster = models.ImageField(max_length=200, blank=True, upload_to='series/')
     nome = models.CharField(max_length=40)
-    diretor = models.CharField(max_length=31, blank=True, null=True)
+    diretor = models.CharField(max_length=100, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)
     classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
