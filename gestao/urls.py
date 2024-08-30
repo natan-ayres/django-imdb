@@ -1,5 +1,5 @@
 from django.urls import path
-from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewserie, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, listarfilmesgrupo, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries, infomembros, removermembro, infofilmegrupo, infoseriegrupo 
+from gestao.views import  index, loginview, registerview, logoutview, createfilme, createreviewfilme, createreviewfilmefiltro, createreviewserie, createreviewseriefiltro, createnoticia, createserie, creategrupo,  updatefilme, updateserie, updatenoticia, updatereviewfilme, updatereviewserie, listarfilmes, listarseries, listargrupos, listarfilmesgrupo, listarseriesgrupo, deletefilme, deleteserie,deletenoticia, deletereviewfilme, deletereviewserie, infouser, infofilme, infoserie, infonoticia, inforeviewfilme, inforeviewserie, update, deleteview, infogrupo, updategrupo, deletegrupo, adicionarwaitlist, adicionarmembro, negarwaitlist, apifilmes, apiseries, infomembros, removermembro, infofilmegrupo, infoseriegrupo 
 app_name = 'gestao'
 
 urlpatterns = [
@@ -16,8 +16,11 @@ urlpatterns = [
     path('criar/serie/', createserie, name='criarserie'),
     path('criar/noticia/', createnoticia, name='criarnoticia'),
     path('criar/review/filme/', createreviewfilme, name='criarreviewfilme'),
+    path('criar/review/filme/<int:filme_id>/', createreviewfilmefiltro, name='criarreviewfilmefiltro'),
     path('criar/review/serie/', createreviewserie, name='criarreviewserie'),
+    path('criar/review/serie/<int:serie_id>/', createreviewseriefiltro, name='criarreviewseriefiltro'),
     path('criar/grupo/',creategrupo, name='criargrupo'),
+
 
     path('delete/filme/<int:filme_id>/', deletefilme, name='deletefilme'),
     path('delete/serie/<int:serie_id>/', deleteserie, name='deleteserie'),
@@ -44,6 +47,7 @@ urlpatterns = [
     path('filmes/', listarfilmes, name='listarfilmes'),
     path('series/', listarseries, name='listarseries'),
     path('filmes/<int:grupo_id>/', listarfilmesgrupo, name='listarfilmesgrupo'),
+    path('series/<int:grupo_id>/', listarseriesgrupo, name='listarseriesgrupo'),
 
     path('user/<int:user_id>/', infouser, name='infouser'),
     path('filme/<int:filme_id>/', infofilme, name='infofilme'),

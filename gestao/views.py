@@ -4,7 +4,7 @@ from django.urls import reverse
 import requests
 from django.contrib import auth
 from . models import Noticias, Filmes, ReviewsFilmes, ReviewsSeries, Series, CustomUser, Grupos
-from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, ApiForm
+from . forms import RegisterUpdateForm, RegisterForm, CustomAuthenticationForm, FilmesForm, ReviewFilmeForm, ReviewFilmeFiltroForm, ReviewUpdateFilmeForm, ReviewSeriesForm, ReviewUpdateSeriesForm, NoticiasForm, SeriesForm, GruposForm, ApiForm, ReviewSerieFiltroForm
 
 from IMDB.local_settings import api_key
 
@@ -178,6 +178,34 @@ def createreviewfilme(request):
         }
     )
 
+def createreviewfilmefiltro(request, filme_id):
+    try:
+        single_filme = Filmes.objects.get(pk=filme_id)
+    except Filmes.DoesNotExist:
+        return redirect('gestao:index')
+    form = ReviewFilmeFiltroForm()
+
+
+    if request.method == 'POST':
+        form = ReviewFilmeFiltroForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.filme = single_filme
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form,
+            'site_title': 'Criar Review'
+        }
+    )    
+    
+
 
 def createreviewserie(request):
     form = ReviewSeriesForm(usuario=request.user)
@@ -188,6 +216,33 @@ def createreviewserie(request):
         if form.is_valid():
             review = form.save(commit=False)
             review.usuario = request.user
+            review.save()
+            return redirect('gestao:index')
+        
+    return render(
+        request,
+        'register.html',
+        {
+            'form': form,
+            'site_title': 'Criar Review'
+        }
+    )
+
+def createreviewseriefiltro(request, serie_id):
+    try:
+        single_serie = Series.objects.get(pk=serie_id)
+    except Series.DoesNotExist:
+        return redirect('gestao:index')
+    form = ReviewSerieFiltroForm()
+
+
+    if request.method == 'POST':
+        form = ReviewSerieFiltroForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.usuario = request.user
+            review.serie = single_serie
             review.save()
             return redirect('gestao:index')
         
@@ -668,6 +723,68 @@ def listarseries(request):
             context
         )
     
+def listarseriesgrupo(request, grupo_id):
+    try:
+        single_grupo = Grupos.objects.get(pk=grupo_id)
+        series_avaliadas = Series.objects.filter(
+        reviews__usuario__in=single_grupo.membros.all()
+        ).distinct()
+
+        contador = 0
+        nota = 0
+        notas = []
+        series_com_notas = []
+        
+        membros = CustomUser.objects \
+                .filter(membros = single_grupo)\
+                .order_by('-id')
+        
+        for serie in series_avaliadas:
+            contador = 0
+            nota = 0
+            reviews = ReviewsSeries.objects \
+                .filter(serie=serie.id,)\
+                .order_by('-id')
+            for review in reviews:
+                for membro in membros:
+                    if review.usuario == membro:
+                        nota += review.nota
+                        contador += 1
+            if contador > 0: 
+                nota = nota / contador
+                notas.append(nota)
+            else:
+                notas.append('?')
+
+            series_com_notas.append((serie, notas[-1]))
+        
+
+        context = {
+            'create': 'gestao:apiseries',
+            'redirect': 'gestao:infoseriegrupo',
+            'items_notas': series_com_notas,
+            'site_title': 'Series',
+            'grupo_id': grupo_id,
+            'notas': notas,
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+    
+    except AttributeError:
+        context = {
+            'site_title': 'Filmes'
+        }
+
+        return render(
+            request,
+            'listar.html',
+            context
+        )
+    
 def listargrupos(request):
     try:
         grupos = Grupos.objects \
@@ -825,7 +942,7 @@ def infofilme(request, filme_id):
         'item': single_filme,
         'site_title': site_title,
         'infoitem': True,
-        'create': 'gestao:criarreviewfilme',
+        'create': 'gestao:criarreviewfilmefiltro',
     }
 
     return render(
@@ -861,7 +978,7 @@ def infoserie(request, serie_id):
         'item': single_serie,
         'site_title': site_title,
         'infoitem': True,
-        'create': 'gestao:criarreviewserie',
+        'create': 'gestao:criarreviewseriefiltro',
     }
 
     return render(
@@ -946,11 +1063,18 @@ def infogrupo(request, grupo_id):
     filmes_avaliados = Filmes.objects.filter(
         reviews__usuario__in=single_grupo.membros.all()
     ).distinct()
+    series_avaliados = Series.objects.filter(
+        reviews__usuario__in=single_grupo.membros.all()
+    ).distinct()
 
-    contador = 0
+    contador_filmes = 0
+    contador_series = 0
 
     for filmes in filmes_avaliados:
-        contador += 1
+        contador_filmes += 1
+
+    for serie in series_avaliados:
+        contador_series += 1
 
     if request.user == single_grupo.dono:
         waitlist = CustomUser.objects \
@@ -979,7 +1103,8 @@ def infogrupo(request, grupo_id):
         'grupo': single_grupo,
         'site_title': site_title,
         'filmes_avaliados': filmes_avaliados,
-        'contador': contador,
+        'contador_filmes': contador_filmes,
+        'contador_series': contador_series,
     }
 
     return render(

@@ -114,6 +114,50 @@ class ReviewFilmeForm(forms.ModelForm):
         filmes_avaliados = Filmes.objects.filter(avaliacoes=usuario)
         self.fields['filme'].queryset = Filmes.objects.exclude(id__in=filmes_avaliados)
 
+class ReviewFilmeFiltroForm(forms.ModelForm):
+    nota = forms.FloatField(
+        label='Grade',
+        required=True,
+        validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Review',
+            }
+        ),
+        label='Review',
+        required=False
+    )
+
+    class Meta:
+        model = ReviewsFilmes
+        fields = (
+            'review', 'nota'
+        )
+
+class ReviewSerieFiltroForm(forms.ModelForm):
+    nota = forms.FloatField(
+        label='Grade',
+        required=True,
+        validators=[MinValueValidator(0,0), MaxValueValidator(10,0)]
+    )
+    review = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Review',
+            }
+        ),
+        label='Review',
+        required=False
+    )
+
+    class Meta:
+        model = ReviewsSeries
+        fields = (
+            'review', 'nota'
+        )
+
 class ReviewUpdateFilmeForm(forms.ModelForm):
     filme = forms.ModelChoiceField(
         queryset=Filmes.objects.all(),

@@ -130,7 +130,8 @@
         <div class="mx-auto col p-1 filme-info-col mb-3"><b>Members: </b>{{ grupo.qntdmembros}}</div>
         {% endif %}
         {% if user_membro or user == grupo.dono %}
-            <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador }}</div></a>
+            <a href="{% url 'gestao:listarfilmesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Movies Reviewd: </b>{{ contador_filmes }}</div></a>
+            <a href="{% url 'gestao:listarseriesgrupo' grupo.id %}" class="text-decoration-none text-black"><div class="mx-auto col p-1 filme-info-col4 mb-3"><b>Series Reviewd: </b>{{ contador_series }}</div></a>
         {% else %}
             <div class="mx-auto col p-1 filme-info-col mb-3"><b>Movies Reviewd: </b>{{ contador }}</div>
         {% endif %}
@@ -162,7 +163,7 @@
 {% endif %}
 {% if infoitem %}
     <div class="container p-1 mb-1 mt-1 container-list">
-        <a href="{% url create %}" class="text-decoration-none custom-card2 text-black">
+        <a href="{% url create item.id %}" class="text-decoration-none custom-card2 text-black">
             <div class="col-12 col-md-12 custom-card2 text-center"> + </div>
         </a>
     </div>
