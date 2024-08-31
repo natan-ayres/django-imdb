@@ -86,7 +86,7 @@ class Series(models.Model):
     diretor = models.CharField(max_length=100, blank=True, null=True)
     escritor = models.TextField(max_length=200, blank=True, null=True)
     atores = models.TextField(max_length=200, blank=True, null=True)
-    classificacao = models.CharField(max_length=20, choices=CLASSIFICACOES_CHOICES)
+    classificacao = models.CharField(null=True, blank=True, max_length=20, choices=CLASSIFICACOES_CHOICES)
     data = models.DateField(blank=True, null=True)
     data_termino = models.DateField(blank=True, null=True)
     episodios = models.PositiveSmallIntegerField(blank=True, null=True)

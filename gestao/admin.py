@@ -17,6 +17,7 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('username',)
     ordering = ('username',)
+    list_editable = 'is_admin',
 
 admin.site.register(CustomUser, CustomUserAdmin)
 

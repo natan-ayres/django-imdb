@@ -16,11 +16,15 @@
                     {% for noticia in noticias %}
                         {% if forloop.first %}
                             <div class="carousel-item active">
+                                <a href="{% url 'gestao:infonoticia' noticia.id %}" class="aindex">
                                 <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
+                                </a>
                             </div>
                         {% else %}
                             <div class="carousel-item">
+                                <a href="{% url 'gestao:infonoticia' noticia.id %}" class="aindex">
                                 <img src="{% static noticia.imagem %}" alt="Noticia" class="d-block imgslidercustom">
+                                </a>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -33,9 +37,9 @@
                 </button>
             </div>
         </div>
-        <div class="col d-flex mt-3">
+        <div class="col d-flex mt-3 mb-3">
             {% for noticia in noticias %}
-            <a href="{% url 'gestao:infonoticia' noticia.id %}" class="text-decoration-none text-black">
+            <a href="{% url 'gestao:infonoticia' noticia.id %}" class="aindex">
                 <div id="slide-text-{{ forloop.counter }}" class="slidetexto">
                     <div class="col font-noticia mb-1"><b>{{ noticia.nome }}</b></div>
                     <div class="col">{{noticia.texto}}</div>

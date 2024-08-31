@@ -51,11 +51,26 @@ class FilmesForm(forms.ModelForm):
             }
         )
     )
-
     sinopse = forms.CharField(
         label='Plot', widget=forms.Textarea(
             attrs={
                 'placeholder': 'Plot',
+                'class': ''
+            }
+        ), required=False
+    )
+    atores = forms.CharField(
+        label='Actors', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Actors',
+                'class': ''
+            }
+        ), required=False
+    )
+    escritor = forms.CharField(
+        label='Writers', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Writers',
                 'class': ''
             }
         ), required=False
@@ -80,6 +95,9 @@ class FilmesForm(forms.ModelForm):
         fields = (
             'nome', 'diretor', 'classificacao', 'duracao', 'sinopse', 'escritor', 'atores', 'data', 'poster'
         )
+        labels = {
+            'classificacao': 'Rated',
+        }
 
 class ReviewFilmeForm(forms.ModelForm):
     filme = forms.ModelChoiceField(
@@ -159,11 +177,6 @@ class ReviewSerieFiltroForm(forms.ModelForm):
         )
 
 class ReviewUpdateFilmeForm(forms.ModelForm):
-    filme = forms.ModelChoiceField(
-        queryset=Filmes.objects.all(),
-        label='Movie',
-        required=True
-    )
     nota = forms.FloatField(
         label='Grade',
         required=True,
@@ -182,15 +195,10 @@ class ReviewUpdateFilmeForm(forms.ModelForm):
     class Meta:
         model = ReviewsFilmes
         fields = (
-            'filme', 'review', 'nota'
+            'review', 'nota'
         )
 
 class ReviewSeriesForm(forms.ModelForm):
-    serie = forms.ModelChoiceField(
-        queryset=Series.objects.all(),
-        label='Serie',
-        required=True
-    )
     nota = forms.FloatField(
         label='Grade',
         required=True,
@@ -242,7 +250,7 @@ class ReviewUpdateSeriesForm(forms.ModelForm):
     class Meta:
         model = ReviewsSeries
         fields = (
-            'serie', 'review', 'nota'
+            'review', 'nota'
         )
 
 class SeriesForm(forms.ModelForm):
@@ -255,7 +263,22 @@ class SeriesForm(forms.ModelForm):
             }
         )
     )
-
+    atores = forms.CharField(
+        label='Actors', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Actors',
+                'class': ''
+            }
+        ), required=False
+    )
+    escritor = forms.CharField(
+        label='Writers', widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Writers',
+                'class': ''
+            }
+        ), required=False
+    )
     diretor = forms.CharField(
         label='Director',
         widget=forms.TextInput(
@@ -299,6 +322,9 @@ class SeriesForm(forms.ModelForm):
         fields = (
             'nome', 'diretor', 'data', 'data_termino', 'episodios', 'atores', 'escritor', 'classificacao','temporadas', 'sinopse', 'poster'
         )
+        labels = {
+            'classificacao': 'Rated'
+        }
 
 class GruposForm(forms.ModelForm):
     nome = forms.CharField(
