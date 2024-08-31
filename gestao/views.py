@@ -1033,6 +1033,7 @@ def inforeviewfilme(request, review_id):
         'delete': 'gestao:deletereviewfilme',
         'update': 'gestao:updatereviewfilme',
         'Fonte': 'Filme',
+        'info': 'gestao:infofilme',
         'fonte': single_review.filme,
         'review': single_review,
         'site_title': site_title
@@ -1056,6 +1057,7 @@ def inforeviewserie(request, review_id):
         'delete': 'gestao:deletereviewserie',
         'update': 'gestao:updatereviewserie',
         'Fonte': 'Série',
+        'info': 'gestao:infoserie',
         'fonte': single_review.serie,
         'review': single_review,
         'site_title': site_title
